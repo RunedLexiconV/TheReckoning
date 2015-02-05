@@ -21,9 +21,11 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.timer = new Timer();
+    console.log('game initialized');
 }
 
 GameEngine.prototype.start = function () {
+    console.log("starting game");
     var that = this;
     (function gameLoop() {
         that.loop();
@@ -32,25 +34,16 @@ GameEngine.prototype.start = function () {
 }
 
 GameEngine.prototype.addEntity = function (entity) {
+    console.log('added entity');
     this.entities.push(entity);
 }
 
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.surfaceWidth, this.surfaceHeight);
-
-   	this.ctx.strokeStyle = "brown";
-    this.ctx.lineWidth = "100";
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, groundY);
-    this.ctx.lineTo(this.surfaceWidth, groundY);
-    this.ctx.stroke();
-    this.ctx.closePath();
-
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
     }
-
     this.ctx.restore();
 }
 
