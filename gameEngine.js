@@ -10,10 +10,11 @@ window.requestAnimFrame = (function () {
 })();
 
 function GameEngine() {
-    this.entities = [];
     this.ctx = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
+    this.entities = [];
+    this.background = null;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -31,6 +32,22 @@ GameEngine.prototype.start = function () {
     })();
 }
 
+GameEngine.prototype.startInput = function () {
+    var that = this;
+    this.ctx.canvas.addEventListener("keydown", function (event) {
+        var key = String.fromCharCode(event.keyCode).toUpperCase();
+    });
+
+    this.ctx.canvas.addEventListener("keyup", function (event) {
+        var key = String.fromCharCode(event.keyCode).toUpperCase();
+
+    });
+}
+
+GameEngine.prototype.setBackground = function (background) {
+    this.background = background;
+};
+
 GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
 }
@@ -38,13 +55,7 @@ GameEngine.prototype.addEntity = function (entity) {
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.surfaceWidth, this.surfaceHeight);
 
-   	this.ctx.strokeStyle = "brown";
-    this.ctx.lineWidth = "100";
-    this.ctx.beginPath();
-    this.ctx.moveTo(0, groundY);
-    this.ctx.lineTo(this.surfaceWidth, groundY);
-    this.ctx.stroke();
-    this.ctx.closePath();
+    if(this.background) this.ctx.drawImage(this.background, 0, 0, WIDTH, HEIGHT);
 
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
