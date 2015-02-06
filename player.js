@@ -21,8 +21,10 @@ Player.prototype.isColliding = function (other) {
 }
 
 Player.prototype.draw = function () {
-	this.character.animations.idle.drawFrame(this.game.clockTick, this.ctx,
+    if(this.state == "idle")
+        this.character.animations.idle.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y);
+    
 };
 
 Player.prototype.update = function() {

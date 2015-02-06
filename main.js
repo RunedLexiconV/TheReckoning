@@ -41,7 +41,7 @@ AM.downloadAll( function () {
 
       var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
       gameEngine.addEntity(new Player(gameEngine, character1,
-                                      100 , HEIGHT - 225, 100, null));
+                                      100 , HEIGHT - 225, 100, PLAYER1_CONTROLS));
       //who is a controls?
 	  	window.removeEventListener(this);
   	};
