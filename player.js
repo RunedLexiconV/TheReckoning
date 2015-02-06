@@ -1,17 +1,17 @@
-function Player (game, spritesheet, x , y, animations, health , controls) { 
+function Player (game, character, x , y, health , controls) { 
 	this.x = x;
     this.y = y;
     this.game = game;
     this.ctx = game.ctx;
     this.state = "idle";
-    this,jumpElapsedTime = 0;
+    this.jumpElapsedTime = 0;
     this.velocity = {x: 0, y: 0};
-    this.animations = animations;
+    this.character = character;
     this.health = health;
     this.control = controls;
 }
 
-PlayerCharacter.prototype.inAir = function () {
+Player.prototype.inAir = function () {
 	return this.y < this.groundY;
 };
 
@@ -21,10 +21,11 @@ Player.prototype.isColliding = function (other) {
 }
 
 Player.prototype.draw = function () {
-	this.animations[this.state].drawFrame(this, this.game.clockTick, this.ctx, this.x, this.y);
+	this.character.animations.idle.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
 };
 
 Player.prototype.update = function() {
-	this.x += velocity.x;
-	this.y += velocity.y;
+	this.x += this.velocity.x;
+	this.y += this.velocity.y;
 }
