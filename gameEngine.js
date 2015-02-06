@@ -23,7 +23,7 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.timer = new Timer();
-}
+};
 
 GameEngine.prototype.start = function () {
     var that = this;
@@ -31,7 +31,7 @@ GameEngine.prototype.start = function () {
         that.loop();
         requestAnimFrame(gameLoop, that.ctx.canvas);
     })();
-}
+};
 
 GameEngine.prototype.startInput = function () {
     var that = this;
@@ -40,7 +40,6 @@ GameEngine.prototype.startInput = function () {
         if(that.keysDown.indexOf(key) < 0){
             that.keysDown.push(key);
         }
-        console.log(that.keysDown);
     }, false);
 
     this.ctx.canvas.addEventListener("keyup", function (event) {
@@ -49,9 +48,8 @@ GameEngine.prototype.startInput = function () {
         if (index > -1) {
             that.keysDown.splice(index, 1);
         }
-        console.log(that.keysDown);
     }, false);
-}
+};
 
 GameEngine.prototype.setBackground = function (background) {
     this.background = background;
@@ -59,7 +57,7 @@ GameEngine.prototype.setBackground = function (background) {
 
 GameEngine.prototype.addEntity = function (entity) {
     this.entities.push(entity);
-}
+};
 
 GameEngine.prototype.draw = function () {
     this.ctx.clearRect(0, 0, this.surfaceWidth, this.surfaceHeight);
@@ -72,7 +70,7 @@ GameEngine.prototype.draw = function () {
     }
 
     this.ctx.restore();
-}
+};
 
 GameEngine.prototype.update = function () {
     var entitiesCount = this.entities.length;
@@ -82,13 +80,13 @@ GameEngine.prototype.update = function () {
 
         entity.update();
     }
-}
+};
 
 GameEngine.prototype.loop = function () {
     this.clockTick = this.timer.tick();
     this.update();
     this.draw();
-}
+};
 
 function Timer() {
     this.gameTime = 0;
@@ -104,3 +102,4 @@ Timer.prototype.tick = function () {
     var gameDelta = Math.min(wallDelta, this.maxStep);
     this.gameTime += gameDelta;
     return gameDelta;
+};

@@ -4,9 +4,9 @@ var WIDTH = 800;
 var HEIGHT = 600;
 var GROUND = 700;
 
-AM.queueAsset("./sprites/Battle_Arena_Background.jpg");
-AM.queueAsset("./sound/Dirtiest - Genoshan Massacre.mp3");
-AM.queueAsset("./sprites/runedlogo.png");
+AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
+AM.queueDownload("./sound/Dirtiest - Genoshan Massacre.mp3");
+AM.queueDownload("./sprites/runedlogo.png");
 
 AM.downloadAll( function () {
 	var canvas = document.getElementById("canvas");
@@ -20,18 +20,19 @@ AM.downloadAll( function () {
     //start screen
     canvas.style.background = "#39275B";
     ctx.drawImage(AM.getAsset("./sprites/runedlogo.png"), 100, 100, 600, 200);
+
     ctx.save();
     ctx.font = "20px runed";
     ctx.shadowColor = "white";
     ctx.shadowBlur = 10;
-    ctx.fillStyle = "white"
+    ctx.fillStyle = "white";
   	ctx.fillText("Press any key to continue...", 270, 400);
-    ctx.drawText
     ctx.restore();
+
   	//music.play();
+
   	var startGameListener = function (e) {
 	  	//start game
-	  	console.log("startListener");
 	    gameEngine.init(ctx);
 	   	gameEngine.start();
 	    gameEngine.setBackground(AM.getAsset("./sprites/Battle_Arena_Background.jpg"));
