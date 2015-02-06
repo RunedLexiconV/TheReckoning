@@ -71,26 +71,28 @@ Player.prototype.update = function() {
         this.velocity.x = -4;
         this.state = "moveLeft";
     }
-    else if (keys.indexOf(this.control.jump) > -1 || this.state === "jump") {
+    else if (keys.indexOf(this.control.jump) > -1 ||
+                this.state === "jump" ||
+                this.state === "inair" ||
+                this.state === "landing") {
         this.x += this.velocity.x;
         this.state = "jump";
-        // if ((GROUND - height) <= 0) {
-        //     character.state = "idle";
-        // }
-        var jumpDistance = (this.character.animations.jump.elapsedTime) / //+
-                            // this.character.animations.landing.elapsedTime) /
-                            (this.character.animations.jump.totalTime) // +
-                            // this.character.animations.landing.totalTime);
+        var jumpDistance = (this.character.animations.jump.elapsedTime +
+                            this.character.animations.landing.elapsedTime) /
+                            (this.character.animations.jump.totalTime +
+                            this.character.animations.landing.totalTime);
         if (jumpDistance > 0.5) {
-            console.log("reverse");
 
             jumpDistance = 1 - jumpDistance;
         }
 
-        var height = 150*(-4 * (jumpDistance * jumpDistance - jumpDistance));
-        console.log(jumpDistance);
-        console.log(height);
-        this.y = this.GROUND - height;
+        var height = 80*(-4 * (jumpDistance * jumpDistance - jumpDistance));
+        if (height < 0) {
+            this.state = "idle";
+            this.character.animations.jump.elapsedTime = 0;
+        }
+        this.y = (GROUND - FRAME_HEIGHT) - height;
+        console.log(GROUND);
     }
     else {
         this.velocity.x = 0;
