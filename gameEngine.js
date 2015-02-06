@@ -15,6 +15,7 @@ function GameEngine() {
     this.surfaceHeight = null;
     this.entities = [];
     this.background = null;
+    this.keysDown = [];
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -36,12 +37,20 @@ GameEngine.prototype.startInput = function () {
     var that = this;
     this.ctx.canvas.addEventListener("keydown", function (event) {
         var key = String.fromCharCode(event.keyCode).toUpperCase();
-    });
+        if(that.keysDown.indexOf(key) < 0){
+            that.keysDown.push(key);
+        }
+        console.log(that.keysDown);
+    }, false);
 
     this.ctx.canvas.addEventListener("keyup", function (event) {
         var key = String.fromCharCode(event.keyCode).toUpperCase();
-
-    });
+        var index = that.keysDown.indexOf(key);
+        if (index > -1) {
+            that.keysDown.splice(index, 1);
+        }
+        console.log(that.keysDown);
+    }, false);
 }
 
 GameEngine.prototype.setBackground = function (background) {

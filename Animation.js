@@ -26,8 +26,8 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y) {
         var xindex = frame % this.lineSize;
         var yindex = Math.floor(frame / this.lineSize) + this.startline;
 
-        if(reverse)
-            xindex += reverseOffset;
+        if(this.reverse)
+            xindex += this.reverseOffset;
 
         ctx.drawImage(this.spriteSheet,
                      xindex * this.frameWidth, yindex * this.frameHeight,  // source from sheet

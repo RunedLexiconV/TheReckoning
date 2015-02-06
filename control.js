@@ -2,16 +2,18 @@ var PLAYER1_CONTROLS =  {
 	moveRight = 'D',
 	moveLeft = 'A',
 	jump = 'W',
-	punch = 'J',
-	kick = 'K',
-	special = 'L'
+	block = 'S';
+	punch = 'C',
+	kick = 'V',
+	special = 'B'
 }
 
 var PLAYER2_CONTROLS =  {
-	moveRight = 'UP',
-	moveLeft = 'A',
-	jump = 'W',
-	punch = '',
-	kick = '',
-	special = ''
+	moveRight = 'RIGHT',
+	moveLeft = 'LEFT',
+	jump = 'UP',
+	block = 'DOWN';
+	punch = ',',
+	kick = '.',
+	special = '/'
 }
