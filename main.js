@@ -2,7 +2,8 @@ var AM = new AssetManager();
 var SCALE= 1;
 var WIDTH = 800;
 var HEIGHT = 600;
-var GROUND = 700;
+var GROUND = 500;
+var HEALTH = 100;
 
 AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
 AM.queueDownload("./sound/Dirtiest - Genoshan Massacre.mp3");
@@ -30,21 +31,23 @@ AM.downloadAll( function () {
   	ctx.fillText("Press any key to continue...", 270, 400);
     ctx.restore();
 
-  	//music.play();
-
+  	// music.play();
+    var that = this;
   	var startGameListener = function (e) {
 	  	//start game
 	    gameEngine.init(ctx);
 	   	gameEngine.start();
 	    gameEngine.setBackground(AM.getAsset("./sprites/Battle_Arena_Background.jpg"));
 	  	gameEngine.startInput();
+      document.getElementById("canvas").focus();
 
       var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
       gameEngine.addEntity(new Player(gameEngine, character1,
-                                      100 , HEIGHT - 225, 100, PLAYER1_CONTROLS));
-      //who is a controls?
-	  	window.removeEventListener(this);
+                                      50 , GROUND - FRAME_HEIGHT,
+                                      HEALTH, PLAYER1_CONTROLS));
+
+	  	window.removeEventListener("keydown", startGameListener, false);
   	};
-  	window.addEventListener("keydown", startGameListener);
+  	window.addEventListener("keydown", startGameListener, false);
 });
 

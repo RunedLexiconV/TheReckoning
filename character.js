@@ -15,10 +15,10 @@ function Character (spritesheet) {
     this.animations = {
     	idle: new Animation(that.spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
     						FRAME_DURATION, 10, 5, 0,
-    						1, true, false, 0),
+    						1.5, true, false, 0),
     	walk: new Animation(that.spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
     						FRAME_DURATION, 5, 5, 2,
-    						1, true, false, 0),
+    						1.5, true, false, 0),
     	punch1: new Animation(that.spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
     						FRAME_DURATION, 7, 5, 3,
     						1, false, false, 0),
@@ -43,7 +43,7 @@ function Character (spritesheet) {
     	inair: new Animation(that.spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
     						FRAME_DURATION, 1, 5, 15,
     						1, true, false, 0),
-    	falling: new Animation(that.spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+    	landing: new Animation(that.spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
     						FRAME_DURATION, 5, 5, 16,
     						1, false, false, 0),
     };
