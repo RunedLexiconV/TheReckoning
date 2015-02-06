@@ -36,14 +36,14 @@ GameEngine.prototype.start = function () {
 GameEngine.prototype.startInput = function () {
     var that = this;
     this.ctx.canvas.addEventListener("keydown", function (event) {
-        var key = String.fromCharCode(event.keyCode).toUpperCase();
-        if(that.keysDown.indexOf(key) < 0){
+        var key = String.fromCharCode(event.keyCode).toLowerCase();
+        if(that.keysDown.indexOf(key) < 0) {
             that.keysDown.push(key);
         }
     }, false);
 
     this.ctx.canvas.addEventListener("keyup", function (event) {
-        var key = String.fromCharCode(event.keyCode).toUpperCase();
+        var key = String.fromCharCode(event.keyCode).toLowerCase();
         var index = that.keysDown.indexOf(key);
         if (index > -1) {
             that.keysDown.splice(index, 1);
@@ -68,7 +68,6 @@ GameEngine.prototype.draw = function () {
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
     }
-
     this.ctx.restore();
 };
 

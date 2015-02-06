@@ -15,17 +15,90 @@ Player.prototype.inAir = function () {
 	return this.y < this.groundY;
 };
 
-
 Player.prototype.isColliding = function (other) {
 	return false;
 }
 
 Player.prototype.draw = function () {
-	this.character.animations.idle.drawFrame(this.game.clockTick, this.ctx,
+    switch (this.state) {
+    case "idle":
+        this.character.animations.idle.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y);
+        break;
+    case "moveRight":
+        this.character.animations.walk.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    case "moveLeft":
+        this.character.animations.walk.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    case "jump":
+        this.character.animations.jump.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    case "inair":
+        this.character.animations.inair.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    case "landing":
+        this.character.animations.landing.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    case "punch":
+        this.character.animations.punch1.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    case "kick":
+        this.character.animations.kick1.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    // case "special";
+    //     this.character.animations.special.drawFrame(this.game.clockTick, this.ctx,
+    //                                                 this.x, this.y);
+    //     break;
+    }
 };
 
 Player.prototype.update = function() {
+    var keys = [];
+    keys = this.game.keysDown;
+    if(keys.indexOf(this.control.moveRight) > -1) {
+        this.velocity.x = 4;
+        this.state = "moveRight";
+    }
+    else if (keys.indexOf(this.control.moveLeft) > -1) {
+        this.velocity.x = -4;
+        this.state = "moveLeft";
+    }
+    else if (keys.indexOf(this.control.jump) > -1 ||
+                this.state === "jump" ||
+                this.state === "inair" ||
+                this.state === "landing") {
+        this.x += this.velocity.x;
+        this.state = "jump";
+        var jumpDistance = (this.character.animations.jump.elapsedTime +
+                            this.character.animations.landing.elapsedTime) /
+                            (this.character.animations.jump.totalTime +
+                            this.character.animations.landing.totalTime);
+        if (jumpDistance > 0.5) {
+
+            jumpDistance = 1 - jumpDistance;
+        }
+
+        var height = 80*(-4 * (jumpDistance * jumpDistance - jumpDistance));
+        if (height < 0) {
+            this.state = "idle";
+            this.character.animations.jump.elapsedTime = 0;
+        }
+        this.y = (GROUND - FRAME_HEIGHT) - height;
+        console.log(GROUND);
+    }
+    else {
+        this.velocity.x = 0;
+        this.state = "idle";
+    }
+
 	this.x += this.velocity.x;
 	this.y += this.velocity.y;
 }

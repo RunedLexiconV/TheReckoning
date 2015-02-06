@@ -2,7 +2,8 @@ var AM = new AssetManager();
 var SCALE= 1;
 var WIDTH = 800;
 var HEIGHT = 600;
-var GROUND = 700;
+var GROUND = 500;
+var HEALTH = 100;
 
 AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
 AM.queueDownload("./sprites/runedlogo.png");
@@ -20,7 +21,6 @@ AM.downloadAll( function () {
     musicPlayer.addSong("./sound/Dirtiest - Genoshan Massacre.mp3");
     musicPlayer.addSong("./sound/06 Hidden Shrine.mp3");
     musicPlayer.addSong("./sound/Robot on Drabgon.mp3");
-
 
     var gameEngine = new GameEngine();
 
@@ -45,13 +45,15 @@ AM.downloadAll( function () {
 	   	gameEngine.start();
 	    gameEngine.setBackground(AM.getAsset("./sprites/Battle_Arena_Background.jpg"));
 	  	gameEngine.startInput();
+      document.getElementById("canvas").focus();
 
       var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
       gameEngine.addEntity(new Player(gameEngine, character1,
-                                      100 , HEIGHT - 225, 100, null));
-      //who is a controls?
-	  	window.removeEventListener(this);
+                                      50 , GROUND - FRAME_HEIGHT,
+                                      HEALTH, PLAYER1_CONTROLS));
+
+	  	window.removeEventListener("keydown", startGameListener, false);
   	};
-  	window.addEventListener("keydown", startGameListener);
+  	window.addEventListener("keydown", startGameListener, false);
 });
 
