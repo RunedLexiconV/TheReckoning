@@ -10,10 +10,11 @@ MusicPlayer.prototype.addSong = function (path) {
 };
 
 MusicPlayer.prototype.init = function () {
-
-	if(shuffle) {
+	this.setTrack(0);
+	var that = this;
+	if(this.shuffle) {
 		this.music.addEventListener("ended", function() {
-			(this.playlist.length < track + 1) ? setTrack(track++) : setTrack(0);
+			(that.playlist.length < that.track + 1) ? that.setTrack(that.track++) : that.setTrack(0);
 		});
 	}
 };
@@ -22,7 +23,7 @@ MusicPlayer.prototype.setTrack = function (track) {
 	if (this.playlist[track]) {
 		this.music.pause();
 		this.track = track;
-		this.music.setAttribute("src", playlist[0]);
+		this.music.setAttribute("src", this.playlist[0]);
 		this.music.play();
 	} 
 };

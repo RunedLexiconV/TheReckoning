@@ -5,7 +5,6 @@ var HEIGHT = 600;
 var GROUND = 700;
 
 AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
-AM.queueDownload("./sound/Dirtiest - Genoshan Massacre.mp3");
 AM.queueDownload("./sprites/runedlogo.png");
 AM.queueDownload("./sprites/sheet 2a.png");
 
@@ -15,7 +14,14 @@ AM.downloadAll( function () {
 	canvas.setAttribute("height",  HEIGHT + "px");
     var ctx = canvas.getContext("2d");
     var music = document.createElement("audio");
-    music.setAttribute("src","./sound/Dirtiest - Genoshan Massacre.mp3");
+    //music.setAttribute("src","./sound/Dirtiest - Genoshan Massacre.mp3");
+    var musicPlayer = new MusicPlayer(music);
+    musicPlayer.addSong("./sound/End of peace.mp3");
+    musicPlayer.addSong("./sound/Dirtiest - Genoshan Massacre.mp3");
+    musicPlayer.addSong("./sound/06 Hidden Shrine.mp3");
+    musicPlayer.addSong("./sound/Robot on Drabgon.mp3");
+
+
     var gameEngine = new GameEngine();
 
     //start screen
@@ -30,7 +36,8 @@ AM.downloadAll( function () {
   	ctx.fillText("Press any key to continue...", 270, 400);
     ctx.restore();
 
-  	//music.play();
+  	musicPlayer.init();
+  	musicPlayer.play();
 
   	var startGameListener = function (e) {
 	  	//start game
