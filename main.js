@@ -31,7 +31,7 @@ AM.downloadAll( function () {
   	ctx.fillText("Press any key to continue...", 270, 400);
     ctx.restore();
 
-  	// music.play();
+  	music.play();
     var that = this;
   	var startGameListener = function (e) {
 	  	//start game
@@ -45,6 +45,11 @@ AM.downloadAll( function () {
       gameEngine.addEntity(new Player(gameEngine, character1,
                                       50 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER1_CONTROLS));
+
+      var character2 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
+      gameEngine.addEntity(new Player(gameEngine, character2,
+                                      600 , GROUND - FRAME_HEIGHT,
+                                      HEALTH, PLAYER2_CONTROLS));
 
 	  	window.removeEventListener("keydown", startGameListener, false);
   	};

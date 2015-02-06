@@ -1,4 +1,6 @@
-function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, lineSize, startline, scale, loop, reverse, reverseOffset) {
+function Animation (spriteSheet, frameWidth, frameHeight, frameDuration,
+                    frames, lineSize, startline, scale, loop,
+                    reverse, reverseOffset, callback) {
     this.spriteSheet = spriteSheet;
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
@@ -13,13 +15,14 @@ function Animation(spriteSheet, frameWidth, frameHeight, frameDuration, frames, 
 
     this.totalTime = frameDuration * frames;
     this.elapsedTime = 0;
-
+    this.callback = callback;
 }
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y) {
     this.elapsedTime += tick;
     if (this.isDone()) {
         if (this.loop) this.elapsedTime = 0;
+        if (this.callback) callback();
     }
     else {
         var frame = this.currentFrame();

@@ -63,6 +63,7 @@ Player.prototype.draw = function () {
 Player.prototype.update = function() {
     var keys = [];
     keys = this.game.keysDown;
+
     if(keys.indexOf(this.control.moveRight) > -1) {
         this.velocity.x = 4;
         this.state = "moveRight";
@@ -71,32 +72,72 @@ Player.prototype.update = function() {
         this.velocity.x = -4;
         this.state = "moveLeft";
     }
-    else if (keys.indexOf(this.control.jump) > -1 ||
-                this.state === "jump" ||
-                this.state === "inair" ||
-                this.state === "landing") {
-        this.x += this.velocity.x;
-        this.state = "jump";
-        var jumpDistance = (this.character.animations.jump.elapsedTime +
-                            this.character.animations.landing.elapsedTime) /
-                            (this.character.animations.jump.totalTime +
-                            this.character.animations.landing.totalTime);
-        if (jumpDistance > 0.5) {
-
-            jumpDistance = 1 - jumpDistance;
-        }
-
-        var height = 80*(-4 * (jumpDistance * jumpDistance - jumpDistance));
-        if (height < 0) {
+    else if(keys.indexOf(this.control.punch) > -1 || this.state === "punch") {
+        this.state = "punch";
+        if(this.character.animations.punch1.isDone()) {
+            this.character.animations.punch1.elapsedTime = 0;
             this.state = "idle";
-            this.character.animations.jump.elapsedTime = 0;
         }
-        this.y = (GROUND - FRAME_HEIGHT) - height;
-        console.log(GROUND);
+    }
+    else if(keys.indexOf(this.control.kick) > -1 || this.state === "kick") {
+        this.state = "kick";
+        if(this.character.animations.kick1.isDone()) {
+            this.character.animations.kick1.elapsedTime = 0;
+            this.state = "idle";
+        }
     }
     else {
         this.velocity.x = 0;
         this.state = "idle";
+    }
+    if (keys.indexOf(this.control.jump) > -1 ||
+                this.state === "jump" ||
+                this.state === "inair" ||
+                this.state === "landing") {
+        this.x += this.velocity.x;
+        var totalTime = this.character.animations.jump.totalTime +
+                            this.character.animations.landing.totalTime +
+                            (this.character.animations.inair.totalTime * 4);
+        var elapsedTime = this.character.animations.jump.elapsedTime +
+                            this.character.animations.landing.elapsedTime +
+                            (this.character.animations.inair.elapsedTime * 4);
+
+        var jumpDistance = elapsedTime / totalTime;
+        var jumpIteration = this.character.animations.jump.totalTime / totalTime;
+        var landIteration = totalTime - (this.character.animations.landing.totalTime / totalTime);
+        console.log(elapsedTime);
+        console.log(jumpIteration);
+        console.log(landIteration);
+        console.log(totalTime);
+        console.log(jumpDistance);
+
+
+        if(jumpDistance < jumpIteration) {
+            console.log("jump");
+            this.state = "jump";
+        }
+        else if(jumpDistance > landIteration) {
+            console.log("land");
+            this.state = "landing";
+        }
+        else {
+            console.log("airtime");
+            this.state = "inair";
+        }
+
+        if (jumpDistance > 0.5) {
+            jumpDistance = 1 - jumpDistance;
+        }
+
+        var height = 100*(-4 * (jumpDistance * jumpDistance - jumpDistance));
+        if (height <= 0) {
+            this.state = "idle";
+            this.character.animations.jump.elapsedTime = 0;
+            this.character.animations.landing.elapsedTime = 0;
+            this.y = GROUND - FRAME_HEIGHT;
+        } else {
+            this.y = (GROUND - FRAME_HEIGHT) - height;
+        }
     }
 
 	this.x += this.velocity.x;
