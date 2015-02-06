@@ -40,3 +40,4 @@ AM.downloadAll( function () {
   	};
   	window.addEventListener("keydown", startGameListener);
 });
+
