@@ -1,5 +1,5 @@
 function Player (game, character, x, y, health, controls) { 
-	this.x = x;
+    this.x = x;
     this.y = y;
     this.game = game;
     this.ctx = game.ctx;
@@ -13,11 +13,11 @@ function Player (game, character, x, y, health, controls) {
 }
 
 Player.prototype.inAir = function () {
-	return this.y < this.groundY;
+    return this.y + FRAME_HEIGHT< this.GROUND;
 };
 
 Player.prototype.isColliding = function (other) {
-	return false;
+    return false;
 };
 
 Player.prototype.draw = function () {
@@ -112,16 +112,16 @@ Player.prototype.update = function() {
             var elapsedTime = this.character.animations.inair.elapsedTime;
 
             var jumpDistance = elapsedTime / totalTime;
-            console.log("elapsed " + elapsedTime);
-            console.log("total " + totalTime);
-            console.log("jumpDistance " + jumpDistance);
+            //console.log("elapsed " + elapsedTime);
+            //console.log("total " + totalTime);
+            //console.log("jumpDistance " + jumpDistance);
 
             if (jumpDistance > 0.5) {
                 jumpDistance = 1 - jumpDistance;
             }
 
             var height = 100 * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-            console.log("height " + height);
+            //console.log("height " + height);
             if (height < 0) {
                 this.state = "landing";
                 this.character.animations.inair.elapsedTime = 0;
@@ -140,6 +140,6 @@ Player.prototype.update = function() {
         }
     }
 
-	this.x += this.velocity.x;
-	this.y += this.velocity.y;
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
 };
