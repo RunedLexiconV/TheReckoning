@@ -20,10 +20,10 @@ AM.downloadAll( function () {
     var music = document.createElement("audio");
     //music.setAttribute("src","./sound/Dirtiest - Genoshan Massacre.mp3");
     var musicPlayer = new MusicPlayer(music);
-    musicPlayer.addSong("./sound/End of peace.mp3");
+    //musicPlayer.addSong("./sound/End of peace.mp3");
     musicPlayer.addSong("./sound/Dirtiest - Genoshan Massacre.mp3");
-    musicPlayer.addSong("./sound/06 Hidden Shrine.mp3");
-    musicPlayer.addSong("./sound/Robot on Drabgon.mp3");
+    //musicPlayer.addSong("./sound/06 Hidden Shrine.mp3");
+    //musicPlayer.addSong("./sound/Robot on Drabgon.mp3");
 
     var gameEngine = new GameEngine();
 
@@ -40,8 +40,8 @@ AM.downloadAll( function () {
     ctx.restore();
     var timer = null;
     var background = 0;
-  	//musicPlayer.init();
-  	//musicPlayer.play();
+  	musicPlayer.init();
+  	musicPlayer.play();
 
   	var startGameListener = function (e) {
 	  	//start game
