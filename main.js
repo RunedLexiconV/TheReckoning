@@ -8,6 +8,8 @@ var HEALTH = 100;
 AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
 AM.queueDownload("./sprites/runedlogo.png");
 AM.queueDownload("./sprites/sheet 2a.png");
+AM.queueDownload("./sprites/portrait1.png");
+loadBackground("./sprites/background1/", 36);
 
 AM.downloadAll( function () {
 	var canvas = document.getElementById("canvas");
@@ -36,24 +38,40 @@ AM.downloadAll( function () {
   	ctx.fillText("Press any key to continue...", 270, 400);
     ctx.restore();
 
-  	musicPlayer.init();
-  	musicPlayer.play();
+  	//musicPlayer.init();
+  	//musicPlayer.play();
 
   	var startGameListener = function (e) {
 	  	//start game
 	    gameEngine.init(ctx);
 	   	gameEngine.start();
-	    gameEngine.setBackground(AM.getAsset("./sprites/Battle_Arena_Background.jpg"));
 	  	gameEngine.startInput();
       document.getElementById("canvas").focus();
-
+      startBackgroundAnimation(gameEngine, "./sprites/background1/", 36);
       var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
       gameEngine.addEntity(new Player(gameEngine, character1,
                                       50 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER1_CONTROLS));
-
 	  	window.removeEventListener("keydown", startGameListener, false);
   	};
   	window.addEventListener("keydown", startGameListener, false);
 });
+
+function loadBackground(path, frames) {
+  for(var i = 0; i < frames; i++) { 
+    AM.queueDownload(path+"tmp-"+i+".gif");
+  }
+}
+
+function startBackgroundAnimation(gameEngine, path, frames) {
+  var i = 0;
+  var reverse = false;
+  window.setInterval(function () {
+    console.log
+    gameEngine.setBackground(AM.getAsset(path+"tmp-"+i+".gif"))
+    i + 1 < frames ? i++ : i = 0;
+  }, 200);
+  
+}
+
 
