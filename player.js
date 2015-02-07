@@ -63,7 +63,6 @@ Player.prototype.draw = function () {
 Player.prototype.update = function() {
     var keys = [];
     keys = this.game.keysDown;
-
     if(keys.indexOf(this.control.moveRight) > -1) {
         this.velocity.x = 4;
         this.state = "moveRight";
