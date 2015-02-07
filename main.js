@@ -18,7 +18,9 @@ AM.downloadAll( function () {
 	canvas.setAttribute("height",  HEIGHT + "px");
     var ctx = canvas.getContext("2d");
     var music = document.createElement("audio");
+    canvas.appendChild(music);
     //music.setAttribute("src","./sound/Dirtiest - Genoshan Massacre.mp3");
+    console.log(music);
     var musicPlayer = new MusicPlayer(music);
     //musicPlayer.addSong("./sound/End of peace.mp3");
     musicPlayer.addSong("./sound/Dirtiest - Genoshan Massacre.mp3");
