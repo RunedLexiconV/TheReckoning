@@ -11,7 +11,7 @@ MusicPlayer.prototype.addSong = function (path) {
 };
 
 MusicPlayer.prototype.init = function () {
-	console.log(this.music);
+	//console.log(this.music);
 	this.setTrack(0);
 	var that = this;
 	if(this.shuffle) {
@@ -30,7 +30,7 @@ MusicPlayer.prototype.init = function () {
 };
 
 MusicPlayer.prototype.setTrack = function (track) {
-	console.log(track);
+	//console.log(track);
 	if (this.playlist[track]) {
 		this.music.pause();
 		this.track = track;

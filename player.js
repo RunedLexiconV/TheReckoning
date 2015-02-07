@@ -112,16 +112,16 @@ Player.prototype.update = function() {
             var elapsedTime = this.character.animations.inair.elapsedTime;
 
             var jumpDistance = elapsedTime / totalTime;
-            console.log("elapsed " + elapsedTime);
-            console.log("total " + totalTime);
-            console.log("jumpDistance " + jumpDistance);
+            //console.log("elapsed " + elapsedTime);
+            //console.log("total " + totalTime);
+            //console.log("jumpDistance " + jumpDistance);
 
             if (jumpDistance > 0.5) {
                 jumpDistance = 1 - jumpDistance;
             }
 
             var height = 100 * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-            console.log("height " + height);
+            //console.log("height " + height);
             if (height < 0) {
                 this.state = "landing";
                 this.character.animations.inair.elapsedTime = 0;
