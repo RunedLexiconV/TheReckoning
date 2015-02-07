@@ -26,11 +26,10 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y) {
         var frame = this.currentFrame();
         var xindex = frame % this.lineSize;
         var yindex = Math.floor(frame / this.lineSize) + this.startline;
-        console.log(this.spriteSheet);
 
         if(this.reflect) {
             ctx.drawImage(this.spriteSheet,
-                        SPRITESHEET_WIDTH - (xindex * this.frameWidth),
+                        this.reverseOffset - (xindex * this.frameWidth),
                         yindex * this.frameHeight,
                         this.frameWidth, this.frameHeight,
                         x, y,
