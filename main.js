@@ -8,6 +8,7 @@ var HEALTH = 100;
 AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
 AM.queueDownload("./sprites/runedlogo.png");
 AM.queueDownload("./sprites/sheet 2a.png");
+AM.queueDownload("./sprites/sheet 2b.png");
 AM.queueDownload("./sprites/portrait1.png");
 loadBackground("./sprites/background0/", 36);
 loadBackground("./sprites/background1/", 8);
@@ -20,7 +21,6 @@ AM.downloadAll( function () {
     var music = document.createElement("audio");
     canvas.appendChild(music);
     //music.setAttribute("src","./sound/Dirtiest - Genoshan Massacre.mp3");
-    console.log(music);
     var musicPlayer = new MusicPlayer(music);
     //musicPlayer.addSong("./sound/End of peace.mp3");
     musicPlayer.addSong("./sound/Dirtiest - Genoshan Massacre.mp3");
@@ -68,11 +68,10 @@ AM.downloadAll( function () {
       window.addEventListener("keyup", function (e) {
         var key = String.fromCharCode(event.keyCode).toLowerCase();
         if(key === 'q') {
-          console.log("hello");
           if(timer) {
             window.clearInterval(timer);
           }
-          background = (background + 1) % 2
+          background = (background + 1) % 2;
           var frames = background === 0 ? 36 : 8;
           timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", frames);
         }
@@ -92,8 +91,7 @@ function startBackgroundAnimation(gameEngine, folder, frames) {
   var i = 0;
   var reverse = false;
   var id = window.setInterval(function () {
-    console.log
-    gameEngine.setBackground(AM.getAsset(folder+"tmp-"+i+".gif"))
+    gameEngine.setBackground(AM.getAsset(folder+"tmp-"+i+".gif"));
     i + 1 < frames ? i++ : i = 0;
   }, 200);
   return id;

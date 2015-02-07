@@ -18,7 +18,7 @@ Player.prototype.inAir = function () {
 
 Player.prototype.isColliding = function (other) {
 	return false;
-}
+};
 
 Player.prototype.draw = function () {
     switch (this.state) {
@@ -142,4 +142,4 @@ Player.prototype.update = function() {
 
 	this.x += this.velocity.x;
 	this.y += this.velocity.y;
-}
+};
