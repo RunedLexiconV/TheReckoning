@@ -67,6 +67,21 @@ GameEngine.prototype.draw = function () {
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
         this.entities[i].draw(this.ctx);
+
+        this.ctx.save();
+        //Portrait and health, move into player ?
+        this.ctx.globalAlpha = 0.7;
+        this.ctx.fillStyle = i === 0 ? "blue" : "red";
+        this.ctx.fillRect(20 + (700* i) - 5, 20 -5, 60, 60);
+        this.ctx.drawImage(this.entities[i].character.portrait, 20 + (700* i), 20, 50, 50);
+        this.ctx.strokeStyle = "green";
+        this.ctx.lineWidth = "10";
+        this.ctx.beginPath();
+        this.ctx.moveTo(80+(430* i), 40);
+        this.ctx.lineTo(80 + (430*i) + 2*Math.ceil(this.entities[i].health),40);
+        this.ctx.stroke();
+        this.ctx.closePath();
+        this.ctx.restore();
     }
     this.ctx.restore();
 };

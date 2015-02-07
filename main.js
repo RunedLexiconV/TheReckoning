@@ -9,7 +9,8 @@ AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
 AM.queueDownload("./sprites/runedlogo.png");
 AM.queueDownload("./sprites/sheet 2a.png");
 AM.queueDownload("./sprites/portrait1.png");
-loadBackground("./sprites/background1/", 36);
+loadBackground("./sprites/background0/", 36);
+loadBackground("./sprites/background1/", 8);
 
 AM.downloadAll( function () {
 	var canvas = document.getElementById("canvas");
@@ -17,12 +18,14 @@ AM.downloadAll( function () {
 	canvas.setAttribute("height",  HEIGHT + "px");
     var ctx = canvas.getContext("2d");
     var music = document.createElement("audio");
+    canvas.appendChild(music);
     //music.setAttribute("src","./sound/Dirtiest - Genoshan Massacre.mp3");
+    console.log(music);
     var musicPlayer = new MusicPlayer(music);
-    musicPlayer.addSong("./sound/End of peace.mp3");
+    //musicPlayer.addSong("./sound/End of peace.mp3");
     musicPlayer.addSong("./sound/Dirtiest - Genoshan Massacre.mp3");
-    musicPlayer.addSong("./sound/06 Hidden Shrine.mp3");
-    musicPlayer.addSong("./sound/Robot on Drabgon.mp3");
+    //musicPlayer.addSong("./sound/06 Hidden Shrine.mp3");
+    //musicPlayer.addSong("./sound/Robot on Drabgon.mp3");
 
     var gameEngine = new GameEngine();
 
@@ -37,9 +40,10 @@ AM.downloadAll( function () {
     ctx.fillStyle = "white";
   	ctx.fillText("Press any key to continue...", 270, 400);
     ctx.restore();
-
-  	//musicPlayer.init();
-  	//musicPlayer.play();
+    var timer = null;
+    var background = 0;
+  	musicPlayer.init();
+  	musicPlayer.play();
 
   	var startGameListener = function (e) {
 	  	//start game
@@ -47,16 +51,29 @@ AM.downloadAll( function () {
 	   	gameEngine.start();
 	  	gameEngine.startInput();
       document.getElementById("canvas").focus();
-      startBackgroundAnimation(gameEngine, "./sprites/background1/", 36);
-      var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
+      timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", 36);
+      var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"));
       gameEngine.addEntity(new Player(gameEngine, character1,
                                       50 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER1_CONTROLS));
-      var character2 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
+      var character2 = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"));
       gameEngine.addEntity(new Player(gameEngine, character2,
                                       500 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER2_CONTROLS));
 	  	window.removeEventListener("keydown", startGameListener, false);
+      window.addEventListener("keyup", function (e) {
+        var key = String.fromCharCode(event.keyCode).toLowerCase();
+        if(key === 'q') {
+          console.log("hello");
+          if(timer) {
+            window.clearInterval(timer);
+          }
+          background = (background + 1) % 2
+          var frames = background === 0 ? 36 : 8;
+          timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", frames);
+        }
+      });
+
   	};
   	window.addEventListener("keydown", startGameListener, false);
 });
@@ -67,15 +84,15 @@ function loadBackground(path, frames) {
   }
 }
 
-function startBackgroundAnimation(gameEngine, path, frames) {
+function startBackgroundAnimation(gameEngine, folder, frames) {
   var i = 0;
   var reverse = false;
-  window.setInterval(function () {
+  var id = window.setInterval(function () {
     console.log
-    gameEngine.setBackground(AM.getAsset(path+"tmp-"+i+".gif"))
+    gameEngine.setBackground(AM.getAsset(folder+"tmp-"+i+".gif"))
     i + 1 < frames ? i++ : i = 0;
   }, 200);
-  
+  return id;
 }
 
 

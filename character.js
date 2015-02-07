@@ -3,8 +3,9 @@ var FRAME_HEIGHT = 215;
 var FRAME_DURATION = .1;
 
 
-function Character (spritesheet) { 
+function Character (spritesheet, portrait) { 
 	this.spritesheet = spritesheet;
+    this.portrait = portrait;
 	that = this;
 // The animation parameters are as follows:
 
