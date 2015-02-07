@@ -54,7 +54,7 @@ AM.downloadAll( function () {
                                       HEALTH, PLAYER1_CONTROLS));
       var character2 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
       gameEngine.addEntity(new Player(gameEngine, character2,
-                                      600 , GROUND - FRAME_HEIGHT,
+                                      500 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER2_CONTROLS));
 	  	window.removeEventListener("keydown", startGameListener, false);
   	};

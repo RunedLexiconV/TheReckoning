@@ -1,6 +1,6 @@
 function Animation (spriteSheet, frameWidth, frameHeight, frameDuration,
                     frames, lineSize, startline, scale, loop,
-                    reverse, reverseOffset, callback) {
+                    reverse, reverseOffset, callback, callbackFlag) {
     this.spriteSheet = spriteSheet;
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
@@ -16,21 +16,23 @@ function Animation (spriteSheet, frameWidth, frameHeight, frameDuration,
     this.totalTime = frameDuration * frames;
     this.elapsedTime = 0;
     this.callback = callback;
+    this.callbackFlag = callbackFlag;
 }
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y) {
     this.elapsedTime += tick;
     if (this.isDone()) {
         if (this.loop) this.elapsedTime = 0;
-        if (this.callback) callback();
+        // if (this.callbackFlag) callback();
     }
     else {
         var frame = this.currentFrame();
         var xindex = frame % this.lineSize;
         var yindex = Math.floor(frame / this.lineSize) + this.startline;
 
-        if(this.reverse)
+        if(this.reverse) {
             xindex += this.reverseOffset;
+        }
 
         ctx.drawImage(this.spriteSheet,
                      xindex * this.frameWidth, yindex * this.frameHeight,  // source from sheet

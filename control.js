@@ -9,10 +9,10 @@ var PLAYER1_CONTROLS =  {
 };
 
 var PLAYER2_CONTROLS =  {
-	moveRight: '\'',
-	moveLeft: '%',
-	jump: '&',
-	block: '(',
+	moveRight: '\'', 	// right arrow
+	moveLeft: '%',		// left arrow
+	jump: '&',			// up arrow
+	block: '(',			// down arrow
 	punch: 'j',
 	kick: 'k',
 	special: 'l'
