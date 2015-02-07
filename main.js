@@ -2,7 +2,7 @@ var AM = new AssetManager();
 var SCALE= 1;
 var WIDTH = 800;
 var HEIGHT = 600;
-var GROUND = 500;
+var GROUND = 610;
 var HEALTH = 100;
 
 AM.queueDownload("./sprites/Battle_Arena_Background.jpg");

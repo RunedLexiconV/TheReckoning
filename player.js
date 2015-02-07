@@ -13,7 +13,7 @@ function Player (game, character, x, y, health, controls) {
 }
 
 Player.prototype.inAir = function () {
-    return this.y < this.groundY;
+    return this.y + FRAME_HEIGHT< this.GROUND;
 };
 
 Player.prototype.isColliding = function (other) {

@@ -2,7 +2,7 @@ var FRAME_WIDTH = 215;
 var FRAME_HEIGHT = 215;
 var FRAME_DURATION = 0.1;
 var SPRITESHEET_WIDTH = 1500;
-var SCALE = 1.5;
+var SCALE = 2;
 
 
 function Character (spritesheet, portrait, player) { 
@@ -15,14 +15,9 @@ function Character (spritesheet, portrait, player) {
 // int frameDuration(sec), int frames, int lineSize, int startline,
 // int scale, bool loop, bool reverse, int reverseOffset)
     var reverse = false
-    if(player === 1) {
-        reverse = false;
-    }
-    else if (player === 2){
-        reverse = true;
-    }
+     if (player === 2) reverse = true;
 
-    this.animation = {
+    this.animations = {
         idle: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             FRAME_DURATION, 10, 5, 0,
                             SCALE, true, reverse, 0),
@@ -69,14 +64,10 @@ function Character2 (spritesheet, portrait, player) {
 // int frameDuration(sec), int frames, int lineSize, int startline,
 // int scale, bool loop, bool reverse, int reverseOffset)
     var reverse = false
-    if(player === 1) {
-        reverse = false;
-    }
-    else if (player === 2){
-        reverse = true;
-    }
+    if (player === 2) reverse = true;
+ 
 
-    this.animation =  {
+    this.animations =  {
         idle: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             FRAME_DURATION, 5, 5, 0,
                             SCALE, true, reverse, 0),
@@ -87,28 +78,28 @@ function Character2 (spritesheet, portrait, player) {
                             FRAME_DURATION, 7, 5, 3,
                             SCALE, false, reverse, 0),
         punch2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 5,
+                            FRAME_DURATION, 9, 5, 5,
                             SCALE, false, reverse, 0),
         punch3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 8, 5, 6,
+                            FRAME_DURATION, 6, 5, 7,
                             SCALE, false, reverse, 0),
         kick1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             FRAME_DURATION, 7, 5, 9,
                             SCALE, false, reverse, 0),
         kick2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 6, 5, 10,
+                            FRAME_DURATION, 10, 5, 11,
                             SCALE, false, reverse, 0),
         kick3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 9, 5, 12,
+                            FRAME_DURATION, 13, 5, 13,
                             SCALE, false, reverse, 0),
         jump: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 14,
+                            FRAME_DURATION, 5, 5, 16,
                             SCALE, false, reverse, 0),
         inair: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 15,
+                            FRAME_DURATION, 1, 5, 17,
                             SCALE, false, reverse, 0),
         landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 16,
+                            FRAME_DURATION, 5, 5, 18,
                             SCALE, false, reverse, 0),
     };
 
