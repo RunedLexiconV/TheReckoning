@@ -1,5 +1,5 @@
-function Player (game, character, x , y, health , controls) { 
-	this.x = x;
+function Player (game, character, x, y, health, controls) { 
+    this.x = x;
     this.y = y;
     this.game = game;
     this.ctx = game.ctx;
@@ -13,12 +13,12 @@ function Player (game, character, x , y, health , controls) {
 }
 
 Player.prototype.inAir = function () {
-	return this.y < this.groundY;
+    return this.y < this.groundY;
 };
 
 Player.prototype.isColliding = function (other) {
-	return false;
-}
+    return false;
+};
 
 Player.prototype.draw = function () {
     switch (this.state) {
@@ -140,6 +140,6 @@ Player.prototype.update = function() {
         }
     }
 
-	this.x += this.velocity.x;
-	this.y += this.velocity.y;
-}
+    this.x += this.velocity.x;
+    this.y += this.velocity.y;
+};

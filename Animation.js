@@ -1,6 +1,6 @@
 function Animation (spriteSheet, frameWidth, frameHeight, frameDuration,
                     frames, lineSize, startline, scale, loop,
-                    reverse, reverseOffset, callback, callbackFlag) {
+                    reflect, reverseOffset) {
     this.spriteSheet = spriteSheet;
     this.frameWidth = frameWidth;
     this.frameHeight = frameHeight;
@@ -10,43 +10,48 @@ function Animation (spriteSheet, frameWidth, frameHeight, frameDuration,
     this.startline = startline;
     this.scale = scale;
     this.loop = loop;
-    this.reverse = reverse;
+    this.reflect = reflect;
     this.reverseOffset = reverseOffset;
 
     this.totalTime = frameDuration * frames;
     this.elapsedTime = 0;
-    this.callback = callback;
-    this.callbackFlag = callbackFlag;
 }
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y) {
     this.elapsedTime += tick;
     if (this.isDone()) {
         if (this.loop) this.elapsedTime = 0;
-        // if (this.callbackFlag) callback();
     }
     else {
         var frame = this.currentFrame();
         var xindex = frame % this.lineSize;
         var yindex = Math.floor(frame / this.lineSize) + this.startline;
+        console.log(this.spriteSheet);
 
-        if(this.reverse) {
-            xindex += this.reverseOffset;
+        if(this.reflect) {
+            ctx.drawImage(this.spriteSheet,
+                        SPRITESHEET_WIDTH - (xindex * this.frameWidth),
+                        yindex * this.frameHeight,
+                        this.frameWidth, this.frameHeight,
+                        x, y,
+                        this.frameWidth * this.scale,
+                        this.frameHeight * this.scale);
         }
-
-        ctx.drawImage(this.spriteSheet,
-                     xindex * this.frameWidth, yindex * this.frameHeight,  // source from sheet
-                     this.frameWidth, this.frameHeight,
-                     x, y,
-                     this.frameWidth * this.scale,
-                     this.frameHeight * this.scale);
+        else {
+            ctx.drawImage(this.spriteSheet,
+                        xindex * this.frameWidth, yindex * this.frameHeight,
+                        this.frameWidth, this.frameHeight,
+                        x, y,
+                        this.frameWidth * this.scale,
+                        this.frameHeight * this.scale);
+        }
     }
-}
+};
 
 Animation.prototype.currentFrame = function () {
     return Math.floor(this.elapsedTime / this.frameDuration);
-}
+};
 
 Animation.prototype.isDone = function () {
     return (this.elapsedTime >= this.totalTime);
-}
+};
