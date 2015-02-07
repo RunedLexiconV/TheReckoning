@@ -52,11 +52,11 @@ AM.downloadAll( function () {
 	  	gameEngine.startInput();
       document.getElementById("canvas").focus();
       timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", 36);
-      var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"));
+      var character1 = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"));
       gameEngine.addEntity(new Player(gameEngine, character1,
                                       50 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER1_CONTROLS));
-      var character2 = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"));
+      var character2 = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"));
       gameEngine.addEntity(new Player(gameEngine, character2,
                                       500 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER2_CONTROLS));
