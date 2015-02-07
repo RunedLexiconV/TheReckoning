@@ -1,4 +1,4 @@
-function Player (game, character, x , y, health , controls) { 
+function Player (game, character, x, y, health, controls) { 
 	this.x = x;
     this.y = y;
     this.game = game;
