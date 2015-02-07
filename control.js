@@ -13,7 +13,7 @@ var PLAYER2_CONTROLS =  {
 	moveLeft: '%',
 	jump: '&',
 	block: '(',
-	punch: ',',
-	kick: '.',
-	special: '/'
+	punch: 'j',
+	kick: 'k',
+	special: 'l'
 };

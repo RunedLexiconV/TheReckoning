@@ -14,16 +14,17 @@ MusicPlayer.prototype.init = function () {
 	var that = this;
 	if(this.shuffle) {
 		this.music.addEventListener("ended", function() {
-			(that.playlist.length < that.track + 1) ? that.setTrack(that.track++) : that.setTrack(0);
+			(that.playlist.length < that.track + 1) ? that.setTrack(that.track+1) : that.setTrack(0);
 		});
 	}
 };
 
 MusicPlayer.prototype.setTrack = function (track) {
+	console.log(track);
 	if (this.playlist[track]) {
 		this.music.pause();
 		this.track = track;
-		this.music.setAttribute("src", this.playlist[0]);
+		this.music.setAttribute("src", this.playlist[track]);
 		this.music.play();
 	} 
 };
