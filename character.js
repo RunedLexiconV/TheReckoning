@@ -2,6 +2,7 @@ var FRAME_WIDTH = 215;
 var FRAME_HEIGHT = 215;
 var FRAME_DURATION = 0.1;
 var SPRITESHEET_WIDTH = 1500;
+var SCALE = 1.5;
 
 
 function Character (spritesheet, portrait, player) { 
@@ -13,81 +14,103 @@ function Character (spritesheet, portrait, player) {
 // (spriteSheet, int frameWidth, int frameHeight,
 // int frameDuration(sec), int frames, int lineSize, int startline,
 // int scale, bool loop, bool reverse, int reverseOffset)
-    var ANIMATION1 = {
-        idle: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 10, 5, 0,
-                            1.5, true, false, 0),
-        walk: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 2,
-                            1.5, true, false, 0),
-        punch1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 7, 5, 3,
-                            1.5, false, false, 0),
-        punch2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 5,
-                            1.5, false, false, 0),
-        punch3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 8, 5, 6,
-                            1.5, false, false, 0),
-        kick1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 8, 5, 8,
-                            1.5, false, false, 0),
-        kick2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 6, 5, 10,
-                            1.5, false, false, 0),
-        kick3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 9, 5, 12,
-                            1.5, false, false, 0),
-        jump: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 14,
-                            1.5, false, false, 0),
-        inair: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 15,
-                            1.5, false, false, 0),
-        landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 16,
-                            1.5, false, false, 0),
-    };
-    var ANIMATION2 = {
-        idle: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 10, 5, 0,
-                            1.5, true, true, SPRITESHEET_WIDTH),
-        walk: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 2,
-                            1.5, true, true, SPRITESHEET_WIDTH),
-        punch1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 7, 5, 3,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-        punch2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 5,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-        punch3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 8, 5, 6,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-        kick1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 8, 5, 8,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-        kick2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 6, 5, 10,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-        kick3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 9, 5, 12,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-        jump: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 14,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-        inair: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 15,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-        landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 16,
-                            1.5, false, true, SPRITESHEET_WIDTH),
-    };
-
+    var reverse = false
     if(player === 1) {
-        this.animations = ANIMATION1;
+        reverse = false;
     }
     else if (player === 2){
-        this.animations = ANIMATION2;
+        reverse = true;
     }
+
+    this.animation = {
+        idle: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 10, 5, 0,
+                            SCALE, true, reverse, 0),
+        walk: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 2,
+                            SCALE, true, reverse, 0),
+        punch1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 7, 5, 3,
+                            SCALE, false, reverse, 0),
+        punch2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 5,
+                            SCALE, false, reverse, 0),
+        punch3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 8, 5, 6,
+                            SCALE, false, reverse, 0),
+        kick1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 8, 5, 8,
+                            SCALE, false, reverse, 0),
+        kick2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 6, 5, 10,
+                            SCALE, false, reverse, 0),
+        kick3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 9, 5, 12,
+                            SCALE, false, reverse, 0),
+        jump: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 14,
+                            SCALE, false, reverse, 0),
+        inair: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 15,
+                            SCALE, false, reverse, 0),
+        landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 16,
+                            SCALE, false, reverse, 0),
+    };
 }
+
+function Character2 (spritesheet, portrait, player) { 
+    this.spritesheet = spritesheet;
+    this.portrait = portrait;
+    that = this;
+// The animation parameters are as follows:
+
+// (spriteSheet, int frameWidth, int frameHeight,
+// int frameDuration(sec), int frames, int lineSize, int startline,
+// int scale, bool loop, bool reverse, int reverseOffset)
+    var reverse = false
+    if(player === 1) {
+        reverse = false;
+    }
+    else if (player === 2){
+        reverse = true;
+    }
+
+    this.animation =  {
+        idle: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 0,
+                            SCALE, true, reverse, 0),
+        walk: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 6, 5, 1,
+                            SCALE, true, reverse, 0),
+        punch1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 7, 5, 3,
+                            SCALE, false, reverse, 0),
+        punch2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 5,
+                            SCALE, false, reverse, 0),
+        punch3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 8, 5, 6,
+                            SCALE, false, reverse, 0),
+        kick1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 7, 5, 9,
+                            SCALE, false, reverse, 0),
+        kick2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 6, 5, 10,
+                            SCALE, false, reverse, 0),
+        kick3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 9, 5, 12,
+                            SCALE, false, reverse, 0),
+        jump: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 14,
+                            SCALE, false, reverse, 0),
+        inair: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 15,
+                            SCALE, false, reverse, 0),
+        landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 16,
+                            SCALE, false, reverse, 0),
+    };
+
+}
+

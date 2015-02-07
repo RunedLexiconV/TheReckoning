@@ -9,7 +9,10 @@ AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
 AM.queueDownload("./sprites/runedlogo.png");
 AM.queueDownload("./sprites/sheet 2a.png");
 AM.queueDownload("./sprites/sheet 2b.png");
+AM.queueDownload("./sprites/sheet 3a.png");
+AM.queueDownload("./sprites/sheet 3b.png");
 AM.queueDownload("./sprites/portrait1.png");
+AM.queueDownload("./sprites/portrait2.png");
 loadBackground("./sprites/background0/", 36);
 loadBackground("./sprites/background1/", 8);
 
@@ -58,8 +61,8 @@ AM.downloadAll( function () {
       gameEngine.addEntity(new Player(gameEngine, character1,
                                       50 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER1_CONTROLS));
-      var character2 = new Character(AM.getAsset("./sprites/sheet 2b.png"),
-                                      AM.getAsset("./sprites/portrait1.png"),
+      var character2 = new Character2(AM.getAsset("./sprites/sheet 3b.png"),
+                                      AM.getAsset("./sprites/portrait2.png"),
                                       2);
       gameEngine.addEntity(new Player(gameEngine, character2,
                                       WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT,
