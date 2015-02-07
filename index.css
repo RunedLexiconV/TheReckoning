@@ -15,3 +15,25 @@
 	margin-right: auto;
 	display: block;
 }
+
+#controls {
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	width: 30em;
+	color: white;
+	text-align: center;
+}
+
+#controls ul {
+	padding-left: 0;
+	padding-right: 0;
+	width : 10em;
+	margin-left: auto;
+	margin-right: auto;
+	float : left;
+	text-align: left;
+	list-style-type:none; 
+}
