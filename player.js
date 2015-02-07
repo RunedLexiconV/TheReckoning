@@ -72,24 +72,28 @@ Player.prototype.update = function() {
         this.velocity.x = -4;
         this.state = "moveLeft";
     }
-    else if(keys.indexOf(this.control.punch) > -1 || this.state === "punch") {
-        this.state = "punch";
-        if(this.character.animations.punch1.isDone()) {
-            this.character.animations.punch1.elapsedTime = 0;
-            this.state = "idle";
-        }
+    else {
+        this.velocity.x = 0;
+        this.state = "idle";
     }
-    else if(keys.indexOf(this.control.kick) > -1 || this.state === "kick") {
+    console.log(keys.size());
+    if(keys.indexOf(this.control.kick) > -1 || this.state === "kick") {
         this.state = "kick";
         if(this.character.animations.kick1.isDone()) {
             this.character.animations.kick1.elapsedTime = 0;
             this.state = "idle";
         }
     }
-    else {
-        this.velocity.x = 0;
-        this.state = "idle";
+
+    if(keys.indexOf(this.control.punch) > -1 || this.state === "punch") {
+        this.state = "punch";
+        if(this.character.animations.punch1.isDone()) {
+            this.character.animations.punch1.elapsedTime = 0;
+            this.state = "idle";
+        }
     }
+
+
     if (keys.indexOf(this.control.jump) > -1 ||
                 this.state === "jump" ||
                 this.state === "inair" ||
