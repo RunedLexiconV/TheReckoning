@@ -48,11 +48,11 @@ AM.downloadAll( function () {
 	  	gameEngine.startInput();
       document.getElementById("canvas").focus();
       startBackgroundAnimation(gameEngine, "./sprites/background1/", 36);
-      var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
+      var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"));
       gameEngine.addEntity(new Player(gameEngine, character1,
                                       50 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER1_CONTROLS));
-      var character2 = new Character(AM.getAsset("./sprites/sheet 2a.png"));
+      var character2 = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"));
       gameEngine.addEntity(new Player(gameEngine, character2,
                                       600 , GROUND - FRAME_HEIGHT,
                                       HEALTH, PLAYER2_CONTROLS));
