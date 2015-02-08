@@ -29,6 +29,7 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y) {
         //console.log(this.spriteSheet);
 
         if(this.reflect) {
+            xindex += 1;
             ctx.drawImage(this.spriteSheet,
                         this.reverseOffset - (xindex * this.frameWidth),
                         yindex * this.frameHeight,
