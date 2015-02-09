@@ -1,45 +1,44 @@
-/*
-	Queues assets for loading, allows you to make sure everything is loaded
-	before starting the game
-*/
 function AssetManager() {
-	this.downloadQueue = [];
-	this.cache = [];
-	this.successCount = 0;
-	this.errorCount = 0;
+    this.successCount = 0;
+    this.errorCount = 0;
+    this.cache = [];
+    this.downloadQueue = [];
 }
 
-AssetManager.prototype.queueAsset = function(path) {
-	this.downloadQueue.push(path);
-	console.log("queued :  " + path);
-};
+AssetManager.prototype.queueDownload = function (path) {
+    //console.log("Queueing " + path);
+    this.downloadQueue.push(path);
+}
 
-/// downloads all files from downloadQueue then calls the callback func
-AssetManager.prototype.downloadAll = function(callback) {
-	for (var i = 0; i < this.downloadQueue.length; i++) {
-		var path = this.downloadQueue[i];
-		var img = new Image();
-		var that = this;
-		img.addEventListener("load", function(){
-			that.successCount++;
-			if (that.isDone()) {callback();}
-		});
-		img.addEventListener("error",function(){
-			that.errorCount++;
-			if (that.isDone()) callback();
-		});
-		img.src = path;
-		this.cache[path]= img; 
-	};
+AssetManager.prototype.isDone = function () {
+    return this.downloadQueue.length === this.successCount + this.errorCount;
+}
 
+AssetManager.prototype.downloadAll = function (callback) {
+    for (var i = 0; i < this.downloadQueue.length; i++) {
+        var img = new Image();
+        var that = this;
 
-};
+        var path = this.downloadQueue[i];
+       // console.log(path);
 
-AssetManager.prototype.isDone = function() {
-	return this.successCount + this.errorCount === this.downloadQueue.length;
- };
+        img.addEventListener("load", function () {
+           // console.log("Loaded " + this.src);
+            that.successCount++;
+            if(that.isDone()) callback();
+        });
 
-AssetManager.prototype.getAsset = function(path) {
-	return this.cache[path];
-};
+        img.addEventListener("error", function () {
+           // console.log("Error loading " + this.src);
+            that.errorCount++;
+            if (that.isDone()) callback();
+        });
 
+        img.src = path;
+        this.cache[path] = img;
+    }
+}
+
+AssetManager.prototype.getAsset = function (path) {
+    return this.cache[path];
+}
