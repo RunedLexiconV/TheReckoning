@@ -10,6 +10,7 @@ function Player (game, character, x, y, health, controls) {
     this.health = health;
     this.control = controls;
     this.interuptable = true;
+    this.moveVelocity = 4;
 }
 
 Player.prototype.inAir = function () {
@@ -66,11 +67,13 @@ Player.prototype.update = function() {
     keys = this.game.keysDown;
     if(this.interuptable) {
         if(keys.indexOf(this.control.moveRight) > -1) {
-            this.velocity.x = 4;
+            this.moveVelocity = Math.abs(this.moveVelocity);
+            this.velocity.x = this.moveVelocity;
             this.state = "moveRight";
         }
         else if (keys.indexOf(this.control.moveLeft) > -1) {
-            this.velocity.x = -4;
+            this.moveVelocity = -1 * Math.abs(this.moveVelocity);
+            this.velocity.x = this.moveVelocity;
             this.state = "moveLeft";
         }
         else {
@@ -90,6 +93,7 @@ Player.prototype.update = function() {
         if(keys.indexOf(this.control.jump) > -1) {
             this.state = "jump";
             this.interuptable = false;
+            this.velocity.x = 0;
         }
     } else {
         if(this.state === "punch" && this.character.animations.punch1.isDone()) {
@@ -105,6 +109,7 @@ Player.prototype.update = function() {
         else if (this.state === "jump" && this.character.animations.jump.isDone()) {
             this.character.animations.jump.elapsedTime = 0;
             this.state = "inair";
+            this.velocity.x = this.moveVelocity;
         }
         else if (this.state === "inair") {
             this.x += this.velocity.x;
