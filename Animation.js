@@ -26,9 +26,9 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y) {
         var frame = this.currentFrame();
         var xindex = frame % this.lineSize;
         var yindex = Math.floor(frame / this.lineSize) + this.startline;
-        //console.log(this.spriteSheet);
 
         if(this.reflect) {
+//          since the x,y coord is in the top left of the image, we need to add one to the xindex
             xindex += 1;
             ctx.drawImage(this.spriteSheet,
                         this.reverseOffset - (xindex * this.frameWidth),
