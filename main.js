@@ -5,48 +5,53 @@ var HEIGHT = 600;
 var GROUND = 610;
 var HEALTH = 100;
 
-AM.queueDownload("./sprites/Battle_Arena_Background.jpg");
-AM.queueDownload("./sprites/runedlogo.png");
-AM.queueDownload("./sprites/sheet 2a.png");
-AM.queueDownload("./sprites/sheet 2b.png");
-AM.queueDownload("./sprites/sheet 3a.png");
-AM.queueDownload("./sprites/sheet 3b.png");
-AM.queueDownload("./sprites/portrait1.png");
-AM.queueDownload("./sprites/portrait2.png");
+AM.queueImage("./sprites/Battle_Arena_Background.jpg");
+AM.queueImage("./sprites/runedlogo.png");
+AM.queueImage("./sprites/sheet 2a.png");
+AM.queueImage("./sprites/sheet 2b.png");
+AM.queueImage("./sprites/sheet 3a.png");
+AM.queueImage("./sprites/sheet 3b.png");
+AM.queueImage("./sprites/portrait1.png");
+AM.queueImage("./sprites/portrait2.png");
 loadBackground("./sprites/background0/", 36);
 loadBackground("./sprites/background1/", 8);
+AM.queueAudio("./sound/Dirtiest - Genoshan Massacre.mp3");
+AM.queueAudio("./sound/End of peace.mp3");
+AM.queueAudio("./sound/06 Hidden Shrine.mp3");
+AM.queueAudio("./sound/Robot on Drabgon.mp3");
 
 AM.downloadAll( function () {
   var canvas = document.getElementById("canvas");
   canvas.setAttribute("width", WIDTH + "px");
   canvas.setAttribute("height",  HEIGHT + "px");
-    var ctx = canvas.getContext("2d");
-    var music = document.createElement("audio");
-    canvas.appendChild(music);
-    //music.setAttribute("src","./sound/Dirtiest - Genoshan Massacre.mp3");
-    var musicPlayer = new MusicPlayer(music);
-    //musicPlayer.addSong("./sound/End of peace.mp3");
-    musicPlayer.addSong("./sound/Dirtiest - Genoshan Massacre.mp3");
-    //musicPlayer.addSong("./sound/06 Hidden Shrine.mp3");
-    //musicPlayer.addSong("./sound/Robot on Drabgon.mp3");
+  var ctx = canvas.getContext("2d");
+  // var music = document.createElement("audio");
+  // canvas.appendChild(music);
+  //music.setAttribute("src","./sound/Dirtiest - Genoshan Massacre.mp3");
+  var musicPlayer = new MusicPlayer();
+  musicPlayer.addSong(AM.getAsset("./sound/End of peace.mp3"));
+  musicPlayer.addSong(AM.getAsset("./sound/Dirtiest - Genoshan Massacre.mp3"));
+  musicPlayer.addSong(AM.getAsset("./sound/06 Hidden Shrine.mp3"));
+  musicPlayer.addSong(AM.getAsset("./sound/Robot on Drabgon.mp3"));
 
-    var gameEngine = new GameEngine();
+  var gameEngine = new GameEngine();
 
-    //start screen
-    canvas.style.background = "#39275B";
-    ctx.drawImage(AM.getAsset("./sprites/runedlogo.png"), 100, 100, 600, 200);
+  //start screen
+  canvas.style.background = "#39275B";
+  ctx.drawImage(AM.getAsset("./sprites/runedlogo.png"), 100, 100, 600, 200);
 
-    ctx.save();
-    ctx.font = "20px runed";
-    ctx.shadowColor = "white";
-    ctx.shadowBlur = 10;
-    ctx.fillStyle = "white";
-    ctx.fillText("Press any key to continue...", 270, 400);
-    ctx.restore();
-    var timer = null;
-    var background = 0;
-    musicPlayer.init();
-    musicPlayer.play();
+  ctx.save();
+  ctx.font = "20px runed";
+  ctx.shadowColor = "white";
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = "white";
+  ctx.fillText("Press any key to continue...", 270, 400);
+  ctx.restore();
+  var timer = null;
+  var background = 0;
+  musicPlayer.init();
+  musicPlayer.play();
+  gameEngine.init(ctx);
 
     var startGameListener = function (e) {
       //start game
@@ -86,7 +91,7 @@ AM.downloadAll( function () {
 
 function loadBackground(path, frames) {
   for(var i = 0; i < frames; i++) { 
-    AM.queueDownload(path+"tmp-"+i+".gif");
+    AM.queueImage(path+"tmp-"+i+".gif");
   }
 }
 
