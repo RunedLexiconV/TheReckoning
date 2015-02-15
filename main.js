@@ -51,8 +51,6 @@ AM.downloadAll( function () {
     var startGameListener = function (e) {
       //start game
       gameEngine.init(ctx);
-      gameEngine.start();
-      gameEngine.startInput();
       document.getElementById("canvas").focus();
       timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", 36);
       var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"),
@@ -79,6 +77,8 @@ AM.downloadAll( function () {
           timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", frames);
         }
       });
+      gameEngine.start();
+      gameEngine.startInput();
 
     };
     window.addEventListener("keydown", startGameListener, false);
