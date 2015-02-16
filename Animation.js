@@ -19,34 +19,36 @@ function Animation (spriteSheet, frameWidth, frameHeight, frameDuration,
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y) {
     this.elapsedTime += tick;
+    var frame = -1;
     if (this.isDone()) {
         if (this.loop) this.elapsedTime = 0;
+        else frame = this.frames;
+    }
+    if (frame === -1) {
+        var frame = this.currentFrame();
+    }
+    var xindex = frame % this.lineSize;
+    var yindex = Math.floor(frame / this.lineSize) + this.startline;
+
+    if(this.reflect) {
+        xindex += 1;
+        ctx.drawImage(this.spriteSheet,
+                    this.reverseOffset - (xindex * this.frameWidth),
+                    yindex * this.frameHeight,
+                    this.frameWidth, this.frameHeight,
+                    x, y,
+                    this.frameWidth * this.scale,
+                    this.frameHeight * this.scale);
     }
     else {
-        var frame = this.currentFrame();
-        var xindex = frame % this.lineSize;
-        var yindex = Math.floor(frame / this.lineSize) + this.startline;
-        //console.log(this.spriteSheet);
-
-        if(this.reflect) {
-            xindex += 1;
-            ctx.drawImage(this.spriteSheet,
-                        this.reverseOffset - (xindex * this.frameWidth),
-                        yindex * this.frameHeight,
-                        this.frameWidth, this.frameHeight,
-                        x, y,
-                        this.frameWidth * this.scale,
-                        this.frameHeight * this.scale);
-        }
-        else {
-            ctx.drawImage(this.spriteSheet,
-                        xindex * this.frameWidth, yindex * this.frameHeight,
-                        this.frameWidth, this.frameHeight,
-                        x, y,
-                        this.frameWidth * this.scale,
-                        this.frameHeight * this.scale);
-        }
+        ctx.drawImage(this.spriteSheet,
+                    xindex * this.frameWidth, yindex * this.frameHeight,
+                    this.frameWidth, this.frameHeight,
+                    x, y,
+                    this.frameWidth * this.scale,
+                    this.frameHeight * this.scale);
     }
+    
 };
 
 Animation.prototype.currentFrame = function () {
