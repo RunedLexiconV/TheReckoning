@@ -2,13 +2,14 @@ var FRAME_WIDTH = 215;
 var FRAME_HEIGHT = 215;
 var FRAME_DURATION = 0.1;
 var SPRITESHEET_WIDTH = 1500;
-var SCALE = 2;
+var SCALE = 1.5;
 
 
 function Character (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
     this.portrait = portrait;
-    that = this;
+    this.attackLength = 80;
+
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -28,19 +29,19 @@ function Character (spritesheet, portrait, player) {
                             0.05, 7, 5, 3,
                             SCALE, false, reverse, 0),
         punch2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 5, 5, 5,
+                            0.05, 5, 5, 5,
                             SCALE, false, reverse, 0),
         punch3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 8, 5, 6,
+                            0.05, 8, 5, 6,
                             SCALE, false, reverse, 0),
         kick1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 8, 5, 8,
                             SCALE, false, reverse, 0),
         kick2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 6, 5, 10,
+                            0.05, 6, 5, 10,
                             SCALE, false, reverse, 0),
         kick3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 9, 5, 12,
+                            0.05, 9, 5, 12,
                             SCALE, false, reverse, 0),
         jump: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.035, 5, 5, 14,
@@ -57,7 +58,8 @@ function Character (spritesheet, portrait, player) {
 function Character2 (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
     this.portrait = portrait;
-    that = this;
+    this.attackLength = 75;
+
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -78,19 +80,19 @@ function Character2 (spritesheet, portrait, player) {
                             0.05, 7, 5, 3,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
         punch2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 9, 5, 5,
+                            0.05, 9, 5, 5,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
         punch3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 6, 5, 7,
+                            0.05, 6, 5, 7,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
         kick1: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 7, 5, 9,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
         kick2: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 10, 5, 11,
+                            0.05, 10, 5, 11,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
         kick3: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-                            FRAME_DURATION, 13, 5, 13,
+                            0.05, 13, 5, 13,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
         jump: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.035, 5, 5, 16,

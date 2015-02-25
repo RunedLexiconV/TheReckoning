@@ -1,5 +1,4 @@
 var AM = new AssetManager();
-var SCALE= 1;
 var WIDTH = 800;
 var HEIGHT = 600;
 var GROUND = 610;
@@ -62,13 +61,13 @@ AM.downloadAll( function () {
                                       AM.getAsset("./sprites/portrait1.png"),
                                       1);
       gameEngine.addEntity(new Player(gameEngine, character1,
-                                      50 , GROUND - FRAME_HEIGHT,
+                                      50 , GROUND - FRAME_HEIGHT * SCALE,
                                       HEALTH, PLAYER1_CONTROLS));
       var character2 = new Character2(AM.getAsset("./sprites/sheet 3b.png"),
                                       AM.getAsset("./sprites/portrait2.png"),
                                       2);
       gameEngine.addEntity(new Player(gameEngine, character2,
-                                      WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT,
+                                      WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT * SCALE,
                                       HEALTH, PLAYER2_CONTROLS));
       window.removeEventListener("keydown", startGameListener, false);
       window.addEventListener("keyup", function (e) {

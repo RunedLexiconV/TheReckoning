@@ -22,7 +22,7 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y) {
     var frame = -1;
     if (this.isDone()) {
         if (this.loop) this.elapsedTime = 0;
-        else frame = this.frames;
+        else frame = this.frames - 1;
     }
     if (frame === -1) {
         var frame = this.currentFrame();

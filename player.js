@@ -4,6 +4,8 @@ function Player (game, character, x, y, health, controls) {
     this.game = game;
     this.ctx = game.ctx;
     this.state = "idle";
+    this.prevState = "idle";
+    this.prevAttack = "";
     this.jumpElapsedTime = 0;
     this.velocity = {x: 0, y: 0};
     this.character = character;
@@ -14,9 +16,12 @@ function Player (game, character, x, y, health, controls) {
     this.boundingBox = {
         bbwidth: 40,
         bbheight: 120,
-        x:this.x - this.bbwidth / 2,
-        y:this.y - this.bbheight / 2
+        x: 0,
+        y: 0
     };
+    this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
+    this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
+    this.debug = true;
 }
 
 Player.prototype.isColliding = function (other) {
@@ -54,91 +59,167 @@ Player.prototype.draw = function () {
                                                     this.x, this.y);
         break;
 
-    // case "punch2";
-    //     this.character.animations.punch2.drawFrame(this.game.clockTick, this.ctx,
-    //                                                 this.x, this.y);
-    //     break;
+    case "punch2":
+        this.character.animations.punch2.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
 
-    // case "punch3";
-    //     this.character.animations.punch3.drawFrame(this.game.clockTick, this.ctx,
-    //                                                 this.x, this.y);
-    //     break;
+    case "punch3":
+        this.character.animations.punch3.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
 
     case "kick1":
         this.character.animations.kick1.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y);
         break;
 
-    // case "kick2";
-    //     this.character.animations.kick2.drawFrame(this.game.clockTick, this.ctx,
-    //                                                 this.x, this.y);
-    //     break;
+    case "kick2":
+        this.character.animations.kick2.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
 
-    // case "kick3";
-    //     this.character.animations.kick3.drawFrame(this.game.clockTick, this.ctx,
-    //                                                 this.x, this.y);
-    //     break;
+    case "kick3":
+        this.character.animations.kick3.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
 
-    // case "special";
+    // case "special":
     //     this.character.animations.special.drawFrame(this.game.clockTick, this.ctx,
     //                                                 this.x, this.y);
     //     break;
 
-    // case "block";
+    // case "block":
     //     this.character.animations.block.drawFrame(this.game.clockTick, this.ctx,
     //                                                 this.x, this.y);
     //     break;
+
+    // case "hurt":
+    //     this.character.animations.hurt.drawFrame(this.game.clockTick, this.ctx,
+    //                                                 this.x, this.y);
+    //     break;    
     }
+
+    if(this.debug) {
+        this.game.ctx.save();
+        this.game.ctx.beginPath();
+        this.game.ctx.rect(this.boundingBox.x, this.boundingBox.y,
+                            this.boundingBox.bbwidth, this.boundingBox.bbheight);
+        this.game.ctx.strokeStyle = "white";
+        this.game.ctx.lineWidth = 2;
+        this.game.ctx.stroke();
+
+        this.game.ctx.rect(this.boundingBox.x - this.character.attackLength,
+                            this.boundingBox.y,
+                            this.boundingBox.bbwidth + this.character.attackLength * 2,
+                            this.boundingBox.bbheight);
+        this.game.ctx.strokeStyle = "cyan";
+        this.game.ctx.lineWidth = 1;
+        this.game.ctx.stroke();
+
+        this.game.ctx.restore();
+
+    }
+
 };
 
 Player.prototype.update = function() {
     switch(this.state) {
+    case "moveRight":
+        this.moveVelocity = 4;
+        this.velocity.x = this.moveVelocity;
+        break;
+
+    case "moveLeft":
+        this.moveVelocity = -4;
+        this.velocity.x = this.moveVelocity;
+        break;
+
     case "punch1":
         if(this.character.animations.punch1.isDone()) {
             this.character.animations.punch1.elapsedTime = 0;
             this.interuptable = true;
-            this.state = "idle";
+            this.prevAttack = this.state;
+            this.state = this.prevState;
         }
+        this.velocity.x = 0;
+        break;
+
+    case "punch2":
+        if(this.character.animations.punch2.isDone()) {
+            this.character.animations.punch2.elapsedTime = 0;
+            this.interuptable = true;
+            this.prevAttack = "punch2";
+            this.state = this.prevState;
+        }
+        this.velocity.x = 0;
+        break;
+
+    case "punch3":
+        if(this.character.animations.punch3.isDone()) {
+            this.character.animations.punch3.elapsedTime = 0;
+            this.interuptable = true;
+            this.prevAttack = "punch3";
+            this.state = this.prevState;
+        }
+        this.velocity.x = 0;
         break;
 
     case "kick1":
         if(this.character.animations.kick1.isDone()) {
             this.character.animations.kick1.elapsedTime = 0;
             this.interuptable = true;
-            this.state = "idle";
+            this.prevAttack = "kick1";
+            this.state = this.prevState;
         }
+        this.velocity.x = 0;
         break;
-        
+
+    case "kick2":
+        if(this.character.animations.kick2.isDone()) {
+            this.character.animations.kick2.elapsedTime = 0;
+            this.interuptable = true;
+            this.prevAttack = "kick2";
+            this.state = this.prevState;
+        }
+        this.velocity.x = 0;
+        break;
+
+    case "kick3":
+        if(this.character.animations.kick3.isDone()) {
+            this.character.animations.kick3.elapsedTime = 0;
+            this.interuptable = true;
+            this.prevAttack = "kick3";
+            this.state = this.prevState;
+        }
+        this.velocity.x = 0;
+        break;
+
     case "jump":
         if (this.character.animations.jump.isDone()) {
             this.character.animations.jump.elapsedTime = 0;
             this.state = "inair";
-            this.velocity.x = this.moveVelocity;
         }
+        this.velocity.x = 0;
         break;
 
     case "inair":
-        this.velocity.x = 8;
+        this.velocity.x = this.moveVelocity;
         var totalTime = this.character.animations.inair.totalTime;
         var elapsedTime = this.character.animations.inair.elapsedTime;
-
         var jumpDistance = elapsedTime / totalTime;
-        //console.log("elapsed " + elapsedTime);
-        //console.log("total " + totalTime);
-        //console.log("jumpDistance " + jumpDistance);
 
         if (jumpDistance > 0.5) {
             jumpDistance = 1 - jumpDistance;
         }
 
         var height = 150 * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-        //console.log("height " + height);
         if (height < 0) {
             this.state = "landing";
             this.character.animations.inair.elapsedTime = 0;
-            this.y = GROUND - FRAME_HEIGHT;
+            this.y = GROUND - FRAME_HEIGHT * SCALE;
         } else {
-            this.y = (GROUND - FRAME_HEIGHT) - height;
+            this.y = (GROUND - FRAME_HEIGHT * SCALE) - height;
         }
         break;
 
@@ -146,71 +227,104 @@ Player.prototype.update = function() {
         if(this.character.animations.landing.isDone()) {
             this.character.animations.landing.elapsedTime = 0;
             this.interuptable = true;
-            this.state = "idle";
+            this.state = this.prevState;
         }
         this.velocity.x = 0;
         break;
     }
 
-    if(this.boundingBox.x < 0 - FRAME_WIDTH / 2)
-        this.x = 0;
-    else if(this.x + this.boundingBox.width > WIDTH)
-        this.x = WIDTH - this.boundingBox.width;
+    if(this.boundingBox.x < 0)
+        this.x = 0 - (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2;
+    else if(this.boundingBox.x + this.boundingBox.bbwidth > WIDTH)
+        this.x = WIDTH - (FRAME_WIDTH * SCALE + this.boundingBox.bbwidth) / 2;
+
+    var entities = this.game.entities;
+    for(var i = 0; i < entities.length; i++) {
+
+    }
 
     this.x += this.velocity.x;
     this.y += this.velocity.y;
+    this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
+    this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
 
 };
 
 Player.prototype.handleInput = function(key, downEvent) {
     if(this.interuptable) {
         switch(key) {
-        default:
-            this.velocity.x = 0;
-            this.state = "idle";
-            break;
-        
         case this.control.moveRight:
-            this.moveVelocity = Math.abs(this.moveVelocity);
-            this.velocity.x = this.moveVelocity;
-            this.state = "moveRight";
+            if(downEvent) {
+                this.prevState = this.state;
+                this.state = "moveRight";
+            } else {
+                this.velocity.x = 0;
+                this.moveVelocity = 0;
+                this.prevState = "moveRight";
+                this.state = "idle";
+            }
             break;
 
         case this.control.moveLeft:
-            this.moveVelocity = -1 * Math.abs(this.moveVelocity);
-            this.velocity.x = this.moveVelocity;
-            this.state = "moveLeft";
-            break;
-        
-        case this.control.punch:
-            this.velocity.x = 0;
-            this.interuptable = false;
-            this.state = "punch1";
-            break;
-        
-        case this.control.kick:
-            this.velocity.x = 0;
-            this.interuptable = false;
-            this.state = "kick1";
-            break;
-        
-        case this.control.jump:
-            this.velocity.x = 0;
-            this.interuptable = false;
-            this.state = "jump";
-            break;
-        
-        case this.control.block:
-            this.velocity.x = 0;
-            this.interuptable = false;
-            this.state = "block";
+            if(downEvent) {
+                this.state = "moveLeft";
+                this.prevState = this.state;
+            } else {
+                this.velocity.x = 0;
+                this.moveVelocity = 0;
+                this.prevState = "moveLeft";
+                this.state = "idle";
+            }
             break;
 
-        case this.control.special:
-            this.velocity.x = 0;
+        case this.control.punch:
+            if(this.prevAttack === "punch1") {
+                this.state = "punch2";
+            } else if (this.prevAttack === "punch2") {
+                this.state = "punch3";
+            } else {
+                this.prevState = this.state;
+                this.state = "punch1";
+            }
             this.interuptable = false;
-            this.state = "special";
             break;
+
+        case this.control.kick:
+            if(this.prevAttack === "kick1") {
+                this.state = "kick2";
+            } else if (this.prevAttack === "kick2") {
+                this.state = "kick3";
+            } else {
+                this.prevState = this.state;
+                this.state = "kick1";
+            }
+            this.interuptable = false;
+            break;
+
+        case this.control.jump:
+            if(downEvent) {
+                this.interuptable = false;
+                this.prevState = this.state;
+                this.state = "jump";
+            } else {
+                this.velocity.x = this.moveVelocity;
+                this.state = this.prevState;
+                this.prevState = "jump";
+            }
+            break;
+
+        // case this.control.block:
+        //     this.interuptable = false;
+        //     this.prevState = this.state;
+        //     this.state = "block";
+        //     break;
+
+        // case this.control.special:
+        //     this.interuptable = false;
+        //     this.prevState = this.state;
+        //     this.state = "special";
+        //     break;
         }
     }
 };
+
