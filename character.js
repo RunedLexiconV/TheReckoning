@@ -8,8 +8,25 @@ var SCALE = 1.5;
 function Character (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
     this.portrait = portrait;
-    this.attackLength = 80;
-
+    this.attackLengths = {
+		punch1: 80,
+		punch2: 80,
+		punch3: 80,
+		kick1: 80,
+		kick2: 80,
+		kick3: 80
+	};
+	
+	this.attacks = [
+	{name: "punch1", length: 80},
+	{name: "punch2", length: 80},
+	{name: "punch3", length: 80},
+	{name: "kick1", length: 80},
+	{name: "kick2", length: 80},
+	{name: "kick3", length: 80}
+	];
+	
+	
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -58,7 +75,14 @@ function Character (spritesheet, portrait, player) {
 function Character2 (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
     this.portrait = portrait;
-    this.attackLength = 75;
+    this.attacks = [
+	{name: "punch1", length: 80},
+	{name: "punch2", length: 80},
+	{name: "punch3", length: 80},
+	{name: "kick1", length: 80},
+	{name: "kick2", length: 80},
+	{name: "kick3", length: 80}
+	];
 
 // The animation parameters are as follows:
 

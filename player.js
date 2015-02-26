@@ -12,7 +12,7 @@ function Player (game, character, x, y, health, controls) {
     this.health = health;
     this.control = controls;
     this.interuptable = true;
-    this.moveVelocity = 4;
+    this.moveVelocity = 0;
     this.boundingBox = {
         bbwidth: 40,
         bbheight: 120,
@@ -227,7 +227,7 @@ Player.prototype.update = function() {
         if(this.character.animations.landing.isDone()) {
             this.character.animations.landing.elapsedTime = 0;
             this.interuptable = true;
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -247,7 +247,8 @@ Player.prototype.update = function() {
     this.y += this.velocity.y;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
     this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
-
+	
+	
 };
 
 Player.prototype.handleInput = function(key, downEvent) {
