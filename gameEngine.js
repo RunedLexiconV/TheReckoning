@@ -37,7 +37,6 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("keydown", function (event) {
         event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        console.log(that.entities);
         for (var i = 0; i < that.entities.length; i++) {
             that.entities[i].handleInput(key, true);
         }
@@ -46,7 +45,6 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("keyup", function (event) {
         event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        console.log(that.entities);
         for (var i = 0; i < that.entities.length; i++) {
             that.entities[i].handleInput(key, false);
         }
