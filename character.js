@@ -4,6 +4,11 @@ var FRAME_DURATION = 0.1;
 var SPRITESHEET_WIDTH = 1500;
 var SCALE = 1.5;
 
+function attack(name, length, damage) {
+	this.name = name;
+	this.length = length;
+	this.damage = damage;
+}
 
 function Character (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
@@ -16,14 +21,15 @@ function Character (spritesheet, portrait, player) {
 		kick2: 80,
 		kick3: 80
 	};
-	
+	this.attackLength = 80;
 	this.attacks = [
-	{name: "punch1", length: 80},
-	{name: "punch2", length: 80},
-	{name: "punch3", length: 80},
-	{name: "kick1", length: 80},
-	{name: "kick2", length: 80},
-	{name: "kick3", length: 80}
+	new attack("punch1", 80, 10),
+	new attack("punch2", 80, 10),
+	new attack("punch3", 80, 10),
+	new attack("kick1", 80, 10),
+	new attack("kick2", 80, 10),
+	new attack("kick3", 80, 10),
+	
 	];
 	
 	
@@ -69,6 +75,15 @@ function Character (spritesheet, portrait, player) {
         landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.04, 5, 5, 16,
                             SCALE, false, reverse, 0),
+		special: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            0.04, 32, 5, 17,
+                            SCALE, false, reverse, 0),
+		hurt: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            0.15, 3, 5, 24,
+                            SCALE, false, reverse, 0),
+		block: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 1, 5, 25,
+                            SCALE, true, reverse, 0)
     };
 }
 
@@ -76,14 +91,14 @@ function Character2 (spritesheet, portrait, player) {
     this.spritesheet = spritesheet;
     this.portrait = portrait;
     this.attacks = [
-	{name: "punch1", length: 80},
-	{name: "punch2", length: 80},
-	{name: "punch3", length: 80},
-	{name: "kick1", length: 80},
-	{name: "kick2", length: 80},
-	{name: "kick3", length: 80}
+	{name: "punch1", length: 80, damage: 10},
+	{name: "punch2", length: 80, damage: 10},
+	{name: "punch3", length: 80, damage: 10},
+	{name: "kick1", length: 80, damage: 10},
+	{name: "kick2", length: 80, damage: 10},
+	{name: "kick3", length: 80, damage: 10}
 	];
-
+	this.attackLength = 75;
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -127,7 +142,49 @@ function Character2 (spritesheet, portrait, player) {
         landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.04, 5, 5, 18,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
+		special: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            0.04, 29, 5, 19,
+                            SCALE, false, reverse, SPRITESHEET_WIDTH),
+		hurt: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            0.15, 3, 5, 25,
+                            SCALE, false, reverse, SPRITESHEET_WIDTH),
+		block: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 1, 5, 26,
+                            SCALE, true, reverse, SPRITESHEET_WIDTH)
     };
+}
 
+Character.prototype.getAnimation = function(name) {
+	switch(name) {
+		case "idle":
+			return this.animations.idle;
+		case "walk":
+			return this.animations.walk;
+		case "punch1":
+			return this.animations.punch1;
+		case "punch2":
+			return this.animations.punch2;
+		case "punch3":
+			return this.animations.punch3;
+		case "kick1":
+			return this.animations.kick1;
+		case "kick2":
+			return this.animations.kick2;
+		case "kick3":
+			return this.animations.kick3;
+		case "jump":
+			return this.animations.jump;
+		case "inair":
+			return this.animations.inair;
+		case "landing":
+			return this.animations.landing;
+		case "special":
+			return this.animations.special;
+		case "hurt":
+			return this.animations.hurt;
+		case "block":
+			return this.animations.block;
+		
+	}
 }
 

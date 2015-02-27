@@ -70,7 +70,7 @@ AM.downloadAll( function () {
                                       WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT * SCALE,
                                       HEALTH, PLAYER2_CONTROLS));
       window.removeEventListener("keydown", startGameListener, false);
-      window.addEventListener("keyup", function (e) {
+      window.addEventListener("keyup", function (event) {
         var key = String.fromCharCode(event.keyCode).toLowerCase();
         if(key === 'q') {
           if(timer) {
