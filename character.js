@@ -159,7 +159,9 @@ Character.prototype.getAnimation = function(name) {
 	switch(name) {
 		case "idle":
 			return this.animations.idle;
-		case "walk":
+		case "moveRight":
+			return this.animations.walk;
+		case "moveLeft":
 			return this.animations.walk;
 		case "punch1":
 			return this.animations.punch1;
@@ -186,6 +188,41 @@ Character.prototype.getAnimation = function(name) {
 		case "block":
 			return this.animations.block;
 		
+	}
+}
+
+Character2.prototype.getAnimation = function(name) {
+	switch(name) {
+		case "idle":
+			return this.animations.idle;
+		case "moveRight":
+			return this.animations.walk;
+		case "moveLeft":
+			return this.animations.walk;
+		case "punch1":
+			return this.animations.punch1;
+		case "punch2":
+			return this.animations.punch2;
+		case "punch3":
+			return this.animations.punch3;
+		case "kick1":
+			return this.animations.kick1;
+		case "kick2":
+			return this.animations.kick2;
+		case "kick3":
+			return this.animations.kick3;
+		case "jump":
+			return this.animations.jump;
+		case "inair":
+			return this.animations.inair;
+		case "landing":
+			return this.animations.landing;
+		case "special":
+			return this.animations.special;
+		case "hurt":
+			return this.animations.hurt;
+		case "block":
+			return this.animations.block;
 	}
 }
 
