@@ -5,10 +5,10 @@ var SPRITESHEET_WIDTH = 1500;
 var SCALE = 2;
 
 
-function Character (spritesheet, portrait, player) { 
+var Character  = function (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
     this.portrait = portrait;
-    that = this;
+    this.player = 1;
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -54,10 +54,10 @@ function Character (spritesheet, portrait, player) {
     };
 }
 
-function Character2 (spritesheet, portrait, player) { 
+var Character2 = function (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
     this.portrait = portrait;
-    that = this;
+    this.player = 1;
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,

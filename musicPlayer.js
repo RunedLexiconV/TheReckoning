@@ -33,10 +33,10 @@ MusicPlayer.prototype.setTrack = function (track) {
 		this.track = track;
 		this.music = this.playlist[track];
 		if(this.shuffle) {
-			this.music.addEventListener("ended", function() {
-				(that.playlist.length > that.track + 1) ? that.setTrack(that.track+1) : that.setTrack(0);
-		});
-	}
+			this.music.addEventListener("ended", function (e) {
+				musicEndHandler(that);
+			});
+		}
 		this.music.play();
 	} 
 };
@@ -45,3 +45,7 @@ MusicPlayer.prototype.play = function () {
 	this.music.play();
 };
 
+
+function musicEndHandler(that) {
+	(that.playlist.length > that.track + 1) ? that.setTrack(that.track+1) : that.setTrack(0);
+}
