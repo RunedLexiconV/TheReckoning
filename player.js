@@ -139,8 +139,19 @@ Player.prototype.update = function() {
 								hit = otherGuy.boundingBox.x - attackLength < this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
 							}
 							if (hit) {
-								this.health -= otherGuy.character.attacks[j].damage;
-								this.state = "hurt";
+								var damage = otherGuy.character.attacks[j].damage;
+								if (this.state === "block"){
+									this.health -= damage * .05;
+									if (this.character.animations.idle.reflect)  {
+										this.x += .35;
+									} else {
+										this.x -= .75;
+									}
+									
+								} else {
+									this.state = "hurt";
+									this.health -= damage;
+								}
 							}
 							break;
 						}
@@ -272,9 +283,9 @@ Player.prototype.update = function() {
 			this.interuptable = true;
 			this.state = "idle";
 		} else if (this.character.animations.idle.reflect) {
-			this.x += 5;
+			this.x += .5;
 		} else {
-			this.x -= 5;
+			this.x -= .5;
 		}
 		break;
 	case "block":
@@ -286,12 +297,7 @@ Player.prototype.update = function() {
         this.x = 0 - (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2;
     else if(this.boundingBox.x + this.boundingBox.bbwidth > WIDTH)
         this.x = WIDTH - (FRAME_WIDTH * SCALE + this.boundingBox.bbwidth) / 2;
-
-    var entities = this.game.entities;
-    for(var i = 0; i < entities.length; i++) {
-
-    }
-
+	
     this.x += this.velocity.x;
     this.y += this.velocity.y;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
