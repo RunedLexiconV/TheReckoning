@@ -97,7 +97,7 @@ Player.prototype.draw = function () {
                                                     this.x, this.y);
         break;   
     }
-
+	this.animationFrame = this.character.getAnimation(this.state).currentFrame();
     if(this.debug) {
         this.game.ctx.save();
         this.game.ctx.beginPath();
@@ -129,18 +129,21 @@ Player.prototype.update = function() {
 				var attack = "";
 				for (var j = 0; j < otherGuy.character.attacks.length; j++) {
 					if (otherGuy.character.attacks[j].name === otherGuy.state) { //other guy is attacking
-						var attackLength = otherGuy.character.attacks[j].length;
-						var hit;
-						if (this.character.animations.idle.reflect) {
-							hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength > this.boundingBox.x ? true : false;
-						} else {
-							hit = otherGuy.boundingBox.x - attackLength < this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
+						attack = otherGuy.character.attacks[j].name;
+						if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
+							var attackLength = otherGuy.character.attacks[j].length;
+							var hit;
+							if (this.character.animations.idle.reflect) {
+								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength > this.boundingBox.x ? true : false;
+							} else {
+								hit = otherGuy.boundingBox.x - attackLength < this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
+							}
+							if (hit) {
+								this.health -= otherGuy.character.attacks[j].damage;
+								this.state = "hurt";
+							}
+							break;
 						}
-						if (hit) {
-							this.health -= otherGuy.character.attacks[j].damage;
-							this.state = "hurt";
-						}
-						break;
 					}
 				}
 			}
@@ -163,7 +166,7 @@ Player.prototype.update = function() {
             this.character.animations.punch1.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = this.state;
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -173,7 +176,7 @@ Player.prototype.update = function() {
             this.character.animations.punch2.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "punch2";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -183,7 +186,7 @@ Player.prototype.update = function() {
             this.character.animations.punch3.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "punch3";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -193,7 +196,7 @@ Player.prototype.update = function() {
             this.character.animations.kick1.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "kick1";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -203,7 +206,7 @@ Player.prototype.update = function() {
             this.character.animations.kick2.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "kick2";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -213,7 +216,7 @@ Player.prototype.update = function() {
             this.character.animations.kick3.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "kick3";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
