@@ -12,14 +12,13 @@ function Player (game, character, x, y, health, controls) {
     this.health = health;
     this.control = controls;
     this.interuptable = true;
-    this.moveVelocity = 0;
+    this.moveVelocity = 4;
     this.boundingBox = {
         bbwidth: 40,
         bbheight: 120,
         x: 0,
         y: 0
     };
-	this.animationFrame = 0;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
     this.debug = true;
@@ -84,18 +83,21 @@ Player.prototype.draw = function () {
         this.character.animations.kick3.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y);
         break;
-	case "Special":
-        this.character.animations.special.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
-        break;
-	case "hurt":
-        this.character.animations.hurt.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
-        break;
-	case "block":
-        this.character.animations.block.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
-        break;   
+
+    // case "special":
+    //     this.character.animations.special.drawFrame(this.game.clockTick, this.ctx,
+    //                                                 this.x, this.y);
+    //     break;
+
+    // case "block":
+    //     this.character.animations.block.drawFrame(this.game.clockTick, this.ctx,
+    //                                                 this.x, this.y);
+    //     break;
+
+    // case "hurt":
+    //     this.character.animations.hurt.drawFrame(this.game.clockTick, this.ctx,
+    //                                                 this.x, this.y);
+    //     break;    
     }
 
     if(this.debug) {
@@ -116,37 +118,12 @@ Player.prototype.draw = function () {
         this.game.ctx.stroke();
 
         this.game.ctx.restore();
+
     }
 
 };
 
 Player.prototype.update = function() {
-	var entities = this.game.entities;
-	if (this.state != "hurt") {
-		for (var i = 0; i < entities.length; i++) {
-			if (entities[i] != this) {
-				var otherGuy = entities[i];
-				var attack = "";
-				for (var j = 0; j < otherGuy.character.attacks.length; j++) {
-					if (otherGuy.character.attacks[j].name === otherGuy.state) { //other guy is attacking
-						var attackLength = otherGuy.character.attacks[j].length;
-						var hit;
-						if (this.character.animations.idle.reflect) {
-							hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength > this.boundingBox.x ? true : false;
-						} else {
-							hit = otherGuy.boundingBox.x - attackLength < this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
-						}
-						if (hit) {
-							this.health -= otherGuy.character.attacks[j].damage;
-							this.state = "hurt";
-						}
-						break;
-					}
-				}
-			}
-		}
-	}
-	
     switch(this.state) {
     case "moveRight":
         this.moveVelocity = 4;
@@ -250,34 +227,11 @@ Player.prototype.update = function() {
         if(this.character.animations.landing.isDone()) {
             this.character.animations.landing.elapsedTime = 0;
             this.interuptable = true;
-            this.state = "idle";
+            this.state = this.prevState;
         }
         this.velocity.x = 0;
         break;
-    
-	case "special":
-        if(this.character.animations.special.isDone()) {
-			this.character.animations.special.elapsedTime = 0;
-			this.interuptable = true;
-			this.state = "idle";
-		}
-		this.velocity.x = 0;
-		break;
-	case "hurt":
-        if(this.character.animations.hurt.isDone()) {
-			this.character.animations.hurt.elapsedTime = 0;
-			this.interuptable = true;
-			this.state = "idle";
-		} else if (this.character.animations.idle.reflect) {
-			this.x += 5;
-		} else {
-			this.x -= 5;
-		}
-		break;
-	case "block":
-        break;
     }
-	
 
     if(this.boundingBox.x < 0)
         this.x = 0 - (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2;
@@ -293,6 +247,7 @@ Player.prototype.update = function() {
     this.y += this.velocity.y;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
     this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
+
 };
 
 Player.prototype.handleInput = function(key, downEvent) {
@@ -357,22 +312,7 @@ Player.prototype.handleInput = function(key, downEvent) {
                 this.prevState = "jump";
             }
             break;
-		case this.control.special:
-			/*needs work here*/
-			break;
-		case this.control.hurt:
-			/*needs work here*/
-			break;
-		case this.control.block:
-			if (downEvent) {
-				this.prevState = this.state;
-				this.state = "block";
-				this.velocity.x = 0;
-			} else {
-				this.prevState = this.state;
-				this.state = "idle";
-			}
-			break;
+
         // case this.control.block:
         //     this.interuptable = false;
         //     this.prevState = this.state;
