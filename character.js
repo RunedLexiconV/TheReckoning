@@ -91,12 +91,13 @@ function Character2 (spritesheet, portrait, player) {
     this.spritesheet = spritesheet;
     this.portrait = portrait;
     this.attacks = [
-	{name: "punch1", length: 80, damage: 10},
-	{name: "punch2", length: 80, damage: 10},
-	{name: "punch3", length: 80, damage: 10},
-	{name: "kick1", length: 80, damage: 10},
-	{name: "kick2", length: 80, damage: 10},
-	{name: "kick3", length: 80, damage: 10}
+    new attack("punch1", 80, 10),
+    new attack("punch2", 80, 10),
+    new attack("punch3", 80, 10),
+    new attack("kick1", 80, 10),
+    new attack("kick2", 80, 10),
+    new attack("kick3", 80, 10),
+    
 	];
 	this.attackLength = 75;
 // The animation parameters are as follows:
