@@ -87,7 +87,7 @@ GameEngine.prototype.draw = function () {
         if(this.gameOver) {
             this.ctx.save();
             this.ctx.globalAlpha = 0.7;
-            this.ctx.font = "40pt runed";
+            this.ctx.font = "45pt runed";
             this.ctx.strokeStyle = "white";
             this.ctx.textAlign = "center";
             this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);

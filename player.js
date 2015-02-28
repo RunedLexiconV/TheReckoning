@@ -21,7 +21,7 @@ function Player (game, character, x, y, health, controls) {
     };
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = true;
+    this.debug = false;
 }
 
 Player.prototype.isColliding = function (other) {
@@ -160,6 +160,7 @@ Player.prototype.update = function() {
 									}
 									
 								} else {
+                                    this.prevState = this.state;
 									this.state = "hurt";
 									this.health -= damage;
 								}
