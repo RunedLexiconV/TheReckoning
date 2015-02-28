@@ -99,7 +99,7 @@ Player.prototype.draw = function () {
     //                                                 this.x, this.y);
     //     break;    
     }
-
+	this.animationFrame = this.character.getAnimation(this.state).currentFrame();
     if(this.debug) {
         this.game.ctx.save();
         this.game.ctx.beginPath();
@@ -124,6 +124,46 @@ Player.prototype.draw = function () {
 };
 
 Player.prototype.update = function() {
+	var entities = this.game.entities;
+	if (this.state != "hurt") {
+		for (var i = 0; i < entities.length; i++) {
+			if (entities[i] != this) {
+				var otherGuy = entities[i];
+				var attack = "";
+				for (var j = 0; j < otherGuy.character.attacks.length; j++) {
+					if (otherGuy.character.attacks[j].name === otherGuy.state) { //other guy is attacking
+						attack = otherGuy.character.attacks[j].name;
+						if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
+							var attackLength = otherGuy.character.attacks[j].length;
+							var hit;
+							if (this.character.animations.idle.reflect) {
+								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength > this.boundingBox.x ? true : false;
+							} else {
+								hit = otherGuy.boundingBox.x - attackLength < this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
+							}
+							if (hit) {
+								var damage = otherGuy.character.attacks[j].damage;
+								if (this.state === "block"){
+									this.health -= damage * .05;
+									if (this.character.animations.idle.reflect)  {
+										this.x += .35;
+									} else {
+										this.x -= .75;
+									}
+									
+								} else {
+									this.state = "hurt";
+									this.health -= damage;
+								}
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	
     switch(this.state) {
     case "moveRight":
         this.moveVelocity = 4;
@@ -140,7 +180,7 @@ Player.prototype.update = function() {
             this.character.animations.punch1.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = this.state;
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -150,7 +190,7 @@ Player.prototype.update = function() {
             this.character.animations.punch2.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "punch2";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -160,7 +200,7 @@ Player.prototype.update = function() {
             this.character.animations.punch3.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "punch3";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -170,7 +210,7 @@ Player.prototype.update = function() {
             this.character.animations.kick1.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "kick1";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -180,7 +220,7 @@ Player.prototype.update = function() {
             this.character.animations.kick2.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "kick2";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -190,7 +230,7 @@ Player.prototype.update = function() {
             this.character.animations.kick3.elapsedTime = 0;
             this.interuptable = true;
             this.prevAttack = "kick3";
-            this.state = this.prevState;
+            this.state = "idle";
         }
         this.velocity.x = 0;
         break;
@@ -231,18 +271,35 @@ Player.prototype.update = function() {
         }
         this.velocity.x = 0;
         break;
+    
+	case "special":
+        if(this.character.animations.special.isDone()) {
+			this.character.animations.special.elapsedTime = 0;
+			this.interuptable = true;
+			this.state = "idle";
+		}
+		this.velocity.x = 0;
+		break;
+	case "hurt":
+        if(this.character.animations.hurt.isDone()) {
+			this.character.animations.hurt.elapsedTime = 0;
+			this.interuptable = true;
+			this.state = "idle";
+		} else if (this.character.animations.idle.reflect) {
+			this.x += .5;
+		} else {
+			this.x -= .5;
+		}
+		break;
+	case "block":
+        break;
     }
 
     if(this.boundingBox.x < 0)
         this.x = 0 - (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2;
     else if(this.boundingBox.x + this.boundingBox.bbwidth > WIDTH)
         this.x = WIDTH - (FRAME_WIDTH * SCALE + this.boundingBox.bbwidth) / 2;
-
-    var entities = this.game.entities;
-    for(var i = 0; i < entities.length; i++) {
-
-    }
-
+    
     this.x += this.velocity.x;
     this.y += this.velocity.y;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
@@ -312,18 +369,22 @@ Player.prototype.handleInput = function(key, downEvent) {
                 this.prevState = "jump";
             }
             break;
-
-        // case this.control.block:
-        //     this.interuptable = false;
-        //     this.prevState = this.state;
-        //     this.state = "block";
-        //     break;
-
-        // case this.control.special:
-        //     this.interuptable = false;
-        //     this.prevState = this.state;
-        //     this.state = "special";
-        //     break;
+		case this.control.special:
+			/*needs work here*/
+			break;
+		case this.control.hurt:
+			/*needs work here*/
+			break;
+		case this.control.block:
+			if (downEvent) {
+				this.prevState = this.state;
+				this.state = "block";
+				this.velocity.x = 0;
+			} else {
+				this.prevState = this.state;
+				this.state = "idle";
+			}
+			break;
         }
     }
 };

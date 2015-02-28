@@ -4,6 +4,11 @@ var FRAME_DURATION = 0.1;
 var SPRITESHEET_WIDTH = 1500;
 var SCALE = 1.5;
 
+function attack(name, length, damage) {
+	this.name = name;
+	this.length = length;
+	this.damage = damage;
+}
 
 function Character (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
@@ -58,8 +63,21 @@ function Character (spritesheet, portrait, player) {
 function Character2 (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
     this.portrait = portrait;
+<<<<<<< HEAD
     this.attackLength = 75;
 
+=======
+    this.attacks = [
+    new attack("punch1", 80, 10),
+    new attack("punch2", 80, 10),
+    new attack("punch3", 80, 10),
+    new attack("kick1", 80, 10),
+    new attack("kick2", 80, 10),
+    new attack("kick3", 80, 10),
+    
+	];
+	this.attackLength = 75;
+>>>>>>> master
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -105,5 +123,74 @@ function Character2 (spritesheet, portrait, player) {
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
     };
 
+Character.prototype.getAnimation = function(name) {
+	switch(name) {
+		case "idle":
+			return this.animations.idle;
+		case "moveRight":
+			return this.animations.walk;
+		case "moveLeft":
+			return this.animations.walk;
+		case "punch1":
+			return this.animations.punch1;
+		case "punch2":
+			return this.animations.punch2;
+		case "punch3":
+			return this.animations.punch3;
+		case "kick1":
+			return this.animations.kick1;
+		case "kick2":
+			return this.animations.kick2;
+		case "kick3":
+			return this.animations.kick3;
+		case "jump":
+			return this.animations.jump;
+		case "inair":
+			return this.animations.inair;
+		case "landing":
+			return this.animations.landing;
+		case "special":
+			return this.animations.special;
+		case "hurt":
+			return this.animations.hurt;
+		case "block":
+			return this.animations.block;
+		
+	}
+}
+
+Character2.prototype.getAnimation = function(name) {
+	switch(name) {
+		case "idle":
+			return this.animations.idle;
+		case "moveRight":
+			return this.animations.walk;
+		case "moveLeft":
+			return this.animations.walk;
+		case "punch1":
+			return this.animations.punch1;
+		case "punch2":
+			return this.animations.punch2;
+		case "punch3":
+			return this.animations.punch3;
+		case "kick1":
+			return this.animations.kick1;
+		case "kick2":
+			return this.animations.kick2;
+		case "kick3":
+			return this.animations.kick3;
+		case "jump":
+			return this.animations.jump;
+		case "inair":
+			return this.animations.inair;
+		case "landing":
+			return this.animations.landing;
+		case "special":
+			return this.animations.special;
+		case "hurt":
+			return this.animations.hurt;
+		case "block":
+			return this.animations.block;
+	}
 }
 
