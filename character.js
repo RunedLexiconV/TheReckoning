@@ -75,6 +75,13 @@ function Character (spritesheet, portrait, player) {
         block: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 25,
                             SCALE, true, reverse, 0)
+        // win: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        //                     0.05, , , ,
+        //                     SCALE, true, reverse, 0)
+        // lose: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        //                     0.05, , , ,
+        //                     SCALE, true, reverse, 0)
+
     };
 }
 
@@ -143,6 +150,13 @@ function Character2 (spritesheet, portrait, player) {
         block: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 26,
                             SCALE, true, reverse, SPRITESHEET_WIDTH)
+        // win: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        //                     0.05, , , ,
+        //                     SCALE, true, reverse, 0)
+        // lose: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        //                     0.05, , , ,
+        //                     SCALE, true, reverse, 0)
+
     };
 }
 

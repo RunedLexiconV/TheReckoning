@@ -83,21 +83,29 @@ Player.prototype.draw = function () {
         this.character.animations.kick3.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y);
         break;
+    case "Special":
+        this.character.animations.special.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    case "hurt":
+        this.character.animations.hurt.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
+    case "block":
+        this.character.animations.block.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;   
 
-    // case "special":
-    //     this.character.animations.special.drawFrame(this.game.clockTick, this.ctx,
-    //                                                 this.x, this.y);
-    //     break;
+    case "lose":
+        this.character.animations.lose.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;   
 
-    // case "block":
-    //     this.character.animations.block.drawFrame(this.game.clockTick, this.ctx,
-    //                                                 this.x, this.y);
-    //     break;
+    case "win":
+        this.character.animations.win.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y);
+        break;
 
-    // case "hurt":
-    //     this.character.animations.hurt.drawFrame(this.game.clockTick, this.ctx,
-    //                                                 this.x, this.y);
-    //     break;    
     }
 	this.animationFrame = this.character.getAnimation(this.state).currentFrame();
     if(this.debug) {
@@ -156,6 +164,11 @@ Player.prototype.update = function() {
 									this.health -= damage;
 								}
 							}
+                            if(this.health <= 0) {
+                                this.game.gameOver = true;
+                                // this.state = "lose";
+                                // otherGuy.state = "win";
+                            }
 							break;
 						}
 					}
@@ -163,7 +176,7 @@ Player.prototype.update = function() {
 			}
 		}
 	}
-	
+
     switch(this.state) {
     case "moveRight":
         this.moveVelocity = 4;
@@ -276,7 +289,7 @@ Player.prototype.update = function() {
         if(this.character.animations.special.isDone()) {
 			this.character.animations.special.elapsedTime = 0;
 			this.interuptable = true;
-			this.state = "idle";
+            this.state = this.prevState;
 		}
 		this.velocity.x = 0;
 		break;
@@ -284,7 +297,7 @@ Player.prototype.update = function() {
         if(this.character.animations.hurt.isDone()) {
 			this.character.animations.hurt.elapsedTime = 0;
 			this.interuptable = true;
-			this.state = "idle";
+            this.state = this.prevState;
 		} else if (this.character.animations.idle.reflect) {
 			this.x += .5;
 		} else {
@@ -292,6 +305,11 @@ Player.prototype.update = function() {
 		}
 		break;
 	case "block":
+        if(this.character.animations.block.isDone()) {
+            this.character.animations.block.elapsedTime = 0;
+            this.interuptable = true;
+            this.state = this.prevState;
+        }
         break;
     }
 
@@ -308,83 +326,93 @@ Player.prototype.update = function() {
 };
 
 Player.prototype.handleInput = function(key, downEvent) {
-    if(this.interuptable) {
-        switch(key) {
-        case this.control.moveRight:
-            if(downEvent) {
-                this.prevState = this.state;
-                this.state = "moveRight";
-            } else {
-                this.velocity.x = 0;
-                this.moveVelocity = 0;
-                this.prevState = "moveRight";
-                this.state = "idle";
-            }
-            break;
+    if (!this.game.gameOver) {
+        if(this.interuptable) {
+            switch(key) {
+            case this.control.moveRight:
+                if(downEvent) {
+                    this.prevState = this.state;
+                    this.state = "moveRight";
+                } else {
+                    this.velocity.x = 0;
+                    this.moveVelocity = 0;
+                    this.prevState = "moveRight";
+                    this.state = "idle";
+                }
+                break;
 
-        case this.control.moveLeft:
-            if(downEvent) {
-                this.state = "moveLeft";
-                this.prevState = this.state;
-            } else {
-                this.velocity.x = 0;
-                this.moveVelocity = 0;
-                this.prevState = "moveLeft";
-                this.state = "idle";
-            }
-            break;
+            case this.control.moveLeft:
+                if(downEvent) {
+                    this.state = "moveLeft";
+                    this.prevState = this.state;
+                } else {
+                    this.velocity.x = 0;
+                    this.moveVelocity = 0;
+                    this.prevState = "moveLeft";
+                    this.state = "idle";
+                }
+                break;
 
-        case this.control.punch:
-            if(this.prevAttack === "punch1") {
-                this.state = "punch2";
-            } else if (this.prevAttack === "punch2") {
-                this.state = "punch3";
-            } else {
-                this.prevState = this.state;
-                this.state = "punch1";
-            }
-            this.interuptable = false;
-            break;
-
-        case this.control.kick:
-            if(this.prevAttack === "kick1") {
-                this.state = "kick2";
-            } else if (this.prevAttack === "kick2") {
-                this.state = "kick3";
-            } else {
-                this.prevState = this.state;
-                this.state = "kick1";
-            }
-            this.interuptable = false;
-            break;
-
-        case this.control.jump:
-            if(downEvent) {
+            case this.control.punch:
+                if(this.prevAttack === "punch1") {
+                    this.state = "punch2";
+                } else if (this.prevAttack === "punch2") {
+                    this.state = "punch3";
+                } else {
+                    this.prevState = this.state;
+                    this.state = "punch1";
+                }
                 this.interuptable = false;
-                this.prevState = this.state;
-                this.state = "jump";
-            } else {
-                this.velocity.x = this.moveVelocity;
-                this.state = this.prevState;
-                this.prevState = "jump";
+                break;
+
+            case this.control.kick:
+                if(this.prevAttack === "kick1") {
+                    this.state = "kick2";
+                } else if (this.prevAttack === "kick2") {
+                    this.state = "kick3";
+                } else {
+                    this.prevState = this.state;
+                    this.state = "kick1";
+                }
+                this.interuptable = false;
+                break;
+
+            case this.control.jump:
+                if(downEvent) {
+                    this.interuptable = false;
+                    this.prevState = this.state;
+                    this.state = "jump";
+                } else {
+                    this.velocity.x = this.moveVelocity;
+                    this.state = this.prevState;
+                    this.prevState = "jump";
+                }
+                break;
+    		case this.control.special:
+    			/*needs work here*/
+    			break;
+    		case this.control.block:
+    			if (downEvent) {
+                    this.interuptable = false;
+    				this.prevState = this.state;
+    				this.state = "block";
+    				this.velocity.x = 0;
+    			}
+    			break;
             }
-            break;
-		case this.control.special:
-			/*needs work here*/
-			break;
-		case this.control.hurt:
-			/*needs work here*/
-			break;
-		case this.control.block:
-			if (downEvent) {
-				this.prevState = this.state;
-				this.state = "block";
-				this.velocity.x = 0;
-			} else {
-				this.prevState = this.state;
-				this.state = "idle";
-			}
-			break;
+        } else {
+            if (!downEvent) {
+                switch (key) {
+
+                case this.control.block:
+                    this.interuptable = true;
+                    this.state = this.prevState;
+                    this.prevState = "block";
+                    break;
+
+
+                }
+            }
         }
     }
 };
