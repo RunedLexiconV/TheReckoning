@@ -13,32 +13,23 @@ function attack(name, length, damage) {
 function Character (spritesheet, portrait, player) { 
     this.spritesheet = spritesheet;
     this.portrait = portrait;
-    this.attackLengths = {
-		punch1: 80,
-		punch2: 80,
-		punch3: 80,
-		kick1: 80,
-		kick2: 80,
-		kick3: 80
-	};
-	this.attackLength = 80;
-	this.attacks = [
-	new attack("punch1", 80, 10),
-	new attack("punch2", 80, 10),
-	new attack("punch3", 80, 10),
-	new attack("kick1", 80, 10),
-	new attack("kick2", 80, 10),
-	new attack("kick3", 80, 10),
-	
-	];
-	
-	
+    this.attacks = [
+    new attack("punch1", 80, 10),
+    new attack("punch2", 80, 10),
+    new attack("punch3", 80, 10),
+    new attack("kick1", 80, 10),
+    new attack("kick2", 80, 10),
+    new attack("kick3", 80, 10),
+    
+    ];
+    this.attackLength = 80;
+
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
 // int frameDuration(sec), int frames, int lineSize, int startline,
 // int scale, bool loop, bool reverse, int reverseOffset)
-    var reverse = false
+    var reverse = false;
     if (player === 2) reverse = true;
 
     this.animations = {
@@ -75,28 +66,36 @@ function Character (spritesheet, portrait, player) {
         landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.04, 5, 5, 16,
                             SCALE, false, reverse, 0),
-		special: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        special: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.04, 32, 5, 17,
                             SCALE, false, reverse, 0),
-		hurt: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        hurt: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.15, 3, 5, 24,
                             SCALE, false, reverse, 0),
-		block: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        block: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 25,
                             SCALE, true, reverse, 0)
+        // win: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        //                     0.05, , , ,
+        //                     SCALE, true, reverse, 0)
+        // lose: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        //                     0.05, , , ,
+        //                     SCALE, true, reverse, 0)
+
     };
 }
 
-function Character2 (spritesheet, portrait, player) { 
+function Character2 (spritesheet, portrait, player) {
     this.spritesheet = spritesheet;
     this.portrait = portrait;
     this.attacks = [
-	{name: "punch1", length: 80, damage: 10},
-	{name: "punch2", length: 80, damage: 10},
-	{name: "punch3", length: 80, damage: 10},
-	{name: "kick1", length: 80, damage: 10},
-	{name: "kick2", length: 80, damage: 10},
-	{name: "kick3", length: 80, damage: 10}
+    new attack("punch1", 80, 10),
+    new attack("punch2", 80, 10),
+    new attack("punch3", 80, 10),
+    new attack("kick1", 80, 10),
+    new attack("kick2", 80, 10),
+    new attack("kick3", 80, 10),
+    
 	];
 	this.attackLength = 75;
 // The animation parameters are as follows:
@@ -104,7 +103,7 @@ function Character2 (spritesheet, portrait, player) {
 // (spriteSheet, int frameWidth, int frameHeight,
 // int frameDuration(sec), int frames, int lineSize, int startline,
 // int scale, bool loop, bool reverse, int reverseOffset)
-    var reverse = false
+    var reverse = false;
     if (player === 2) reverse = true;
  
 
@@ -142,15 +141,22 @@ function Character2 (spritesheet, portrait, player) {
         landing: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.04, 5, 5, 18,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
-		special: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        special: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.04, 29, 5, 19,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
-		hurt: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        hurt: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.15, 3, 5, 25,
                             SCALE, false, reverse, SPRITESHEET_WIDTH),
-		block: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        block: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 26,
                             SCALE, true, reverse, SPRITESHEET_WIDTH)
+        // win: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        //                     0.05, , , ,
+        //                     SCALE, true, reverse, 0)
+        // lose: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
+        //                     0.05, , , ,
+        //                     SCALE, true, reverse, 0)
+
     };
 }
 
@@ -188,7 +194,7 @@ Character.prototype.getAnimation = function(name) {
 			return this.animations.block;
 		
 	}
-}
+};
 
 Character2.prototype.getAnimation = function(name) {
 	switch(name) {
@@ -223,5 +229,5 @@ Character2.prototype.getAnimation = function(name) {
 		case "block":
 			return this.animations.block;
 	}
-}
+};
 
