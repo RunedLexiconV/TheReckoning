@@ -3,12 +3,12 @@
 <head>
 	<title>Runed Lexicon V: The Reckoning</title>
 	<link rel="stylesheet" type="text/css" href="index.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
 	<script src="assetManager.js" type="text/javascript"></script>
 	<script src="musicPlayer.js" type="text/javascript"></script>
 	<script src="gameEngine.js" type="text/javascript"></script>
 	<script src="Animation.js" type="text/javascript"></script>
 	<script src="character.js" type="text/javascript"></script>
+	<script src="charSelect.js" type="text/javascript"></script>
 	<script src="control.js" type="text/javascript"></script>
 	<script src="player.js" type="text/javascript"></script>
 	<script src="main.js" type="text/javascript"></script>
@@ -18,7 +18,7 @@
 		<h2 style="font-family: reckoning; color: white; font-size: 22pt">The Reckoning</h2> -->
 	<div style="font-family: runed;"></div>
 	<div style="font-family: reckoning;"></div>
-	<canvas id = "canvas" tabindex="1" style="border: 2px solid white; border-radius: 5px; "></canvas>
+	<canvas id = "canvas" tabindex="1" width="800" height="600" style="border: 2px solid white; border-radius: 5px; "></canvas>
 	<div id="controls">
 		<h3>Controls</h3>
 		<ul>
@@ -26,16 +26,20 @@
 			<li>Move Right : D</li>
 			<li>Move Left : A</li>
 			<li>Jump : W</li>
+			<li>Block : S</li>
 			<li>Kick: C</li>
 			<li>Punch: V</li>
+			<li>Special Attack : V</li>
 		</ul>
 		<ul>
 			<h4>Player 2</h4>
 			<li>Move Right : Right Arrow</li>
 			<li>Move Left : Left Arrow</li>
 			<li>Jump : Up Arrow</li>
+			<li>Block : Down Arrow</li>
 			<li>Kick: J</li>
 			<li>Punch: K</li>
+			<li>Special Attack : L</li>
 		</ul>
 		<ul>
 			<h4>Misc</h4>

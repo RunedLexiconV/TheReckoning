@@ -19,7 +19,7 @@ MusicPlayer.prototype.init = function () {
 		});
 	}
 	window.addEventListener("keyup", function(e) {
-		var key = String.fromCharCode(event.keyCode).toLowerCase();
+		var key = String.fromCharCode(e.keyCode).toLowerCase();
 		if(key === "m") {
 			(that.paused) ? that.music.play() : that.music.pause();
 			that.paused = !that.paused;
