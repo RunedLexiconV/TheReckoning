@@ -15,7 +15,6 @@ function GameEngine() {
     this.surfaceHeight = null;
     this.entities = [];
     this.background = null;
-    this.keysDown = [];
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -23,6 +22,7 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.timer = new Timer();
+    this.gameOver = false;
 };
 
 GameEngine.prototype.start = function () {
@@ -36,17 +36,18 @@ GameEngine.prototype.start = function () {
 GameEngine.prototype.startInput = function () {
     var that = this;
     this.ctx.canvas.addEventListener("keydown", function (event) {
+        event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        if(that.keysDown.indexOf(key) < 0) {
-            that.keysDown.push(key);
+        for (var i = 0; i < that.entities.length; i++) {
+            that.entities[i].handleInput(key, true);
         }
     }, false);
 
     this.ctx.canvas.addEventListener("keyup", function (event) {
+        event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        var index = that.keysDown.indexOf(key);
-        if (index > -1) {
-            that.keysDown.splice(index, 1);
+        for (var i = 0; i < that.entities.length; i++) {
+            that.entities[i].handleInput(key, false);
         }
     }, false);
 };
@@ -82,17 +83,29 @@ GameEngine.prototype.draw = function () {
         this.ctx.stroke();
         this.ctx.closePath();
         this.ctx.restore();
+
+        if(this.gameOver) {
+            this.ctx.save();
+            this.ctx.globalAlpha = 0.7;
+            this.ctx.font = "45pt runed";
+            this.ctx.strokeStyle = "white";
+            this.ctx.textAlign = "center";
+            this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+            this.ctx.restore();
+        }
     }
     this.ctx.restore();
 };
 
 GameEngine.prototype.update = function () {
-    var entitiesCount = this.entities.length;
+    if(!this.gameOver) {
+        var entitiesCount = this.entities.length;
 
-    for (var i = 0; i < entitiesCount; i++) {
-        var entity = this.entities[i];
+        for (var i = 0; i < entitiesCount; i++) {
+            var entity = this.entities[i];
 
-        entity.update();
+            entity.update();
+        }
     }
 };
 
