@@ -22,6 +22,8 @@ function Player (game, character, x, y, health, controls) {
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
     this.debug = false;
+	
+	this.jump = null;
 }
 
 Player.prototype.isColliding = function (other) {
@@ -250,31 +252,45 @@ Player.prototype.update = function() {
         break;
 
     case "jump":
-        if (this.character.animations.jump.isDone()) {
-            this.character.animations.jump.elapsedTime = 0;
-            this.state = "inair";
-        }
-        this.velocity.x = 0;
-        break;
+        //if (this.character.animations.jump.isDone()) {
+        //    this.character.animations.jump.elapsedTime = 0;
+        //    this.state = "inair";
+        //}
+        //this.velocity.x = 0;
+        //break;
 
     case "inair":
-        this.velocity.x = this.moveVelocity;
-        var totalTime = this.character.animations.inair.totalTime;
-        var elapsedTime = this.character.animations.inair.elapsedTime;
-        var jumpDistance = elapsedTime / totalTime;
+        //this.velocity.x = this.moveVelocity;
+        //var totalTime = this.character.animations.inair.totalTime;
+        //var elapsedTime = this.character.animations.inair.elapsedTime;
+        //var jumpDistance = elapsedTime / totalTime;
 
-        if (jumpDistance > 0.5) {
-            jumpDistance = 1 - jumpDistance;
-        }
+        //if (jumpDistance > 0.5) {
+        //    jumpDistance = 1 - jumpDistance;
+        //}
 
-        var height = 150 * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-        if (height < 0) {
-            this.state = "landing";
-            this.character.animations.inair.elapsedTime = 0;
-            this.y = GROUND - FRAME_HEIGHT * SCALE;
-        } else {
-            this.y = (GROUND - FRAME_HEIGHT * SCALE) - height;
-        }
+        //var height = 150 * (-4 * (jumpDistance * jumpDistance - jumpDistance));
+        //if (height < 0) {
+        //    this.state = "landing";
+        //    this.character.animations.inair.elapsedTime = 0;
+        //    this.y = GROUND - FRAME_HEIGHT * SCALE;
+        //} else {
+        //    this.y = (GROUND - FRAME_HEIGHT * SCALE) - height;
+        //}
+		var timeInAir = this.game.timer.gameTime - this.jump.start;
+		this.velocity.y = this.jump.jumpSpeed;
+		this.jump.jumpSpeed = -16 + ((timeInAir) * 32);
+		if(this.y > GROUND - FRAME_HEIGHT * SCALE) {
+			if (this.velocity.x < 0) {
+				this.state = "moveLeft"
+			} else if (this.velocity > 0) {
+				this.state = "moveRight";
+			} else {
+				this.state = "idle";
+			}
+			this.velocity.y = 0;
+			this.y = GROUND - FRAME_HEIGHT * SCALE;
+		}
         break;
 
     case "landing":
@@ -332,25 +348,39 @@ Player.prototype.handleInput = function(key, downEvent) {
             switch(key) {
             case this.control.moveRight:
                 if(downEvent) {
-                    this.prevState = this.state;
-                    this.state = "moveRight";
+					if (this.state === "inair") {
+						this.velocity.x = 4;
+					} else {
+						this.prevState = this.state;
+						this.state = "moveRight";
+					}
+                    
                 } else {
                     this.velocity.x = 0;
                     this.moveVelocity = 0;
-                    this.prevState = "moveRight";
-                    this.state = "idle";
+					if (!(this.state === "inair")) {
+						this.prevState = "moveRight";
+						this.state = "idle";
+					}
                 }
                 break;
 
             case this.control.moveLeft:
                 if(downEvent) {
-                    this.state = "moveLeft";
-                    this.prevState = this.state;
+					if (this.state === "inair") {
+						this.velocity.x = -4;
+					} else {
+						this.prevState = this.state;
+						this.state = "moveLeft";
+					}
+                    
                 } else {
                     this.velocity.x = 0;
                     this.moveVelocity = 0;
-                    this.prevState = "moveLeft";
-                    this.state = "idle";
+					if (!(this.state === "inair")) {
+						this.prevState = "moveLeft";
+						this.state = "idle";
+					}
                 }
                 break;
 
@@ -379,15 +409,21 @@ Player.prototype.handleInput = function(key, downEvent) {
                 break;
 
             case this.control.jump:
-                if(downEvent) {
-                    this.interuptable = false;
-                    this.prevState = this.state;
-                    this.state = "jump";
-                } else {
-                    this.velocity.x = this.moveVelocity;
-                    this.state = this.prevState;
-                    this.prevState = "jump";
-                }
+                //if(downEvent) {
+                //    this.interuptable = true;
+                //    this.prevState = this.state;
+                //    this.state = "jump";
+                //} else {
+                //    this.velocity.x = this.moveVelocity;
+                //    this.state = this.prevState;
+                //    this.prevState = "jump";
+                //}
+				if (downEvent) {
+					if (this.state !== "inair") {
+						this.state = "inair";
+						this.jump = {start: this.game.timer.gameTime, height: 0, attack: "none", jumpSpeed: -16};
+					}
+				}
                 break;
     		case this.control.special:
     			/*needs work here*/
