@@ -16,14 +16,13 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
     this.portrait = portrait;
 	this.player = player;
     this.attacks = [
-    new attack("punch1", 80, 10),
-    new attack("punch2", 80, 10),
-    new attack("punch3", 80, 10),
-    new attack("kick1", 80, 10),
-    new attack("kick2", 80, 10),
-    new attack("kick3", 80, 10)
+        new attack("punch1", 45 * SCALE, 10),
+        new attack("punch2", 49 * SCALE, 10),
+        new attack("punch3", 47 * SCALE, 10),
+        new attack("kick1", 48 * SCALE, 10),
+        new attack("kick2", 52 * SCALE, 10),
+        new attack("kick3", 50 * SCALE, 10)
     ];
-    this.attackLength = 80;
 
 // The animation parameters are as follows:
 
@@ -104,15 +103,13 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
     this.portrait = portrait;
 	this.player = player;
     this.attacks = [
-    new attack("punch1", 80, 10),
-    new attack("punch2", 80, 10),
-    new attack("punch3", 80, 10),
-    new attack("kick1", 80, 10),
-    new attack("kick2", 80, 10),
-    new attack("kick3", 80, 10),
-    
+        new attack("punch1", 40 * SCALE, 10),
+        new attack("punch2", 45 * SCALE, 10),
+        new attack("punch3", 41 * SCALE, 10),
+        new attack("kick1", 40 * SCALE, 10),
+        new attack("kick2", 47 * SCALE, 10),
+        new attack("kick3", 58 * SCALE, 10)
 	];
-	this.attackLength = 75;
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -131,27 +128,27 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, true, SPRITESHEET_WIDTH),
         punch1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 7, 5, 3,
+                            0.5, 7, 5, 3,
                             SCALE, false, SPRITESHEET_WIDTH),
         punch2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 9, 5, 5,
+                            0.5, 9, 5, 5,
                             SCALE, false, SPRITESHEET_WIDTH),
         punch3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 6, 5, 7,
+                            0.5, 6, 5, 7,
                             SCALE, false, SPRITESHEET_WIDTH),
         kick1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 7, 5, 9,
+                            0.5, 7, 5, 9,
                             SCALE, false, SPRITESHEET_WIDTH),
         kick2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 10, 5, 11,
+                            0.5, 10, 5, 11,
                             SCALE, false, SPRITESHEET_WIDTH),
         kick3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 13, 5, 13,
+                            0.5, 13, 5, 13,
                             SCALE, false, SPRITESHEET_WIDTH),
         jump: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,

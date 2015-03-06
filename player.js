@@ -22,7 +22,7 @@ function Player (game, character, x, y, health, controls, orientation) {
     };
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = true;
+    this.debug = false;
 	
 	this.jump = null;
 	console.log("once");
@@ -121,18 +121,21 @@ Player.prototype.draw = function () {
         this.game.ctx.lineWidth = 2;
         this.game.ctx.stroke();
 
-        this.game.ctx.rect(this.boundingBox.x - this.character.attackLength,
-                            this.boundingBox.y,
-                            this.boundingBox.bbwidth + this.character.attackLength * 2,
-                            this.boundingBox.bbheight);
-        this.game.ctx.strokeStyle = "cyan";
-        this.game.ctx.lineWidth = 1;
-        this.game.ctx.stroke();
+        var attacks = this.character.attacks;
+        var colors = ["lemmonchiffon", "lavender", "white", "yellow", "azure", "springgreen"];
+        for(var i = 0; i < attacks.length; i++) {
+
+            this.game.ctx.rect(this.boundingBox.x - attacks[i].length,
+                                this.boundingBox.y,
+                                this.boundingBox.bbwidth + attacks[i].length * 2,
+                                this.boundingBox.bbheight);
+            this.game.ctx.strokeStyle = colors[i];
+            this.game.ctx.lineWidth = 1;
+            this.game.ctx.stroke();
+        }
 
         this.game.ctx.restore();
-
     }
-
 };
 
 Player.prototype.update = function() {
@@ -148,16 +151,16 @@ Player.prototype.update = function() {
 						if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
 							var attackLength = otherGuy.character.attacks[j].length;
 							var hit;
-							if (this.character.animations.idle.reflect) {
-								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength > this.boundingBox.x ? true : false;
+							if (otherGuy.isFacingLeft()) {
+								hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
 							} else {
-								hit = otherGuy.boundingBox.x - attackLength < this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
+								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength >= this.boundingBox.x ? true : false;
 							}
 							if (hit) {
 								var damage = otherGuy.character.attacks[j].damage;
 								if (this.state === "block"){
 									this.health -= damage * .05;
-									if (this.character.animations.idle.reflect)  {
+									if (this.isFacingLeft())  {
 										this.x += .35;
 									} else {
 										this.x -= .75;
@@ -318,7 +321,7 @@ Player.prototype.update = function() {
 			this.character.animations.hurt.elapsedTime = 0;
 			this.interuptable = true;
             this.state = this.prevState;
-		} else if (this.character.animations.idle.reflect) {
+		} else if (this.isFacingLeft()) {
 			this.x += .5;
 		} else {
 			this.x -= .5;
