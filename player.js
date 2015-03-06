@@ -1,4 +1,4 @@
-function Player (game, character, x, y, health, controls) { 
+function Player (game, character, x, y, health, controls, orientation) { 
     this.x = x;
     this.y = y;
     this.game = game;
@@ -13,6 +13,7 @@ function Player (game, character, x, y, health, controls) {
     this.control = controls;
     this.interuptable = true;
     this.moveVelocity = 4;
+	this.facing = orientation;
     this.boundingBox = {
         bbwidth: 40,
         bbheight: 120,
@@ -20,90 +21,92 @@ function Player (game, character, x, y, health, controls) {
         y: 0
     };
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
-    this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = false;
+    this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
+    this.debug = true;
+	
+	this.jump = null;
 }
 
-Player.prototype.isColliding = function (other) {
-    return false;
+Player.prototype.isFacingLeft = function (other) {
+    return this.facing === "left" ? true : false;
 };
 
 Player.prototype.draw = function () {
     switch (this.state) {
     case "idle":
         this.character.animations.idle.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "moveRight":
         this.character.animations.walk.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "moveLeft":
         this.character.animations.walk.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "jump":
         this.character.animations.jump.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "inair":
         this.character.animations.inair.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "landing":
         this.character.animations.landing.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "punch1":
         this.character.animations.punch1.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
 
     case "punch2":
         this.character.animations.punch2.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
 
     case "punch3":
         this.character.animations.punch3.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
 
     case "kick1":
         this.character.animations.kick1.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
 
     case "kick2":
         this.character.animations.kick2.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
 
     case "kick3":
         this.character.animations.kick3.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "Special":
         this.character.animations.special.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "hurt":
         this.character.animations.hurt.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
     case "block":
         this.character.animations.block.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;   
 
     case "lose":
         this.character.animations.lose.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;   
 
     case "win":
         this.character.animations.win.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y);
+                                                    this.x, this.y, this.isFacingLeft());
         break;
 
     }
@@ -174,6 +177,8 @@ Player.prototype.update = function() {
 						}
 					}
 				}
+				this.facing = this.x > otherGuy.x ? "left" : "right";
+				//if (this.character.player === 1) console.log(this.orientation);
 			}
 		}
 	}
@@ -250,31 +255,45 @@ Player.prototype.update = function() {
         break;
 
     case "jump":
-        if (this.character.animations.jump.isDone()) {
-            this.character.animations.jump.elapsedTime = 0;
-            this.state = "inair";
-        }
-        this.velocity.x = 0;
-        break;
+        //if (this.character.animations.jump.isDone()) {
+        //    this.character.animations.jump.elapsedTime = 0;
+        //    this.state = "inair";
+        //}
+        //this.velocity.x = 0;
+        //break;
 
     case "inair":
-        this.velocity.x = this.moveVelocity;
-        var totalTime = this.character.animations.inair.totalTime;
-        var elapsedTime = this.character.animations.inair.elapsedTime;
-        var jumpDistance = elapsedTime / totalTime;
+        //this.velocity.x = this.moveVelocity;
+        //var totalTime = this.character.animations.inair.totalTime;
+        //var elapsedTime = this.character.animations.inair.elapsedTime;
+        //var jumpDistance = elapsedTime / totalTime;
 
-        if (jumpDistance > 0.5) {
-            jumpDistance = 1 - jumpDistance;
-        }
+        //if (jumpDistance > 0.5) {
+        //    jumpDistance = 1 - jumpDistance;
+        //}
 
-        var height = 150 * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-        if (height < 0) {
-            this.state = "landing";
-            this.character.animations.inair.elapsedTime = 0;
-            this.y = GROUND - FRAME_HEIGHT * SCALE;
-        } else {
-            this.y = (GROUND - FRAME_HEIGHT * SCALE) - height;
-        }
+        //var height = 150 * (-4 * (jumpDistance * jumpDistance - jumpDistance));
+        //if (height < 0) {
+        //    this.state = "landing";
+        //    this.character.animations.inair.elapsedTime = 0;
+        //    this.y = GROUND - FRAME_HEIGHT * SCALE;
+        //} else {
+        //    this.y = (GROUND - FRAME_HEIGHT * SCALE) - height;
+        //}
+		var timeInAir = this.game.timer.gameTime - this.jump.start;
+		this.velocity.y = this.jump.jumpSpeed;
+		this.jump.jumpSpeed = 16 - ((timeInAir) * 32);
+		if(this.y < GROUND) {
+			if (this.velocity.x < 0) {
+				this.state = "moveLeft"
+			} else if (this.velocity > 0) {
+				this.state = "moveRight";
+			} else {
+				this.state = "idle";
+			}
+			this.velocity.y = 0;
+			this.y = GROUND;
+		}
         break;
 
     case "landing":
@@ -322,7 +341,7 @@ Player.prototype.update = function() {
     this.x += this.velocity.x;
     this.y += this.velocity.y;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
-    this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
+    this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//(this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
 
 };
 
@@ -332,25 +351,39 @@ Player.prototype.handleInput = function(key, downEvent) {
             switch(key) {
             case this.control.moveRight:
                 if(downEvent) {
-                    this.prevState = this.state;
-                    this.state = "moveRight";
+					if (this.state === "inair") {
+						this.velocity.x = 4;
+					} else {
+						this.prevState = this.state;
+						this.state = "moveRight";
+					}
+                    
                 } else {
                     this.velocity.x = 0;
                     this.moveVelocity = 0;
-                    this.prevState = "moveRight";
-                    this.state = "idle";
+					if (!(this.state === "inair")) {
+						this.prevState = "moveRight";
+						this.state = "idle";
+					}
                 }
                 break;
 
             case this.control.moveLeft:
                 if(downEvent) {
-                    this.state = "moveLeft";
-                    this.prevState = this.state;
+					if (this.state === "inair") {
+						this.velocity.x = -4;
+					} else {
+						this.prevState = this.state;
+						this.state = "moveLeft";
+					}
+                    
                 } else {
                     this.velocity.x = 0;
                     this.moveVelocity = 0;
-                    this.prevState = "moveLeft";
-                    this.state = "idle";
+					if (!(this.state === "inair")) {
+						this.prevState = "moveLeft";
+						this.state = "idle";
+					}
                 }
                 break;
 
@@ -379,15 +412,21 @@ Player.prototype.handleInput = function(key, downEvent) {
                 break;
 
             case this.control.jump:
-                if(downEvent) {
-                    this.interuptable = false;
-                    this.prevState = this.state;
-                    this.state = "jump";
-                } else {
-                    this.velocity.x = this.moveVelocity;
-                    this.state = this.prevState;
-                    this.prevState = "jump";
-                }
+                //if(downEvent) {
+                //    this.interuptable = true;
+                //    this.prevState = this.state;
+                //    this.state = "jump";
+                //} else {
+                //    this.velocity.x = this.moveVelocity;
+                //    this.state = this.prevState;
+                //    this.prevState = "jump";
+                //}
+				if (downEvent) {
+					if (this.state !== "inair") {
+						this.state = "inair";
+						this.jump = {start: this.game.timer.gameTime, height: 0, attack: "none", jumpSpeed: 16};
+					}
+				}
                 break;
     		case this.control.special:
     			/*needs work here*/
