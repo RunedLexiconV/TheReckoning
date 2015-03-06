@@ -25,9 +25,10 @@ function Player (game, character, x, y, health, controls, orientation) {
     this.debug = true;
 	
 	this.jump = null;
+	console.log("once");
 }
 
-Player.prototype.isFacingLeft = function (other) {
+Player.prototype.isFacingLeft = function () {
     return this.facing === "left" ? true : false;
 };
 
@@ -178,7 +179,6 @@ Player.prototype.update = function() {
 					}
 				}
 				this.facing = this.x > otherGuy.x ? "left" : "right";
-				//if (this.character.player === 1) console.log(this.orientation);
 			}
 		}
 	}
