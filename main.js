@@ -1,7 +1,7 @@
 var AM = new AssetManager();
 var WIDTH = 800;
 var HEIGHT = 600;
-var GROUND = 610;
+var GROUND = 0;
 var HEALTH = 100;
 
 AM.queueImage("./sprites/Battle_Arena_Background.jpg");
@@ -58,17 +58,17 @@ AM.downloadAll( function () {
       document.getElementById("canvas").focus();
       timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", 36);
       var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"),
-                                      AM.getAsset("./sprites/portrait1.png"),
-                                      1);
+									AM.getAsset("./sprites/sheet 2b.png"),
+                                    AM.getAsset("./sprites/portrait1.png"), 1);
       gameEngine.addEntity(new Player(gameEngine, character1,
-                                      50 , GROUND - FRAME_HEIGHT * SCALE,
-                                      HEALTH, PLAYER1_CONTROLS));
-      var character2 = new Character2(AM.getAsset("./sprites/sheet 3b.png"),
-                                      AM.getAsset("./sprites/portrait2.png"),
-                                      2);
+                                      50 , GROUND,
+                                      HEALTH, PLAYER1_CONTROLS, "right"));
+      var character2 = new Character2(AM.getAsset("./sprites/sheet 3a.png"),
+									AM.getAsset("./sprites/sheet 3b.png"),
+                                    AM.getAsset("./sprites/portrait2.png"), 2);
       gameEngine.addEntity(new Player(gameEngine, character2,
-                                      WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT * SCALE,
-                                      HEALTH, PLAYER2_CONTROLS));
+                                      WIDTH - FRAME_WIDTH - 50 , GROUND,
+                                      HEALTH, PLAYER2_CONTROLS, "left"));
       window.removeEventListener("keydown", startGameListener, false);
       window.addEventListener("keyup", function (event) {
         var key = String.fromCharCode(event.keyCode).toLowerCase();
