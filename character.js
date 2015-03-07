@@ -94,11 +94,8 @@ var Character  = function (spritesheet, portrait, player) {
     };
 }
 
-<<<<<<< HEAD
-var Character2 = function (spritesheet, portrait, player) { 
-=======
+
 function Character2 (spritesheet, portrait, player) {
->>>>>>> master
     this.spritesheet = spritesheet;
     this.portrait = portrait;
     this.player = 1;
@@ -208,11 +205,7 @@ Character.prototype.getAnimation = function(name) {
 			return this.animations.block;
 		
 	}
-<<<<<<< HEAD
-}
-=======
 };
->>>>>>> master
 
 Character2.prototype.getAnimation = function(name) {
 	switch(name) {
@@ -247,9 +240,5 @@ Character2.prototype.getAnimation = function(name) {
 		case "block":
 			return this.animations.block;
 	}
-<<<<<<< HEAD
-}
-=======
 };
->>>>>>> master
 

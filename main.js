@@ -1,7 +1,7 @@
 var AM = new AssetManager();
 var WIDTH = 800;
 var HEIGHT = 600;
-var GROUND = 610;
+var GROUND = 520;
 var HEALTH = 100;
 
 AM.queueImage("./sprites/Battle_Arena_Background.jpg");
@@ -26,23 +26,22 @@ window.onload = function () {
     var canvas = document.getElementById("canvas");
     canvas.setAttribute("width", WIDTH + "px");
     canvas.setAttribute("height",  HEIGHT + "px");
+    canvas.style.background = "#39275B";
     var ctx = canvas.getContext("2d");
     
     var musicPlayer = new MusicPlayer();
-    musicPlayer.addSong(AM.getAsset("./sound/End of peace.mp3"));
-    musicPlayer.addSong(AM.getAsset("./sound/Dirtiest - Genoshan Massacre.mp3"));
-    musicPlayer.addSong(AM.getAsset("./sound/06 Hidden Shrine.mp3"));
-    musicPlayer.addSong(AM.getAsset("./sound/Robot on Drabgon.mp3"));
+
 
     var gameEngine = new GameEngine();
-
-    //start screen
-    startScreen(ctx);
     var timer = null;
     var background = 0;
     musicPlayer.init();
     musicPlayer.play();
     gameEngine.init(ctx);
+    gameEngine.startInput();
+    gameEngine.start();
+
+    /*
     var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"),
                                     AM.getAsset("./sprites/portrait1.png"), 1);
     var character2 = new Character2(AM.getAsset("./sprites/sheet 3b.png"),
@@ -51,24 +50,10 @@ window.onload = function () {
     characters.push(character1);
     characters.push(character2);
     var selections = [];
-    var call = function () {
-      console.log("calback");
-    };
+
     selections.push({name: "Stickman", portrait: "./sprites/portrait1.png", callback: call});
     selections.push({name: "Jenkins", portrait: "./sprites/portrait2.png", callback: call});
-
-    
-    var startHandler = function (e) {
-      if(e) {
-        console.log("startHandler");
-        SelectScreen("Character Select", selections, ctx, true, call);
-        canvas.removeEventListener("keyup", startHandler);
-        //e.target.removeEventListener(e.type, arguments.callee);
-
-      }
-    };
-    canvas.addEventListener("keyup", startHandler);
-    console.log(canvas);
+    */
   }); 
 };
 
@@ -78,11 +63,11 @@ function loadBackground(path, frames) {
   }
 }
 
-function startBackgroundAnimation(gameEngine, folder, frames) {
+function startBackgroundAnimation(screen, folder, frames) {
   var i = 0;
   var reverse = false;
   var id = window.setInterval(function () {
-    gameEngine.setBackground(AM.getAsset(folder+"tmp-"+i+".gif"));
+    screen.setBackground(AM.getAsset(folder+"tmp-"+i+".gif"));
     (i + 1) < frames ? i++ : i = 0;
   }, 200);
   return id;

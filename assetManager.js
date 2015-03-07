@@ -15,8 +15,8 @@ AssetManager.prototype.queueAudio = function (path) {
 }
 
 AssetManager.prototype.isDone = function () { 
-    if(this.audioQueue.length  + this.imageQueue.length >= this.successCount + this.errorCount) console.log("done with downloads");
-    return this.audioQueue.length  + this.imageQueue.length >= this.successCount + this.errorCount;
+    if(this.audioQueue.length  + this.imageQueue.length === this.successCount + this.errorCount) console.log("done with downloads");
+    return this.audioQueue.length  + this.imageQueue.length === this.successCount + this.errorCount;
 }
 
 AssetManager.prototype.downloadAll = function (callback) {
@@ -46,7 +46,7 @@ AssetManager.prototype.downloadAll = function (callback) {
         var audio = new Audio();
         var that = this;
         var path = this.audioQueue[i];
-        audio.addEventListener("load", function (e) {
+        audio.addEventListener("loadeddata", function (e) {
             console.log("success loading: " + that.audioQueue[i]);
             that.successCount++;
             if(that.isDone()) callback();

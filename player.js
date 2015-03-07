@@ -22,6 +22,8 @@ function Player (game, character, x, y, health, controls) {
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = (this.y + (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
     this.debug = false;
+    this.entities = this.game.screen.entities;
+    console.log(this.entities);
 }
 
 Player.prototype.isColliding = function (other) {
@@ -132,7 +134,7 @@ Player.prototype.draw = function () {
 };
 
 Player.prototype.update = function() {
-	var entities = this.game.entities;
+	var entities = this.entities;
 	if (this.state != "hurt") {
 		for (var i = 0; i < entities.length; i++) {
 			if (entities[i] != this) {
