@@ -22,7 +22,7 @@ function Player (game, character, x, y, health, controls, orientation) {
     };
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = true;
+    this.debug = false;
 	this.jump = null;
     this.entities = this.game.screen.entities;
 }
@@ -160,9 +160,14 @@ Player.prototype.update = function() {
 							} else {
 								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength >= this.boundingBox.x;
 							}
-                            if(hit && otherGuy.y !== GROUND) {
-                                verticalHit = otherGuy.boundingBox.y + (otherGuy.boundingBox.bbheight / 2) >= this.boundingBox.y;
-                                hit = verticalHit;
+                            if(hit) {
+                                if(otherGuy.y !== GROUND) {
+                                    verticalHit = otherGuy.boundingBox.y + (otherGuy.boundingBox.bbheight / 2) >= this.boundingBox.y;
+                                    hit = verticalHit;
+                                } else if (this.y !== GROUND) {
+                                    verticalHit = otherGuy.boundingBox.y < this.boundingBox.y + this.boundingBox.bbheight;
+                                    hit = verticalHit;
+                                }
                             }
 							if (hit) {
 								var damage = otherGuy.character.attacks[j].damage;
