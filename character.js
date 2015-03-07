@@ -67,6 +67,10 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.035, 5, 5, 14,
                             SCALE, false, SPRITESHEET_WIDTH),
+		jumpKick: new Animation(spritesheet, reverseSpritesheet,
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 12, 5, 30,
+                            SCALE, false, SPRITESHEET_WIDTH),
         inair: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             FRAME_DURATION, 1, 5, 15,
@@ -86,13 +90,15 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
         block: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 25,
-                            SCALE, true, SPRITESHEET_WIDTH)
-        // win: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-        //                     0.05, , , ,
-        //                     SCALE, true, reverse, 0)
-        // lose: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-        //                     0.05, , , ,
-        //                     SCALE, true, reverse, 0)
+                            SCALE, true, SPRITESHEET_WIDTH),
+        win: new Animation(spritesheet, reverseSpritesheet,
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 5, 5, 33,
+                            SCALE, true, SPRITESHEET_WIDTH),
+        lose: new Animation(spritesheet, reverseSpritesheet,
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 15, 5, 27,
+                            SCALE, false, SPRITESHEET_WIDTH)
 
     };
 }
@@ -114,7 +120,7 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
 
 // (spriteSheet, int frameWidth, int frameHeight,
 // int frameDuration(sec), int frames, int lineSize, int startline,
-// int scale, bool loop, bool reverse, int reverseOffset)
+// int scale, bool loop, int reverseOffset)
  
 
     this.animations =  {
@@ -128,31 +134,35 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, true, SPRITESHEET_WIDTH),
         punch1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.5, 7, 5, 3,
+                            0.05, 7, 5, 3,
                             SCALE, false, SPRITESHEET_WIDTH),
         punch2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.5, 9, 5, 5,
+                            0.05, 9, 5, 5,
                             SCALE, false, SPRITESHEET_WIDTH),
         punch3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.5, 6, 5, 7,
+                            0.05, 6, 5, 7,
                             SCALE, false, SPRITESHEET_WIDTH),
         kick1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.5, 7, 5, 9,
+                            0.05, 7, 5, 9,
                             SCALE, false, SPRITESHEET_WIDTH),
         kick2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.5, 10, 5, 11,
+                            0.05, 10, 5, 11,
                             SCALE, false, SPRITESHEET_WIDTH),
         kick3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.5, 13, 5, 13,
+                            0.05, 13, 5, 13,
                             SCALE, false, SPRITESHEET_WIDTH),
         jump: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.035, 5, 5, 16,
+                            SCALE, false, SPRITESHEET_WIDTH),
+		jumpKick: new Animation(spritesheet, reverseSpritesheet,
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 12, 5, 34,
                             SCALE, false, SPRITESHEET_WIDTH),
         inair: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
@@ -173,13 +183,15 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
         block: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 26,
-                            SCALE, true, SPRITESHEET_WIDTH)
-        // win: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-        //                     0.05, , , ,
-        //                     SCALE, true, reverse, 0)
-        // lose: new Animation(spritesheet, FRAME_WIDTH, FRAME_HEIGHT,
-        //                     0.05, , , ,
-        //                     SCALE, true, reverse, 0)
+                            SCALE, true, SPRITESHEET_WIDTH),
+        win: new Animation(spritesheet, reverseSpritesheet,
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 5, 5, 32,
+                            SCALE, true, SPRITESHEET_WIDTH),
+        lose: new Animation(spritesheet, reverseSpritesheet,
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 15, 5, 27,
+                            SCALE, false, SPRITESHEET_WIDTH)
 
     };
 }
@@ -206,6 +218,8 @@ Character.prototype.getAnimation = function(name) {
 			return this.animations.kick3;
 		case "jump":
 			return this.animations.jump;
+		case "jumpKick":
+			return this.animations.jumpKick;
 		case "inair":
 			return this.animations.inair;
 		case "landing":
@@ -216,6 +230,10 @@ Character.prototype.getAnimation = function(name) {
 			return this.animations.hurt;
 		case "block":
 			return this.animations.block;
+		case "win":
+			return this.animations.win;
+		case "lose":
+			return this.animations.lose;
 		
 	}
 };
@@ -242,6 +260,8 @@ Character2.prototype.getAnimation = function(name) {
 			return this.animations.kick3;
 		case "jump":
 			return this.animations.jump;
+		case "jumpKick":
+			return this.animations.jumpKick;
 		case "inair":
 			return this.animations.inair;
 		case "landing":
@@ -252,6 +272,11 @@ Character2.prototype.getAnimation = function(name) {
 			return this.animations.hurt;
 		case "block":
 			return this.animations.block;
+		case "win":
+			return this.animations.win;
+		case "lose":
+			return this.animations.lose;
+		
 	}
 };
 

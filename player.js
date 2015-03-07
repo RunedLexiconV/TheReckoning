@@ -25,7 +25,6 @@ function Player (game, character, x, y, health, controls, orientation) {
     this.debug = false;
 	
 	this.jump = null;
-	console.log("once");
 }
 
 Player.prototype.isFacingLeft = function () {
@@ -52,6 +51,10 @@ Player.prototype.draw = function () {
         break;
     case "inair":
         this.character.animations.inair.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y, this.isFacingLeft());
+        break;
+	case "jumpKick":
+        this.character.animations.jumpKick.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         break;
     case "landing":
@@ -174,8 +177,8 @@ Player.prototype.update = function() {
 							}
                             if(this.health <= 0) {
                                 this.game.gameOver = true;
-                                // this.state = "lose";
-                                // otherGuy.state = "win";
+                                this.state = "lose";
+                                otherGuy.state = "win";
                             }
 							break;
 						}
@@ -257,32 +260,10 @@ Player.prototype.update = function() {
         this.velocity.x = 0;
         break;
 
-    case "jump":
-        //if (this.character.animations.jump.isDone()) {
-        //    this.character.animations.jump.elapsedTime = 0;
-        //    this.state = "inair";
-        //}
-        //this.velocity.x = 0;
-        //break;
+    case "jumpKick":
+        //x, y behavior is same as inair
 
     case "inair":
-        //this.velocity.x = this.moveVelocity;
-        //var totalTime = this.character.animations.inair.totalTime;
-        //var elapsedTime = this.character.animations.inair.elapsedTime;
-        //var jumpDistance = elapsedTime / totalTime;
-
-        //if (jumpDistance > 0.5) {
-        //    jumpDistance = 1 - jumpDistance;
-        //}
-
-        //var height = 150 * (-4 * (jumpDistance * jumpDistance - jumpDistance));
-        //if (height < 0) {
-        //    this.state = "landing";
-        //    this.character.animations.inair.elapsedTime = 0;
-        //    this.y = GROUND - FRAME_HEIGHT * SCALE;
-        //} else {
-        //    this.y = (GROUND - FRAME_HEIGHT * SCALE) - height;
-        //}
 		var timeInAir = this.game.timer.gameTime - this.jump.start;
 		this.velocity.y = this.jump.jumpSpeed;
 		this.jump.jumpSpeed = 16 - ((timeInAir) * 32);
@@ -296,6 +277,7 @@ Player.prototype.update = function() {
 			}
 			this.velocity.y = 0;
 			this.y = GROUND;
+			this.character.animations.jumpKick.elapsedTime = 0;
 		}
         break;
 
@@ -345,7 +327,7 @@ Player.prototype.update = function() {
     this.y += this.velocity.y;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//(this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
-
+	
 };
 
 Player.prototype.handleInput = function(key, downEvent) {
@@ -364,7 +346,7 @@ Player.prototype.handleInput = function(key, downEvent) {
                 } else {
                     this.velocity.x = 0;
                     this.moveVelocity = 0;
-					if (!(this.state === "inair")) {
+					if (!(this.state === "inair" || this.state === "jumpKick")) {
 						this.prevState = "moveRight";
 						this.state = "idle";
 					}
@@ -383,7 +365,7 @@ Player.prototype.handleInput = function(key, downEvent) {
                 } else {
                     this.velocity.x = 0;
                     this.moveVelocity = 0;
-					if (!(this.state === "inair")) {
+					if (!(this.state === "inair" || this.state === "jumpKick")) {
 						this.prevState = "moveLeft";
 						this.state = "idle";
 					}
@@ -403,27 +385,25 @@ Player.prototype.handleInput = function(key, downEvent) {
                 break;
 
             case this.control.kick:
-                if(this.prevAttack === "kick1") {
-                    this.state = "kick2";
-                } else if (this.prevAttack === "kick2") {
-                    this.state = "kick3";
-                } else {
-                    this.prevState = this.state;
-                    this.state = "kick1";
-                }
-                this.interuptable = false;
+				if (downEvent) {
+					if (this.state === "inair" || this.state === "jumpKick") {
+						this.state = "jumpKick";
+						this.jump.attack = "kick";
+					} else if(this.prevAttack === "kick1") {
+						this.state = "kick2";
+					} else if (this.prevAttack === "kick2") {
+						this.state = "kick3";
+					} else {
+						this.prevState = this.state;
+						this.state = "kick1";
+					}
+					if (this.state !== "jumpKick") {
+						this.interuptable = false;
+					}
+				}
                 break;
 
             case this.control.jump:
-                //if(downEvent) {
-                //    this.interuptable = true;
-                //    this.prevState = this.state;
-                //    this.state = "jump";
-                //} else {
-                //    this.velocity.x = this.moveVelocity;
-                //    this.state = this.prevState;
-                //    this.prevState = "jump";
-                //}
 				if (downEvent) {
 					if (this.state !== "inair") {
 						this.state = "inair";
