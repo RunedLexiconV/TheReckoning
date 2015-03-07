@@ -13,8 +13,8 @@ function GameEngine() {
     this.ctx = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
-    this.entities = [];
-    this.background = null;
+    this.screen = null;
+    this.mode = null;
 }
 
 GameEngine.prototype.init = function (ctx) {
@@ -23,6 +23,11 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceHeight = this.ctx.canvas.height;
     this.timer = new Timer();
     this.gameOver = false;
+    var that = this;
+    this.mode = "localMult";
+    //var gs = new GameScreen(this);
+    var s = new StartScreen(this);
+    this.screen = s;
 };
 
 GameEngine.prototype.start = function () {
@@ -38,75 +43,28 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("keydown", function (event) {
         event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        for (var i = 0; i < that.entities.length; i++) {
-            that.entities[i].handleInput(key, true);
+        var entities = that.screen.entities;
+        for (var i = 0; i < entities.length; i++) {
+            entities[i].handleInput(key, true);
         }
     }, false);
 
     this.ctx.canvas.addEventListener("keyup", function (event) {
         event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        for (var i = 0; i < that.entities.length; i++) {
-            that.entities[i].handleInput(key, false);
+        var entities = that.screen.entities;
+        for (var i = 0; i < entities.length; i++) {
+            entities[i].handleInput(key, false);
         }
     }, false);
 };
 
-GameEngine.prototype.setBackground = function (background) {
-    this.background = background;
-};
-
-GameEngine.prototype.addEntity = function (entity) {
-    this.entities.push(entity);
-};
-
 GameEngine.prototype.draw = function () {
-    this.ctx.clearRect(0, 0, this.surfaceWidth, this.surfaceHeight);
-
-    if(this.background) this.ctx.drawImage(this.background, 0, 0, WIDTH, HEIGHT);
-
-    this.ctx.save();
-    for (var i = 0; i < this.entities.length; i++) {
-        this.entities[i].draw(this.ctx);
-
-        this.ctx.save();
-        //Portrait and health, move into player ?
-        this.ctx.globalAlpha = 0.7;
-        this.ctx.fillStyle = i === 0 ? "blue" : "red";
-        this.ctx.fillRect(20 + (700* i) - 5, 20 -5, 60, 60);
-        this.ctx.drawImage(this.entities[i].character.portrait, 20 + (700* i), 20, 50, 50);
-        this.ctx.strokeStyle = "green";
-        this.ctx.lineWidth = "10";
-        this.ctx.beginPath();
-        this.ctx.moveTo(80+(430* i), 40);
-        this.ctx.lineTo(80 + (430*i) + 2*Math.ceil(this.entities[i].health),40);
-        this.ctx.stroke();
-        this.ctx.closePath();
-        this.ctx.restore();
-
-        if(this.gameOver) {
-            this.ctx.save();
-            this.ctx.globalAlpha = 0.7;
-            this.ctx.font = "45pt runed";
-            this.ctx.strokeStyle = "white";
-            this.ctx.textAlign = "center";
-            this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
-            this.ctx.restore();
-        }
-    }
-    this.ctx.restore();
+    this.screen.draw();
 };
 
 GameEngine.prototype.update = function () {
-    if(!this.gameOver) {
-        var entitiesCount = this.entities.length;
-
-        for (var i = 0; i < entitiesCount; i++) {
-            var entity = this.entities[i];
-
-            entity.update();
-        }
-    }
+    this.screen.update();
 };
 
 GameEngine.prototype.loop = function () {

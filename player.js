@@ -22,9 +22,9 @@ function Player (game, character, x, y, health, controls, orientation) {
     };
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = false;
-	
+    this.debug = false;	
 	this.jump = null;
+    this.entities = this.game.screen.entities;
 }
 
 Player.prototype.isFacingLeft = function () {
@@ -142,7 +142,7 @@ Player.prototype.draw = function () {
 };
 
 Player.prototype.update = function() {
-	var entities = this.game.entities;
+	var entities = this.entities;
 	if (this.state != "hurt") {
 		for (var i = 0; i < entities.length; i++) {
 			if (entities[i] != this) {

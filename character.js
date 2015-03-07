@@ -11,6 +11,7 @@ function attack(name, length, damage) {
 }
 
 function Character (spritesheet, reverseSpritesheet, portrait, player) { 
+
     this.spritesheet = spritesheet;
 	this.reverseSpritesheet = reverseSpritesheet;
     this.portrait = portrait;
@@ -104,6 +105,8 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
 }
 
 function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
+
+
     this.spritesheet = spritesheet;
 	this.reverseSpritesheet = reverseSpritesheet;
     this.portrait = portrait;

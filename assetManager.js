@@ -15,8 +15,8 @@ AssetManager.prototype.queueAudio = function (path) {
 }
 
 AssetManager.prototype.isDone = function () { 
-    if(this.audioQueue.length  + this.imageQueue.length == this.successCount + this.errorCount) console.log("done with downloads");
-    return this.audioQueue.length  + this.imageQueue.length == this.successCount + this.errorCount;
+    if(this.audioQueue.length  + this.imageQueue.length === this.successCount + this.errorCount) console.log("done with downloads");
+    return this.audioQueue.length  + this.imageQueue.length === this.successCount + this.errorCount;
 }
 
 AssetManager.prototype.downloadAll = function (callback) {
@@ -25,15 +25,17 @@ AssetManager.prototype.downloadAll = function (callback) {
         var img = new Image();
         var that = this;
         var path = this.imageQueue[i];
-        img.addEventListener("load", function () {
+        img.addEventListener("load", function (e) {
             console.log("success loading: " + that.imageQueue[i]);
             that.successCount++;
             if(that.isDone()) callback();
+            e.target.removeEventListener(e.type, arguments.callee);
         });
-        img.addEventListener("error", function () {
+        img.addEventListener("error", function (e) {
             console.log("error loading: " + that.imageQueue[i]);
             that.errorCount++;
             if (that.isDone()) callback();
+            e.target.removeEventListener(e.type, arguments.callee);
         });
         img.src = path;
         this.cache[path] = img;
@@ -44,15 +46,18 @@ AssetManager.prototype.downloadAll = function (callback) {
         var audio = new Audio();
         var that = this;
         var path = this.audioQueue[i];
-        audio.addEventListener("loadeddata", function () {
+
+        audio.addEventListener("loadeddata", function (e) {
             console.log("success loading: " + that.audioQueue[i]);
             that.successCount++;
             if(that.isDone()) callback();
+            e.target.removeEventListener(e.type, arguments.callee);
         });
-        audio.addEventListener("error", function () {
+        audio.addEventListener("error", function (e) {
             console.log("error loading: " + that.audioQueue[i]);
             that.errorCount++;
             if (that.isDone()) callback();
+            e.target.removeEventListener(e.type, arguments.callee);
         });
         audio.src = path;
         this.cache[path] = audio;
