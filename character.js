@@ -24,12 +24,19 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
         new attack("kick2", 52 * SCALE, 10),
         new attack("kick3", 50 * SCALE, 10)
     ];
-
+	
+	this.special = {game: null,
+					animation: new Animation(spritesheet, reverseSpritesheet,
+											FRAME_WIDTH, FRAME_HEIGHT,
+											.05, 1, 5, 26,
+											SCALE, true, SPRITESHEET_WIDTH), 
+					spawnFrames: [{frame: 25, created: false}],
+					spawnOffset: 50};
 // The animation parameters are as follows:
 
 // (spriteSheet, reverseSpritesheet, int frameWidth, int frameHeight,
 // int frameDuration(sec), int frames, int lineSize, int startline,
-// int scale, bool loop, bool reverse, int reverseOffset)
+// int scale, bool loop, int reverseOffset)
 
     this.animations = {
         idle: new Animation(spritesheet, reverseSpritesheet, 
@@ -82,7 +89,7 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, false, SPRITESHEET_WIDTH),
         special: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.04, 32, 5, 17,
+                            0.045, 32, 5, 17,
                             SCALE, false, SPRITESHEET_WIDTH),
         hurt: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
@@ -119,6 +126,14 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
         new attack("kick2", 47 * SCALE, 10),
         new attack("kick3", 58 * SCALE, 10)
 	];
+	this.special = {game: null,
+					animation: new Animation(spritesheet, reverseSpritesheet,
+											FRAME_WIDTH, FRAME_HEIGHT,
+											.05, 1, 5, 33,
+											SCALE, true, SPRITESHEET_WIDTH), 
+					spawnFrames: [{frame: 15, created: false}, {frame: 17, created: false}, 
+								{frame: 19, created: false}, {frame: 21, created: false}],
+					spawnOffset: 50};
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -177,7 +192,7 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, false, SPRITESHEET_WIDTH),
         special: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.04, 29, 5, 19,
+                            0.06, 29, 5, 19,
                             SCALE, false, SPRITESHEET_WIDTH),
         hurt: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
@@ -282,4 +297,39 @@ Character2.prototype.getAnimation = function(name) {
 		
 	}
 };
+
+function special(game, animation, spawnFrames, spawnOffset) {
+	this.game = game;
+	this.animation = animation;
+	this.x = 0;
+	this.y = 0;
+	this.facing = "right";
+	this.spawnFrames = spawnFrames;
+	this.spawnOffset = spawnOffset;
+}
+
+special.prototype.update = function() {
+	if (this.facing === "right") {
+		this.x += 15;
+	} else {
+		this.x -= 15;
+	}
+}
+
+special.prototype.draw = function() {
+	//console.log(this.animation.currentFrame());
+	if (this.facing === "right") {
+		this.animation.drawFrame(this.game.clockTick, this.game.ctx, this.x, this.y, false);
+	} else {
+		this.animation.drawFrame(this.game.clockTick, this.game.ctx, this.x, this.y, true);
+	}
+	
+}
+
+special.prototype.handleInput = function(key, downEvent) {
+	//do nothing
+}
+
+
+
 
