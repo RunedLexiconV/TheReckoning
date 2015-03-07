@@ -147,28 +147,39 @@ Player.prototype.update = function() {
 	if (this.state != "hurt") {
 		for (var i = 0; i < entities.length; i++) {
 			if (entities[i] != this) {
-				if (entities[i] instanceof special) {
-					var theSpecial = entities[i];
-				} else {
-					var otherGuy = entities[i];
-					var attack = "";
-					for (var j = 0; j < otherGuy.character.attacks.length; j++) {
-						if (otherGuy.character.attacks[j].name === otherGuy.state) { //other guy is attacking
-							attack = otherGuy.character.attacks[j].name;
-							if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
-								var attackLength = otherGuy.character.attacks[j].length;
-								var hit;
-								if (otherGuy.isFacingLeft()) {
-									hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
-								} else {
-									hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength >= this.boundingBox.x ? true : false;
-								}
-								if (hit) {
-									var damage = otherGuy.character.attacks[j].damage;
-									if (this.state === "block"){
-										this.health -= damage * .05;
-										if (this.isFacingLeft())  {
-											this.x += .35;
+                if (entities[i] instanceof special) {
+                    var theSpecial = entities[i];
+                    // do collision detection
+                } else {
+    				var otherGuy = entities[i];
+    				var attack = "";
+    				for (var j = 0; j < otherGuy.character.attacks.length; j++) {
+    					if (otherGuy.character.attacks[j].name === otherGuy.state) { //other guy is attacking
+    						attack = otherGuy.character.attacks[j].name;
+    						if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
+    							var attackLength = otherGuy.character.attacks[j].length;
+    							var hit;
+    							var verticalHit;
+                                if (otherGuy.isFacingLeft()) {
+    								hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth;
+    							} else {
+    								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength >= this.boundingBox.x;
+    							}
+                                if(hit) {
+                                    if(otherGuy.y !== GROUND) {
+                                        verticalHit = otherGuy.boundingBox.y + (otherGuy.boundingBox.bbheight / 2) >= this.boundingBox.y;
+                                        hit = verticalHit;
+                                    } else if (this.y !== GROUND) {
+                                        verticalHit = otherGuy.boundingBox.y < this.boundingBox.y + this.boundingBox.bbheight;
+                                        hit = verticalHit;
+                                    }
+                                }
+    							if (hit) {
+    								var damage = otherGuy.character.attacks[j].damage;
+    								if (this.state === "block"){
+    									this.health -= damage * .05;
+    									if (this.isFacingLeft())  {
+    										this.x += .35;
 										} else {
 											this.x -= .75;
 										}
@@ -324,7 +335,6 @@ Player.prototype.update = function() {
 				this.game.screen.addEntity(newSpecial);
 				this.character.special.spawnFrames[i].created = true;
 			}
-
 		}
 		
 		this.velocity.x = 0;
@@ -449,7 +459,6 @@ Player.prototype.handleInput = function(key, downEvent) {
     			if (downEvent && this.y === GROUND) {
 					this.prevState = this.state;
 					this.state = "special";
-
 				}
 				this.interuptable = false;
     			break;
