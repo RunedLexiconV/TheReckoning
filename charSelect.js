@@ -242,7 +242,7 @@ function GameScreen (gameEngine) {
   this.gameOver = false;
   this.entities = [];
   this.background = null;
-  startBackgroundAnimation(this, "./sprites/background0/", 36);
+  startBackgroundAnimation(this, "./sprites/background3/", 20);
   this.gameEngine = gameEngine;
 }
 
