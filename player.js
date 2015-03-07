@@ -149,7 +149,6 @@ Player.prototype.update = function() {
 			if (entities[i] != this) {
 				if (entities[i] instanceof special) {
 					var theSpecial = entities[i];
-					// do collision detection
 				} else {
 					var otherGuy = entities[i];
 					var attack = "";
@@ -325,6 +324,7 @@ Player.prototype.update = function() {
 				this.game.screen.addEntity(newSpecial);
 				this.character.special.spawnFrames[i].created = true;
 			}
+
 		}
 		
 		this.velocity.x = 0;
@@ -449,6 +449,7 @@ Player.prototype.handleInput = function(key, downEvent) {
     			if (downEvent && this.y === GROUND) {
 					this.prevState = this.state;
 					this.state = "special";
+
 				}
 				this.interuptable = false;
     			break;
