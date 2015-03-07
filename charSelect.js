@@ -1,39 +1,39 @@
-var startGame = function (e) {
-  gameEngine.start();
-  gameEngine.startInput();
-  document.getElementById("canvas").focus();
-  timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", 36);
-  var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"),
-                                    AM.getAsset("./sprites/portrait1.png"), 1);
-  var character2 = new Character2(AM.getAsset("./sprites/sheet 3b.png"),
-                                    AM.getAsset("./sprites/portrait2.png"), 2);
-  gameEngine.addEntity(new Player(gameEngine, character1,
-                                  50 , GROUND - FRAME_HEIGHT,
-                                  HEALTH, PLAYER1_CONTROLS));
+// var startGame = function (e) {
+//   gameEngine.start();
+//   gameEngine.startInput();
+//   document.getElementById("canvas").focus();
+//   timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", 36);
+//   var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"),
+//                                     AM.getAsset("./sprites/portrait1.png"), 1);
+//   var character2 = new Character2(AM.getAsset("./sprites/sheet 3b.png"),
+//                                     AM.getAsset("./sprites/portrait2.png"), 2);
+//   gameEngine.addEntity(new Player(gameEngine, character1,
+//                                   50 , GROUND - FRAME_HEIGHT,
+//                                   HEALTH, PLAYER1_CONTROLS));
  
-  gameEngine.addEntity(new Player(gameEngine, character2,
-                                  WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT,
-                                  HEALTH, PLAYER2_CONTROLS));
-  window.removeEventListener("keydown", startListener, false);
-  window.addEventListener("keyup", function (e) {
-    var key = String.fromCharCode(e.keyCode).toLowerCase();
-    if(key === 'q') {
-      if(timer) {
-        window.clearInterval(timer);
-      }
-      background = (background + 1) % 2;
-      var frames = background === 0 ? 36 : 8;
-      switch (background) {
-        case 0: frames = 36; break;
-        case 1: frames = 9; break;
-        case 2: frames = 56; break;
-        case 3: frames = 40; break;
-        default: break;
-      }
-      timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", frames);
-    }
-  });
-};
+//   gameEngine.addEntity(new Player(gameEngine, character2,
+//                                   WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT,
+//                                   HEALTH, PLAYER2_CONTROLS));
+//   window.removeEventListener("keydown", startListener, false);
+//   window.addEventListener("keyup", function (e) {
+//     var key = String.fromCharCode(e.keyCode).toLowerCase();
+//     if(key === 'q') {
+//       if(timer) {
+//         window.clearInterval(timer);
+//       }
+//       background = (background + 1) % 2;
+//       var frames = background === 0 ? 36 : 8;
+//       switch (background) {
+//         case 0: frames = 36; break;
+//         case 1: frames = 9; break;
+//         case 2: frames = 56; break;
+//         case 3: frames = 40; break;
+//         default: break;
+//       }
+//       timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", frames);
+//     }
+//   });
+// };
 
 //------------------------------------- BEGIN START SCREEN ----------------------------------------------
 
@@ -209,6 +209,29 @@ SceneSelect.prototype.draw = function () {
       drawTitle(this.ctx, "Scene Select", 60);
 
 };
+
+SceneSelect.prototype.handleInput =  function (key, downEvent) {
+  if(!downEvent) {
+    switch (key) {
+      case PLAYER1_CONTROLS.moveRight:
+        ((this.selector1.charIndex + 1) < this.selections.length) ? this.selector1.charIndex++ : this.selector1.charIndex = 0;
+        break;
+      case PLAYER1_CONTROLS.moveLeft:
+        (this.selector1.charIndex > 0) ? this.selector1.charIndex-- : this.selector1.charIndex = this.selections.length - 1;
+        break;
+      case PLAYER2_CONTROLS.moveRight:
+          ((this.selector2.charIndex + 1) < this.selections.length) ? this.selector2.charIndex++ : this.selector2.charIndex = 0;
+        break;
+      case PLAYER2_CONTROLS.moveLeft:
+        (this.selector2.charIndex > 0) ? this.selector2.charIndex-- : this.selector2.charIndex = this.selections.length - 1;
+        break;
+      default:
+        if(key === PLAYER1_CONTROLS.punch || key === PLAYER1_CONTROLS.kick) this.player1Ready = true;
+        if(key === PLAYER2_CONTROLS.punch || key === PLAYER2_CONTROLS.kick) this.player2Ready = true;
+        break;
+    }
+  }
+};
 //-----------------------------END SCENE SELECT SCREEN-----------------------------------------------------
 //---------------------------- BEGIN GAME SCREEN ----------------------------------------------------
 
@@ -219,7 +242,7 @@ function GameScreen (gameEngine) {
   this.gameOver = false;
   this.entities = [];
   this.background = null;
-  startBackgroundAnimation(this, "./sprites/background3/", 36);
+  startBackgroundAnimation(this, "./sprites/background2/", 56);
   this.gameEngine = gameEngine;
 }
 

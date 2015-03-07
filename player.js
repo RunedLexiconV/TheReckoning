@@ -22,7 +22,7 @@ function Player (game, character, x, y, health, controls, orientation) {
     };
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = true;
+    this.debug = false;
 	this.jump = null;
     this.entities = this.game.screen.entities;
 }
