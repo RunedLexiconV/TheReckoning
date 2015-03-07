@@ -22,7 +22,7 @@ function Player (game, character, x, y, health, controls, orientation) {
     };
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = false;	
+    this.debug = true;
 	this.jump = null;
     this.entities = this.game.screen.entities;
 }
@@ -154,11 +154,16 @@ Player.prototype.update = function() {
 						if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
 							var attackLength = otherGuy.character.attacks[j].length;
 							var hit;
-							if (otherGuy.isFacingLeft()) {
-								hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
+							var verticalHit;
+                            if (otherGuy.isFacingLeft()) {
+								hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth;
 							} else {
-								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength >= this.boundingBox.x ? true : false;
+								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength >= this.boundingBox.x;
 							}
+                            if(hit && otherGuy.y !== GROUND) {
+                                verticalHit = otherGuy.boundingBox.y + (otherGuy.boundingBox.bbheight / 2) >= this.boundingBox.y;
+                                hit = verticalHit;
+                            }
 							if (hit) {
 								var damage = otherGuy.character.attacks[j].damage;
 								if (this.state === "block"){
@@ -278,6 +283,7 @@ Player.prototype.update = function() {
 			this.velocity.y = 0;
 			this.y = GROUND;
 			this.character.animations.jumpKick.elapsedTime = 0;
+            this.jump = null;
 		}
         break;
 
@@ -336,7 +342,7 @@ Player.prototype.handleInput = function(key, downEvent) {
             switch(key) {
             case this.control.moveRight:
                 if(downEvent) {
-					if (this.state === "inair") {
+					if (this.state === "inair" || this.state === "jumpKick") {
 						this.velocity.x = 4;
 					} else {
 						this.prevState = this.state;
@@ -355,7 +361,7 @@ Player.prototype.handleInput = function(key, downEvent) {
 
             case this.control.moveLeft:
                 if(downEvent) {
-					if (this.state === "inair") {
+					if (this.state === "inair" || this.state === "jumpKick") {
 						this.velocity.x = -4;
 					} else {
 						this.prevState = this.state;
@@ -373,15 +379,17 @@ Player.prototype.handleInput = function(key, downEvent) {
                 break;
 
             case this.control.punch:
-                if(this.prevAttack === "punch1") {
-                    this.state = "punch2";
-                } else if (this.prevAttack === "punch2") {
-                    this.state = "punch3";
-                } else {
-                    this.prevState = this.state;
-                    this.state = "punch1";
+                if(!this.jump) {
+                    if(this.prevAttack === "punch1") {
+                        this.state = "punch2";
+                    } else if (this.prevAttack === "punch2") {
+                        this.state = "punch3";
+                    } else {
+                        this.prevState = this.state;
+                        this.state = "punch1";
+                    }
+                    this.interuptable = false;
                 }
-                this.interuptable = false;
                 break;
 
             case this.control.kick:
@@ -405,7 +413,7 @@ Player.prototype.handleInput = function(key, downEvent) {
 
             case this.control.jump:
 				if (downEvent) {
-					if (this.state !== "inair") {
+					if (this.state !== "inair" && this.state !== "jumpKick") {
 						this.state = "inair";
 						this.jump = {start: this.game.timer.gameTime, height: 0, attack: "none", jumpSpeed: 16};
 					}
@@ -416,10 +424,12 @@ Player.prototype.handleInput = function(key, downEvent) {
     			break;
     		case this.control.block:
     			if (downEvent) {
-                    this.interuptable = false;
-    				this.prevState = this.state;
-    				this.state = "block";
-    				this.velocity.x = 0;
+                    if(!this.jump) {
+                        this.interuptable = false;
+        				this.prevState = this.state;
+        				this.state = "block";
+        				this.velocity.x = 0;
+                    }
     			}
     			break;
             }

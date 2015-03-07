@@ -22,7 +22,8 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
         new attack("punch3", 47 * SCALE, 10),
         new attack("kick1", 48 * SCALE, 10),
         new attack("kick2", 52 * SCALE, 10),
-        new attack("kick3", 50 * SCALE, 10)
+        new attack("kick3", 50 * SCALE, 10),
+        new attack("jumpKick", 50 * SCALE, 10)
     ];
 
 // The animation parameters are as follows:
@@ -70,7 +71,7 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, false, SPRITESHEET_WIDTH),
 		jumpKick: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 12, 5, 30,
+                            0.05, 10, 5, 30,
                             SCALE, false, SPRITESHEET_WIDTH),
         inair: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
@@ -117,7 +118,8 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
         new attack("punch3", 41 * SCALE, 10),
         new attack("kick1", 40 * SCALE, 10),
         new attack("kick2", 47 * SCALE, 10),
-        new attack("kick3", 58 * SCALE, 10)
+        new attack("kick3", 58 * SCALE, 10),
+        new attack("jumpKick", 50 * SCALE, 10)
 	];
 // The animation parameters are as follows:
 
@@ -165,7 +167,7 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, false, SPRITESHEET_WIDTH),
 		jumpKick: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 12, 5, 34,
+                            0.05, 10, 5, 34,
                             SCALE, false, SPRITESHEET_WIDTH),
         inair: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
