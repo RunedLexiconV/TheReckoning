@@ -263,6 +263,10 @@ GameScreen.prototype.update = function () {
       for (var i = 0; i < entitiesCount; i++) {
           var entity = this.entities[i];
           entity.update();
+		  if (entity instanceof special && entity.x > WIDTH || entity.x + 100 < 0) {
+			  this.entities.splice(i, 1);
+			  entitiesCount--;
+		  }
       }
   }
 };
@@ -274,30 +278,32 @@ GameScreen.prototype.draw = function() {
 
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
-        console.log(this.entities[i]);
-        this.entities[i].draw(this.ctx);
-        this.ctx.save();
-        this.ctx.globalAlpha = 0.7;
-        this.ctx.fillStyle = i === 0 ? "blue" : "red";
-        this.ctx.fillRect(20 + (700* i) - 5, 20 -5, 60, 60);
-        this.ctx.drawImage(this.entities[i].character.portrait, 20 + (700* i), 20, 50, 50);
-        this.ctx.strokeStyle = "green";
-        this.ctx.lineWidth = "10";
-        this.ctx.beginPath();
-        this.ctx.moveTo(80+(430* i), 40);
-        this.ctx.lineTo(80 + (430*i) + 2*Math.ceil(this.entities[i].health),40);
-        this.ctx.stroke();
-        this.ctx.closePath();
-        this.ctx.restore();
-        if(this.gameOver) {
-            this.ctx.save();
-            this.ctx.globalAlpha = 0.7;
-            this.ctx.font = "45pt runed";
-            this.ctx.strokeStyle = "white";
-            this.ctx.textAlign = "center";
-            this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
-            this.ctx.restore();
-        }
+		this.entities[i].draw(this.ctx);
+		if (this.entities[i] instanceof Player) {
+			this.ctx.save();
+			this.ctx.globalAlpha = 0.7;
+			this.ctx.fillStyle = i === 0 ? "blue" : "red";
+			this.ctx.fillRect(20 + (700* i) - 5, 20 -5, 60, 60);
+			this.ctx.drawImage(this.entities[i].character.portrait, 20 + (700* i), 20, 50, 50);
+			this.ctx.strokeStyle = "green";
+			this.ctx.lineWidth = "10";
+			this.ctx.beginPath();
+			this.ctx.moveTo(80+(430* i), 40);
+			this.ctx.lineTo(80 + (430*i) + 2*Math.ceil(this.entities[i].health),40);
+			this.ctx.stroke();
+			this.ctx.closePath();
+			this.ctx.restore();
+			if(this.gameOver) {
+				this.ctx.save();
+				this.ctx.globalAlpha = 0.7;
+				this.ctx.font = "45pt runed";
+				this.ctx.strokeStyle = "white";
+				this.ctx.textAlign = "center";
+				this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+				this.ctx.restore();
+			}
+		}
+        
     }
     this.ctx.restore();
 };
