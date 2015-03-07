@@ -26,7 +26,7 @@ GameEngine.prototype.init = function (ctx) {
     var that = this;
     this.mode = "localMult";
     //var gs = new GameScreen(this);
-    var s = new CharSelectScreen(this);
+    var s = new StartScreen(this);
     this.screen = s;
 };
 

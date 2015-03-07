@@ -48,7 +48,7 @@ function StartScreen (gameEngine) {
 
 StartScreen.prototype.update = function() {
   if(this.goToModeSelect) {
-    //this.gameEngine.screen = new SelectScreen();
+    this.gameEngine.screen = new CharSelectScreen(this.gameEngine);
   }
   if(this.shadowBlur <= 2) this.shadowUp = true;
   if(this.shadowBlur >= 30) this.shadowUp = false;
@@ -192,6 +192,30 @@ CharSelectScreen.prototype.handleInput = function (key, downEvent) {
 //-----------------------------END MODE SELECT SCREEN------------------------------------------------
 //-----------------------------BEGIN SCENE SELECT SCREEN-----------------------------------------------
 
+function SceneSelect (gameEngine) {
+  this.ctx = gameEngine.ctx;
+  this.gameEngine = gameEngine;
+  var portrait1 = AM.getAsset("./sprites/portrait1.png");
+  var portrait2 = AM.getAsset("./sprites/portrait2.png");
+
+  this.selections = [];
+  this.selections.push({name: "Stickman", portrait: portrait1, x: 0, y:0});
+  this.selections.push({name: "Jenkins", portrait: portrait2, x: 0, y: 0});
+  console.log(this.selections);
+
+  this.selector1 = {x: 0, y: 0, color: "blue", charIndex: 0, selected: false};
+}
+
+SceneSelect.prototype.update = function () {
+
+};
+
+SceneSelect.prototype.draw = function () {
+      drawTitle(this.ctx, "Scene Select", 60);
+
+} 
+
+S
 //-----------------------------END SCENE SELECT SCREEN-----------------------------------------------------
 //---------------------------- BEGIN GAME SCREEN ----------------------------------------------------
 
