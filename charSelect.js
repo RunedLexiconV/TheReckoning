@@ -240,6 +240,7 @@ function GameScreen (gameEngine) {
   this.surfaceWidth = gameEngine.surfaceWidth;
   this.surfaceHeight = gameEngine.surfaceHeight;
   this.gameOver = false;
+  this.winner = "";
   this.entities = [];
   this.background = null;
   startBackgroundAnimation(this, "./sprites/background3/", 20);
@@ -321,9 +322,14 @@ GameScreen.prototype.draw = function() {
   				this.ctx.save();
   				this.ctx.globalAlpha = 0.7;
   				this.ctx.font = "45pt runed";
-  				this.ctx.strokeStyle = "white";
+  				this.ctx.strokeStyle = "black";
+          this.ctx.fillStyle = "white";
   				this.ctx.textAlign = "center";
+          this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
   				this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+          this.ctx.font = "36pt runed";
+          this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+          this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
   				this.ctx.restore();
   			}
   		}

@@ -190,7 +190,8 @@ Player.prototype.update = function() {
 									}
 								}
 								if(this.health <= 0) {
-									this.game.gameOver = true;
+									this.game.screen.gameOver = true;
+                                    this.game.screen.winner = otherGuy.character.player;
 									this.state = "lose";
 									otherGuy.state = "win";
 								}
@@ -385,7 +386,7 @@ Player.prototype.handleInput = function(key, downEvent) {
 						this.state = "moveRight";
 					}
                     
-                } else {
+                } else if(this.state !== "moveLeft" && this.state !== "jump") {
                     this.velocity.x = 0;
                     this.moveVelocity = 0;
 					if (!(this.state === "inair" || this.state === "jumpKick")) {
@@ -404,7 +405,7 @@ Player.prototype.handleInput = function(key, downEvent) {
 						this.state = "moveLeft";
 					}
                     
-                } else {
+                } else if(this.state !== "moveRight" && this.state !== "jump") {
                     this.velocity.x = 0;
                     this.moveVelocity = 0;
 					if (!(this.state === "inair" || this.state === "jumpKick")) {

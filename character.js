@@ -102,11 +102,11 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, true, SPRITESHEET_WIDTH),
         win: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 5, 5, 33,
+                            0.1, 5, 5, 33,
                             SCALE, true, SPRITESHEET_WIDTH),
         lose: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 15, 5, 27,
+                            0.1, 15, 5, 27,
                             SCALE, false, SPRITESHEET_WIDTH)
 
     };
@@ -206,11 +206,11 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, true, SPRITESHEET_WIDTH),
         win: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 5, 5, 32,
+                            0.1, 5, 5, 32,
                             SCALE, true, SPRITESHEET_WIDTH),
         lose: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.05, 15, 5, 27,
+                            0.1, 15, 5, 27,
                             SCALE, false, SPRITESHEET_WIDTH)
 
     };

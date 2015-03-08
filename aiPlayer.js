@@ -10,7 +10,7 @@ function aiPlayer (game, character, x, y, health) {
 	this.controls = PLAYER2_CONTROLS;
 	this.attackLength = 50;
 	this.fleeLength = 70;
-	this.moveTime = 0.5;
+	this.moveTime = 1;
 	this.prevControl = "idle";
 }
 
@@ -36,7 +36,7 @@ aiPlayer.prototype.chooseMove = function() {
 				flee = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + this.flee >= this.boundingBox.x ? true : false;
 			}
 			if(hitable) {
-				if(random(0, 100) < 1) {
+				if(random(0, 100) < 10) {
 					this.handleInput(this.controls.block, true);
 					this.prevControl = this.controls.block;
 				}
