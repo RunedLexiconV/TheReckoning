@@ -1,40 +1,3 @@
-// var startGame = function (e) {
-//   gameEngine.start();
-//   gameEngine.startInput();
-//   document.getElementById("canvas").focus();
-//   timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", 36);
-//   var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"),
-//                                     AM.getAsset("./sprites/portrait1.png"), 1);
-//   var character2 = new Character2(AM.getAsset("./sprites/sheet 3b.png"),
-//                                     AM.getAsset("./sprites/portrait2.png"), 2);
-//   gameEngine.addEntity(new Player(gameEngine, character1,
-//                                   50 , GROUND - FRAME_HEIGHT,
-//                                   HEALTH, PLAYER1_CONTROLS));
- 
-//   gameEngine.addEntity(new Player(gameEngine, character2,
-//                                   WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT,
-//                                   HEALTH, PLAYER2_CONTROLS));
-//   window.removeEventListener("keydown", startListener, false);
-//   window.addEventListener("keyup", function (e) {
-//     var key = String.fromCharCode(e.keyCode).toLowerCase();
-//     if(key === 'q') {
-//       if(timer) {
-//         window.clearInterval(timer);
-//       }
-//       background = (background + 1) % 2;
-//       var frames = background === 0 ? 36 : 8;
-//       switch (background) {
-//         case 0: frames = 36; break;
-//         case 1: frames = 9; break;
-//         case 2: frames = 56; break;
-//         case 3: frames = 40; break;
-//         default: break;
-//       }
-//       timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", frames);
-//     }
-//   });
-// };
-
 //------------------------------------- BEGIN START SCREEN ----------------------------------------------
 
 function StartScreen (gameEngine) {
@@ -48,7 +11,7 @@ function StartScreen (gameEngine) {
 
 StartScreen.prototype.update = function() {
   if(this.goToModeSelect) {
-    this.gameEngine.screen = new CharSelectScreen(this.gameEngine);
+    this.gameEngine.screen = new SceneSelect(this.gameEngine);
   }
   if(this.shadowBlur <= 2) this.shadowUp = true;
   if(this.shadowBlur >= 30) this.shadowUp = false;
@@ -90,7 +53,8 @@ function CharSelectScreen (gameEngine) {
   this.gameEngine = gameEngine;
   this.player1Ready = false;
   this.player2Ready = false;
-
+  this.shadowBlur = 2;
+  this.shadowUp = true;
   //var stickman = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"), 1);
   //var jenkins = new Character2(AM.getAsset("./sprites/sheet 3b.png"), AM.getAsset("./sprites/portrait2.png"), 1);
   var portrait1 = AM.getAsset("./sprites/portrait1.png");
@@ -112,13 +76,16 @@ function CharSelectScreen (gameEngine) {
 }
 
 CharSelectScreen.prototype.update = function () {
-    if(this.player1Ready && this.player2Ready)  {
-      var p1 = this.selections[this.selector1.charIndex];
-      var p2 = this.selections[this.selector2.charIndex];
-      var gs = new GameScreen(this.gameEngine);
-      this.gameEngine.screen = gs;
-      gs.addPlayers(p1.name, p2.name);
-    }
+  if(this.player1Ready && this.player2Ready)  {
+    var p1 = this.selections[this.selector1.charIndex];
+    var p2 = this.selections[this.selector2.charIndex];
+    var gs = new GameScreen(this.gameEngine);
+    this.gameEngine.screen = gs;
+    gs.addPlayers(p1.name, p2.name);
+  }
+  if(this.shadowBlur <= 2) this.shadowUp = true;
+  if(this.shadowBlur >= 30) this.shadowUp = false;
+  this.shadowUp ?  this.shadowBlur += 2: this.shadowBlur -= 2;
 };
 
 CharSelectScreen.prototype.draw = function () {
@@ -129,7 +96,7 @@ CharSelectScreen.prototype.draw = function () {
       this.ctx.fillStyle = this.selector1.color;
       this.ctx.fillRect(this.selections[this.selector1.charIndex].x - 5, this.selections[this.selector1.charIndex].y - 5, 
                   (this.portraitWidth / 2) + 5, this.portraitWidth + 10);
-      
+  
       this.ctx.font = "24px runed";
       this.ctx.strokeStyle = this.selector1.color;
       this.ctx.fillStyle = "white";
@@ -153,7 +120,6 @@ CharSelectScreen.prototype.draw = function () {
     }
 
     drawTitle(this.ctx, "Character Select", 60);
-
     this.ctx.restore();
 };
 
@@ -191,44 +157,80 @@ CharSelectScreen.prototype.handleInput = function (key, downEvent) {
 function SceneSelect (gameEngine) {
   this.ctx = gameEngine.ctx;
   this.gameEngine = gameEngine;
-  var portrait1 = AM.getAsset("./sprites/portrait1.png");
-  var portrait2 = AM.getAsset("./sprites/portrait2.png");
-
+  var portrait0 = AM.getAsset("./sprites/background0/tmp-0.gif");
+  var portrait1 = AM.getAsset("./sprites/background1/tmp-0.gif");
+  var portrait2 = AM.getAsset("./sprites/background2/tmp-0.gif");
+  var portrait3 = AM.getAsset("./sprites/background3/tmp-0.gif");
+  this.player1Ready = false;
+  this.portraitWidth = 90;
+  this.titleHeight = 100;
+  this.padding = 10;
+  this.shadowBlur = 2;
+  this.shadowUp = false;
+  this.entities = [this];
   this.selections = [];
-  this.selections.push({name: "Stickman", portrait: portrait1, x: 0, y:0});
-  this.selections.push({name: "Jenkins", portrait: portrait2, x: 0, y: 0});
+  this.selections.push({name: "Sunset", portrait: portrait0, x: 0, y:0});
+  this.selections.push({name: "Ruins", portrait: portrait1, x: 0, y: 0});
+  this.selections.push({name: "Under the Sea", portrait: portrait2, x: 0, y:0});
+  this.selections.push({name: "Dark Fortress", portrait: portrait3, x: 0, y: 0});
 
-  this.selector1 = {x: 0, y: 0, color: "blue", charIndex: 0, selected: false};
+  this.selector1 = {x: 0, y: 0, color: "blue", index: 0};
+
+  for (var i = 0; i < this.selections.length; i++) {
+    this.selections[i].x = 200 + (this.portraitWidth + this.padding)* i;
+    this.selections[i].y = this.titleHeight + 200;
+  }
 }
 
 SceneSelect.prototype.update = function () {
-
+  if(this.shadowBlur <= 2) this.shadowUp = true;
+  if(this.shadowBlur >= 30) this.shadowUp = false;
+  this.shadowUp ?  this.shadowBlur += 2: this.shadowBlur -= 2;
 };
 
 SceneSelect.prototype.draw = function () {
-      drawTitle(this.ctx, "Scene Select", 60);
+    this.ctx.save();
+    this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    drawTitle(this.ctx, "Scene Select", 60);
+    this.ctx.font = "24px runed";
+    this.ctx.textAlign ="center";
+    this.ctx.fillStyle = "white";
+    if(!this.player1Ready) {
+      this.ctx.fillText("press kick or punch to select a scene", WIDTH / 2, 120);
+    } else {
+      this.ctx.shadowColor = "white";
+      this.ctx.shadowBlur = this.shadowBlur;
+      this.ctx.fillText("Scene Selected. Press any key to continue.", WIDTH / 2, 120);
+    }
 
+    this.ctx.fillText(this.selections[this.selector1.index].name, WIDTH / 2, 190);
+    this.ctx.fillStyle = "blue";
+    this.ctx.fillRect(this.selections[this.selector1.index].x - 5, this.selections[this.selector1.index].y - 5, 
+                  (this.portraitWidth) + 10, this.portraitWidth + 10);
+    for (var i = 0; i < this.selections.length; i++) {
+      this.ctx.drawImage(this.selections[i].portrait, this.selections[i].x, this.selections[i].y, 
+        this.portraitWidth, this.portraitWidth);
+    }
+    this.ctx.restore();
 };
 
 SceneSelect.prototype.handleInput =  function (key, downEvent) {
   if(!downEvent) {
-    switch (key) {
-      case PLAYER1_CONTROLS.moveRight:
-        ((this.selector1.charIndex + 1) < this.selections.length) ? this.selector1.charIndex++ : this.selector1.charIndex = 0;
-        break;
-      case PLAYER1_CONTROLS.moveLeft:
-        (this.selector1.charIndex > 0) ? this.selector1.charIndex-- : this.selector1.charIndex = this.selections.length - 1;
-        break;
-      case PLAYER2_CONTROLS.moveRight:
-          ((this.selector2.charIndex + 1) < this.selections.length) ? this.selector2.charIndex++ : this.selector2.charIndex = 0;
-        break;
-      case PLAYER2_CONTROLS.moveLeft:
-        (this.selector2.charIndex > 0) ? this.selector2.charIndex-- : this.selector2.charIndex = this.selections.length - 1;
-        break;
-      default:
-        if(key === PLAYER1_CONTROLS.punch || key === PLAYER1_CONTROLS.kick) this.player1Ready = true;
-        if(key === PLAYER2_CONTROLS.punch || key === PLAYER2_CONTROLS.kick) this.player2Ready = true;
-        break;
+    if(!this.player1Ready) {
+      switch (key) {
+        case PLAYER1_CONTROLS.moveRight:
+          ((this.selector1.index + 1) < this.selections.length) ? this.selector1.index++ : this.selector1.index = 0;
+          break;
+        case PLAYER1_CONTROLS.moveLeft:
+          (this.selector1.index > 0) ? this.selector1.index-- : this.selector1.index = this.selections.length - 1;
+          break;
+        default:
+          if(key === PLAYER1_CONTROLS.punch || key === PLAYER1_CONTROLS.kick) this.player1Ready = true;
+          break;
+        }
+    } else {
+      this.gameEngine.background = this.selector1.index;
+      this.gameEngine.screen = new CharSelectScreen(this.gameEngine);
     }
   }
 };
@@ -236,6 +238,7 @@ SceneSelect.prototype.handleInput =  function (key, downEvent) {
 //---------------------------- BEGIN GAME SCREEN ----------------------------------------------------
 
 function GameScreen (gameEngine) {
+  this.gameEngine = gameEngine;
   this.ctx = gameEngine.ctx;
   this.surfaceWidth = gameEngine.surfaceWidth;
   this.surfaceHeight = gameEngine.surfaceHeight;
@@ -243,7 +246,15 @@ function GameScreen (gameEngine) {
   this.winner = "";
   this.entities = [];
   this.background = null;
-  startBackgroundAnimation(this, "./sprites/background3/", 20);
+  this.backFrames = 0;
+  switch (this.gameEngine.background) {
+      case 0: this.backFrames = 36; break;
+      case 1: this.backFrames = 9; break;
+      case 2: this.backFrames = 27; break;
+      case 3: this.bacFrames = 20; break;
+      default: break;
+  }
+  startBackgroundAnimation(this, "./sprites/background" + this.gameEngine.background + "/", this.backFrames);
   this.gameEngine = gameEngine;
 }
 

@@ -4,7 +4,6 @@ var HEIGHT = 600;
 var GROUND = 0;
 var HEALTH = 100;
 
-AM.queueImage("./sprites/Battle_Arena_Background.jpg");
 AM.queueImage("./sprites/runedlogo.png");
 AM.queueImage("./sprites/sheet 2a.png");
 AM.queueImage("./sprites/sheet 2b.png");
@@ -14,8 +13,8 @@ AM.queueImage("./sprites/portrait1.png");
 AM.queueImage("./sprites/portrait2.png");
 loadBackground("./sprites/background0/", 36);
 loadBackground("./sprites/background1/", 8);
-loadBackground("./sprites/background2/", 56);
-loadBackground("./sprites/background3/", 40);
+loadBackground("./sprites/background2/", 27);
+loadBackground("./sprites/background3/", 20);
 AM.queueAudio("./sound/Dirtiest - Genoshan Massacre.mp3");
 AM.queueAudio("./sound/End of peace.mp3");
 AM.queueAudio("./sound/06 Hidden Shrine.mp3");
