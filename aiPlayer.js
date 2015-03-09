@@ -22,9 +22,9 @@ aiPlayer.prototype.isFacingLeft = function() {
 
 aiPlayer.prototype.chooseMove = function() {
 	this.handleInput(this.prevControl, false);
-	var entities = this.game.entities;
+	var entities = this.game.screen.entities;
 	for (var i = 0; i < entities.length; i++) {
-		if (entities[i] != this) {
+		if (entities[i] !== this && !(entities[i] instanceof special)) {
 			var otherGuy = entities[i];
 			var hitable;
 			var flee;

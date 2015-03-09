@@ -265,15 +265,15 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   if(p2Name === "Stickman") {
     var character = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
                                 AM.getAsset("./sprites/portrait1.png"), 2);
-    this.addEntity(new Player(this.gameEngine, character,
+    this.addEntity(new aiPlayer(this.gameEngine, character,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
-                              HEALTH, PLAYER2_CONTROLS));
+                              HEALTH));
   } else if (p2Name === "Jenkins") {
       var character = new Character2(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                                 AM.getAsset("./sprites/portrait2.png"), 2);
-      this.addEntity(new Player(this.gameEngine, character,
+      this.addEntity(new aiPlayer(this.gameEngine, character,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
-                              HEALTH, PLAYER2_CONTROLS));
+                              HEALTH));
   }
 };
 
@@ -304,7 +304,7 @@ GameScreen.prototype.draw = function() {
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
 		this.entities[i].draw(this.ctx);
-  		if (this.entities[i] instanceof Player) {
+  		if (!(this.entities[i] instanceof special)) {
   			this.ctx.save();
   			this.ctx.globalAlpha = 0.7;
   			this.ctx.fillStyle = i === 0 ? "blue" : "red";

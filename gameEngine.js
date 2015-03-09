@@ -43,18 +43,22 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("keydown", function (event) {
         event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        var entities = that.screen.entities;
-        for (var i = 0; i < entities.length; i++) {
-            entities[i].handleInput(key, true);
+        if(!this.gameOver) {
+            var entities = that.screen.entities;
+            for (var i = 0; i < entities.length; i++) {
+                entities[i].handleInput(key, true);
+            }
         }
     }, false);
 
     this.ctx.canvas.addEventListener("keyup", function (event) {
         event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        var entities = that.screen.entities;
-        for (var i = 0; i < entities.length; i++) {
+        if(!this.gameOver) {
+            var entities = that.screen.entities;
+            for (var i = 0; i < entities.length; i++) {
             entities[i].handleInput(key, false);
+            }
         }
     }, false);
 };

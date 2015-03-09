@@ -28,6 +28,7 @@ window.onload = function () {
     canvas.setAttribute("height",  HEIGHT + "px");
     canvas.style.background = "#39275B";
     var ctx = canvas.getContext("2d");
+    canvas.focus();
     
     var musicPlayer = new MusicPlayer();
 
