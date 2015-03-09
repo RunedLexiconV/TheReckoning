@@ -147,6 +147,7 @@ Player.prototype.update = function() {
 	if (this.state != "hurt") {
 		for (var i = 0; i < entities.length; i++) {
 			if (entities[i] != this) {
+<<<<<<< Updated upstream
 				if (entities[i] instanceof special) {
 					var theSpecial = entities[i];
 					// do collision detection
@@ -170,6 +171,53 @@ Player.prototype.update = function() {
 										this.health -= damage * .05;
 										if (this.isFacingLeft())  {
 											this.x += .35;
+=======
+                if (entities[i] instanceof special) {
+                    var theSpecial = entities[i];
+                    var hit = !(theSpecial.boundingBox.x + theSpecial.boundingBox.bbwidth < this.boundingBox.x ||
+								theSpecial.boundingBox.x > this.boundingBox.x + this.boundingBox.bbwidth);
+					if (hit && this.y !== GROUND) {
+						hit = this.boundingBox.y + this.boundingBox.bbheight > theSpecial.boundingBox.y;
+					}
+					
+					if (hit) {
+						this.health -= theSpecial.damage;
+						this.state = "hurt";
+						this.y = 0;
+						this.velocity.y = 0;
+					}
+					
+                } else {
+    				var otherGuy = entities[i];
+    				var attack = "";
+    				for (var j = 0; j < otherGuy.character.attacks.length; j++) {
+    					if (otherGuy.character.attacks[j].name === otherGuy.state) { //other guy is attacking
+    						attack = otherGuy.character.attacks[j].name;
+    						if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
+    							var attackLength = otherGuy.character.attacks[j].length;
+    							var hit;
+    							var verticalHit;
+                                if (otherGuy.isFacingLeft()) {
+    								hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth;
+    							} else {
+    								hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength >= this.boundingBox.x;
+    							}
+                                if(hit) {
+                                    if(otherGuy.y !== GROUND) {
+                                        verticalHit = otherGuy.boundingBox.y + (otherGuy.boundingBox.bbheight / 2) >= this.boundingBox.y;
+                                        hit = verticalHit;
+                                    } else if (this.y !== GROUND) {
+                                        verticalHit = otherGuy.boundingBox.y < this.boundingBox.y + this.boundingBox.bbheight;
+                                        hit = verticalHit;
+                                    }
+                                }
+    							if (hit) {
+    								var damage = otherGuy.character.attacks[j].damage;
+    								if (this.state === "block"){
+    									this.health -= damage * .05;
+    									if (this.isFacingLeft())  {
+    										this.x += .35;
+>>>>>>> Stashed changes
 										} else {
 											this.x -= .75;
 										}
@@ -180,22 +228,37 @@ Player.prototype.update = function() {
 										this.health -= damage;
 									}
 								}
+<<<<<<< Updated upstream
 								if(this.health <= 0) {
 									this.game.gameOver = true;
 									this.state = "lose";
 									otherGuy.state = "win";
 								}
 								break;
+=======
+								
+>>>>>>> Stashed changes
 							}
 						}
 					}
 				}
 				
 				this.facing = this.x > otherGuy.x ? "left" : "right";
+				
 			}
 		}
+		
 	}
-
+	
+	if(this.health <= 0) {
+		this.health = 0;
+		this.y = 0;
+		this.game.screen.gameOver = true;
+		this.game.screen.winner = otherGuy.character.player;
+		this.state = "lose";
+		otherGuy.state = "win";
+	}
+	
     switch(this.state) {
     case "moveRight":
         this.moveVelocity = 4;
@@ -319,9 +382,14 @@ Player.prototype.update = function() {
 				} else {
 					newSpecial.x = this.x + this.boundingBox.bbwidth + newSpecial.spawnOffset;
 				}
+				newSpecial.boundingBox.x = newSpecial.x + this.character.special.bbX;
 				
-				newSpecial.y = this.y + 15;
+				newSpecial.y = this.y + 25;
+				newSpecial.boundingBox.y = this.character.special.bbY;
+				newSpecial.boundingBox.bbwidth = this.character.special.bbWidth;
+				newSpecial.boundingBox.bbheight = this.character.special.bbHeight;
 				newSpecial.facing = this.facing;
+				newSpecial.damage = this.character.special.damage;
 				this.game.screen.addEntity(newSpecial);
 				this.character.special.spawnFrames[i].created = true;
 			}
@@ -334,7 +402,7 @@ Player.prototype.update = function() {
         if(this.character.animations.hurt.isDone()) {
 			this.character.animations.hurt.elapsedTime = 0;
 			this.interuptable = true;
-            this.state = this.prevState;
+            this.state = "idle";
 		} else if (this.isFacingLeft()) {
 			this.x += .5;
 		} else {

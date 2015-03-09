@@ -25,13 +25,17 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
         new attack("kick3", 50 * SCALE, 10)
     ];
 	
-	this.special = {game: null,
-					animation: new Animation(spritesheet, reverseSpritesheet,
+	this.special = {animation: new Animation(spritesheet, reverseSpritesheet,
 											FRAME_WIDTH, FRAME_HEIGHT,
 											.05, 1, 5, 26,
 											SCALE, true, SPRITESHEET_WIDTH), 
 					spawnFrames: [{frame: 25, created: false}],
-					spawnOffset: 50};
+					damage: 30,
+					spawnOffset: 50,
+					bbX: 75,
+					bbY: HEIGHT - 170,
+					bbWidth: 80,
+					bbHeight: 80};
 // The animation parameters are as follows:
 
 // (spriteSheet, reverseSpritesheet, int frameWidth, int frameHeight,
@@ -93,7 +97,7 @@ function Character (spritesheet, reverseSpritesheet, portrait, player) {
                             SCALE, false, SPRITESHEET_WIDTH),
         hurt: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
-                            0.15, 3, 5, 24,
+                            0.05, 3, 5, 24,
                             SCALE, false, SPRITESHEET_WIDTH),
         block: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
@@ -126,14 +130,18 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
         new attack("kick2", 47 * SCALE, 10),
         new attack("kick3", 58 * SCALE, 10)
 	];
-	this.special = {game: null,
-					animation: new Animation(spritesheet, reverseSpritesheet,
+	this.special = {animation: new Animation(spritesheet, reverseSpritesheet,
 											FRAME_WIDTH, FRAME_HEIGHT,
 											.05, 1, 5, 33,
 											SCALE, true, SPRITESHEET_WIDTH), 
 					spawnFrames: [{frame: 15, created: false}, {frame: 17, created: false}, 
 								{frame: 19, created: false}, {frame: 21, created: false}],
-					spawnOffset: 50};
+					damage: 30,
+					spawnOffset: 85,
+					bbX: 75,
+					bbY: HEIGHT - 145,
+					bbWidth: 80,
+					bbHeight: 30};
 // The animation parameters are as follows:
 
 // (spriteSheet, int frameWidth, int frameHeight,
@@ -306,13 +314,23 @@ function special(game, animation, spawnFrames, spawnOffset) {
 	this.facing = "right";
 	this.spawnFrames = spawnFrames;
 	this.spawnOffset = spawnOffset;
+	this.boundingBox = new Object();
+	this.debug = false;
 }
 
 special.prototype.update = function() {
 	if (this.facing === "right") {
+<<<<<<< Updated upstream
 		this.x += 15;
 	} else {
 		this.x -= 15;
+=======
+		this.x += 15;
+		this.boundingBox.x += 15;
+	} else {
+		this.x -= 15;
+		this.boundingBox.x -= 15;
+>>>>>>> Stashed changes
 	}
 }
 
@@ -322,6 +340,16 @@ special.prototype.draw = function() {
 		this.animation.drawFrame(this.game.clockTick, this.game.ctx, this.x, this.y, false);
 	} else {
 		this.animation.drawFrame(this.game.clockTick, this.game.ctx, this.x, this.y, true);
+	}
+	
+	if (this.debug) {
+		this.game.ctx.save();
+		this.game.ctx.beginPath();
+		this.game.ctx.rect(this.boundingBox.x, this.boundingBox.y,
+							this.boundingBox.bbwidth, this.boundingBox.bbheight);
+		this.game.ctx.strokeStyle = "white";
+		this.game.ctx.lineWidth = 2;
+		this.game.ctx.stroke();
 	}
 	
 }

@@ -90,6 +90,8 @@ function CharSelectScreen (gameEngine) {
   this.gameEngine = gameEngine;
   this.player1Ready = false;
   this.player2Ready = false;
+  this.countdown = 3;
+  this.countdownSet = false;
 
   //var stickman = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"), 1);
   //var jenkins = new Character2(AM.getAsset("./sprites/sheet 3b.png"), AM.getAsset("./sprites/portrait2.png"), 1);
@@ -113,11 +115,27 @@ function CharSelectScreen (gameEngine) {
 
 CharSelectScreen.prototype.update = function () {
     if(this.player1Ready && this.player2Ready)  {
-      var p1 = this.selections[this.selector1.charIndex];
-      var p2 = this.selections[this.selector2.charIndex];
-      var gs = new GameScreen(this.gameEngine);
-      this.gameEngine.screen = gs;
-      gs.addPlayers(p1.name, p2.name);
+	  var that = this;
+	  if (!this.countdownSet) {
+		window.setTimeout(function() {
+	      that.countdown--;
+		  window.setTimeout(function() {
+		    that.countdown--;
+		    window.setTimeout(function() {
+		      that.countdown--;
+		    }, 1000);
+		  }, 1000);
+	    }, 1000);
+		this.countdownSet = true;
+	  }
+	  
+	  window.setTimeout(function() {
+	    var p1 = that.selections[that.selector1.charIndex];
+		var p2 = that.selections[that.selector2.charIndex];
+		var gs = new GameScreen(that.gameEngine);
+		that.gameEngine.screen = gs;
+		gs.addPlayers(p1.name, p2.name);
+	  }, 3000);
     }
 };
 
@@ -136,22 +154,32 @@ CharSelectScreen.prototype.draw = function () {
       this.ctx.fillText("Player 1", this.padding * 3, 200);
       this.ctx.strokeText("Player 1", this.padding * 3, 200);
       this.ctx.fillText(this.selections[this.selector1.charIndex].name, this.padding * 3 , 250);
+	  if (this.player1Ready)  {
+	  	this.ctx.fillText("*Selected*", this.padding * 3, 300);
+	  }
 
       if(this.selector2) {
         this.ctx.fillStyle = this.selector2.color;
         this.ctx.fillRect(this.selections[this.selector2.charIndex].x + this.portraitWidth / 2, this.selections[this.selector2.charIndex].y - 5,
                     (this.portraitWidth / 2) + 5, this.portraitWidth + 10);
-      this.ctx.strokeStyle = "white";
-      this.ctx.fillText("Player 2", WIDTH - this.padding * 3 - 150, 200);
-      this.ctx.strokeText("Player 2", WIDTH - this.padding * 3 - 150, 200);
-      this.ctx.fillText(this.selections[this.selector2.charIndex].name, WIDTH - this.padding * 3 - 150, 250);
+        this.ctx.strokeStyle = "white";
+        this.ctx.fillText("Player 2", WIDTH - this.padding * 3 - 150, 200);
+        this.ctx.strokeText("Player 2", WIDTH - this.padding * 3 - 150, 200);
+        this.ctx.fillText(this.selections[this.selector2.charIndex].name, WIDTH - this.padding * 3 - 150, 250);
+	    if (this.player2Ready)  {
+	  	  this.ctx.fillText("*Selected*", WIDTH - this.padding * 3 - 150, 300);
+	    }
       }
     }
     for (var i = 0; i < this.selections.length; i++) {
       this.ctx.drawImage(this.selections[i].portrait, this.selections[i].x, this.selections[i].y, 
         this.portraitWidth, this.portraitWidth);
     }
-
+	
+	if (this.player1Ready && this.player2Ready){
+		this.ctx.fillText(this.countdown + "", WIDTH / 2, HEIGHT / 2);
+	}
+	
     drawTitle(this.ctx, "Character Select", 60);
 
     this.ctx.restore();
@@ -221,6 +249,7 @@ function GameScreen (gameEngine) {
   this.background = null;
   startBackgroundAnimation(this, "./sprites/background3/", 36);
   this.gameEngine = gameEngine;
+  this.printed = false;
 }
 
 GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
@@ -279,6 +308,7 @@ GameScreen.prototype.draw = function() {
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
 		this.entities[i].draw(this.ctx);
+<<<<<<< Updated upstream
 		if (this.entities[i] instanceof Player) {
 			this.ctx.save();
 			this.ctx.globalAlpha = 0.7;
@@ -304,6 +334,43 @@ GameScreen.prototype.draw = function() {
 			}
 		}
         
+=======
+  		if (this.entities[i] instanceof Player) {
+  			this.ctx.save();
+  			this.ctx.globalAlpha = 0.7;
+  			this.ctx.fillStyle = i === 0 ? "blue" : "red";
+  			this.ctx.fillRect(20 + (700* i) - 5, 20 -5, 60, 60);
+  			this.ctx.drawImage(this.entities[i].character.portrait, 20 + (700* i), 20, 50, 50);
+  			this.ctx.strokeStyle = "green";
+  			this.ctx.lineWidth = "10";
+  			this.ctx.beginPath();
+  			this.ctx.moveTo(80+(430* i), 40);
+  			this.ctx.lineTo(80 + (430*i) + 2*Math.ceil(this.entities[i].health),40);
+  			this.ctx.stroke();
+  			this.ctx.closePath();
+  			this.ctx.restore();
+  			if(this.gameOver) {
+  				this.ctx.save();
+  				this.ctx.globalAlpha = 0.7;
+  				this.ctx.font = "45pt runed";
+  				this.ctx.strokeStyle = "black";
+				this.ctx.fillStyle = "white";
+  				this.ctx.textAlign = "center";
+				this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+  				this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+				this.ctx.font = "36pt runed";
+				this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+				this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+  				this.ctx.restore();
+				for (var i = 0; i < this.entities.length; i++) {
+					if (this.entities[i] instanceof special) {
+						this.entities.splice(i, 1);
+					}
+				}
+  			}
+  		}
+          
+>>>>>>> Stashed changes
     }
     this.ctx.restore();
 };
