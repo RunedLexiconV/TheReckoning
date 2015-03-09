@@ -52,7 +52,11 @@ StartScreen.prototype.update = function() {
   }
   if(this.shadowBlur <= 2) this.shadowUp = true;
   if(this.shadowBlur >= 30) this.shadowUp = false;
-  this.shadowUp ?  this.shadowBlur += 2: this.shadowBlur -= 2;
+  if(this.shadowUp) {
+    this.shadowBlur += 2;
+  } else {
+    this.shadowBlur -= 2;
+  }
 };
 
 StartScreen.prototype.draw = function() {
@@ -92,6 +96,7 @@ function CharSelectScreen (gameEngine) {
   this.player2Ready = false;
   this.countdown = 3;
   this.countdownSet = false;
+  this.interval;
 
   //var stickman = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"), 1);
   //var jenkins = new Character2(AM.getAsset("./sprites/sheet 3b.png"), AM.getAsset("./sprites/portrait2.png"), 1);
@@ -114,23 +119,23 @@ function CharSelectScreen (gameEngine) {
 }
 
 CharSelectScreen.prototype.update = function () {
-    if(this.player1Ready && this.player2Ready)  {
-  	  var that = this;
-  	  if (!this.countdownSet) {
-  		  var interval = window.setInterval(function() {
-          that.countdown--;
-  	    }, 1000);
-    		this.countdownSet = true;
-  	  }
-      if (this.countdown === 0) {
-  	    var p1 = that.selections[that.selector1.charIndex];
-  		  var p2 = that.selections[that.selector2.charIndex];
-  		  var gs = new GameScreen(that.gameEngine);
-        window.clearInterval(interval);
-    		that.gameEngine.screen = gs;
-    		gs.addPlayers(p1.name, p2.name);
-      }
+  if(this.player1Ready && this.player2Ready)  {
+	  var that = this;
+	  if (!this.countdownSet) {
+		  this.interval = window.setInterval(function() {
+        that.countdown--;
+      }, 1000);
+  		this.countdownSet = true;
+	  }
+    if (this.countdown === 0) {
+	    var p1 = that.selections[that.selector1.charIndex];
+		  var p2 = that.selections[that.selector2.charIndex];
+		  var gs = new GameScreen(that.gameEngine);
+      window.clearInterval(this.interval);
+  		that.gameEngine.screen = gs;
+  		gs.addPlayers(p1.name, p2.name);
     }
+  }
 };
 
 CharSelectScreen.prototype.draw = function () {
@@ -181,22 +186,41 @@ CharSelectScreen.prototype.draw = function () {
 
 CharSelectScreen.prototype.handleInput = function (key, downEvent) {
   if(!downEvent) {
-    switch (key) {
+    console.log(this.player1Ready + " " + this.player2Ready);
+    switch (key) {  
       case PLAYER1_CONTROLS.moveRight:
-        ((this.selector1.charIndex + 1) < this.selections.length) ? this.selector1.charIndex++ : this.selector1.charIndex = 0;
+        if(!this.player1Ready)
+          ((this.selector1.charIndex + 1) < this.selections.length) ? this.selector1.charIndex++ : this.selector1.charIndex = 0;
         break;
       case PLAYER1_CONTROLS.moveLeft:
-        (this.selector1.charIndex > 0) ? this.selector1.charIndex-- : this.selector1.charIndex = this.selections.length - 1;
+        if(!this.player1Ready)
+          (this.selector1.charIndex > 0) ? this.selector1.charIndex-- : this.selector1.charIndex = this.selections.length - 1;
         break;
       case PLAYER2_CONTROLS.moveRight:
+        if(!this.player2Ready)
           ((this.selector2.charIndex + 1) < this.selections.length) ? this.selector2.charIndex++ : this.selector2.charIndex = 0;
         break;
       case PLAYER2_CONTROLS.moveLeft:
-        (this.selector2.charIndex > 0) ? this.selector2.charIndex-- : this.selector2.charIndex = this.selections.length - 1;
+        if(!this.player2Ready)
+          (this.selector2.charIndex > 0) ? this.selector2.charIndex-- : this.selector2.charIndex = this.selections.length - 1;
         break;
-      default:
-        if(key === PLAYER1_CONTROLS.punch || key === PLAYER1_CONTROLS.kick) this.player1Ready = true;
-        if(key === PLAYER2_CONTROLS.punch || key === PLAYER2_CONTROLS.kick) this.player2Ready = true;
+      case PLAYER1_CONTROLS.punch:
+        this.player1Ready = true;
+        break;
+      case PLAYER2_CONTROLS.punch:
+        this.player2Ready = true;
+        break;
+      case PLAYER1_CONTROLS.kick:
+        this.player1Ready = false;
+        this.countdown = 3;
+        this.countdownSet = false;
+        window.clearInterval(this.interval);
+        break;
+      case PLAYER2_CONTROLS.kick:
+        this.player2Ready = false;
+        this.countdown = 3;
+        this.countdownSet = false;
+        window.clearInterval(this.interval);
         break;
     }
   }

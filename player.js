@@ -154,12 +154,20 @@ Player.prototype.update = function() {
 					if (hit && this.y !== GROUND) {
 						hit = this.boundingBox.y + this.boundingBox.bbheight > theSpecial.boundingBox.y;
 					}
-					
 					if (hit) {
-						this.health -= theSpecial.damage;
-						this.state = "hurt";
-						this.y = 0;
-						this.velocity.y = 0;
+                        if (this.state === "block") {
+                            this.health -= theSpecial.damage * .05;
+                            if (this.isFacingLeft())  {
+                                this.x += .35;
+                            } else {
+                                this.x -= .75;
+                            }
+                        } else {
+    						this.health -= theSpecial.damage;
+    						this.state = "hurt";
+    						this.y = 0;
+                            this.velocity.y = 0;
+                        }
 					}
 					
                 } else {
