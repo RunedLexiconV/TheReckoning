@@ -115,27 +115,21 @@ function CharSelectScreen (gameEngine) {
 
 CharSelectScreen.prototype.update = function () {
     if(this.player1Ready && this.player2Ready)  {
-	  var that = this;
-	  if (!this.countdownSet) {
-		window.setTimeout(function() {
-	      that.countdown--;
-		  window.setTimeout(function() {
-		    that.countdown--;
-		    window.setTimeout(function() {
-		      that.countdown--;
-		    }, 1000);
-		  }, 1000);
-	    }, 1000);
-		this.countdownSet = true;
-	  }
-	  
-	  window.setTimeout(function() {
-	    var p1 = that.selections[that.selector1.charIndex];
-		var p2 = that.selections[that.selector2.charIndex];
-		var gs = new GameScreen(that.gameEngine);
-		that.gameEngine.screen = gs;
-		gs.addPlayers(p1.name, p2.name);
-	  }, 3000);
+  	  var that = this;
+  	  if (!this.countdownSet) {
+  		  var interval = window.setInterval(function() {
+          that.countdown--;
+  	    }, 1000);
+    		this.countdownSet = true;
+  	  }
+      if (this.countdown === 0) {
+  	    var p1 = that.selections[that.selector1.charIndex];
+  		  var p2 = that.selections[that.selector2.charIndex];
+  		  var gs = new GameScreen(that.gameEngine);
+        window.clearInterval(interval);
+    		that.gameEngine.screen = gs;
+    		gs.addPlayers(p1.name, p2.name);
+      }
     }
 };
 
@@ -307,7 +301,7 @@ GameScreen.prototype.draw = function() {
 
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
-		this.entities[i].draw(this.ctx);
+		  this.entities[i].draw(this.ctx);
   		if (this.entities[i] instanceof Player) {
   			this.ctx.save();
   			this.ctx.globalAlpha = 0.7;
@@ -322,26 +316,26 @@ GameScreen.prototype.draw = function() {
   			this.ctx.stroke();
   			this.ctx.closePath();
   			this.ctx.restore();
-  			if(this.gameOver) {
-  				this.ctx.save();
-  				this.ctx.globalAlpha = 0.7;
-  				this.ctx.font = "45pt runed";
-  				this.ctx.strokeStyle = "black";
-				this.ctx.fillStyle = "white";
-  				this.ctx.textAlign = "center";
-				this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
-  				this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
-				this.ctx.font = "36pt runed";
-				this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-				this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-  				this.ctx.restore();
-				for (var i = 0; i < this.entities.length; i++) {
-					if (this.entities[i] instanceof special) {
-						this.entities.splice(i, 1);
-					}
-				}
-  			}
-  		}
+      }
+    }
+		if(this.gameOver) {
+			this.ctx.save();
+			this.ctx.globalAlpha = 0.7;
+			this.ctx.font = "45pt runed";
+			this.ctx.strokeStyle = "black";
+  		this.ctx.fillStyle = "white";
+			this.ctx.textAlign = "center";
+  		this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+			this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+  		this.ctx.font = "36pt runed";
+      this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+		  this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+			this.ctx.restore();
+		  for (var i = 0; i < this.entities.length; i++) {
+			 if (this.entities[i] instanceof special) {
+				this.entities.splice(i, 1);
+			 }
+			}
     }
     this.ctx.restore();
 };
