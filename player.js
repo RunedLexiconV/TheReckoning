@@ -147,31 +147,6 @@ Player.prototype.update = function() {
 	if (this.state != "hurt") {
 		for (var i = 0; i < entities.length; i++) {
 			if (entities[i] != this) {
-<<<<<<< Updated upstream
-				if (entities[i] instanceof special) {
-					var theSpecial = entities[i];
-					// do collision detection
-				} else {
-					var otherGuy = entities[i];
-					var attack = "";
-					for (var j = 0; j < otherGuy.character.attacks.length; j++) {
-						if (otherGuy.character.attacks[j].name === otherGuy.state) { //other guy is attacking
-							attack = otherGuy.character.attacks[j].name;
-							if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
-								var attackLength = otherGuy.character.attacks[j].length;
-								var hit;
-								if (otherGuy.isFacingLeft()) {
-									hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth ? true : false;
-								} else {
-									hit = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + attackLength >= this.boundingBox.x ? true : false;
-								}
-								if (hit) {
-									var damage = otherGuy.character.attacks[j].damage;
-									if (this.state === "block"){
-										this.health -= damage * .05;
-										if (this.isFacingLeft())  {
-											this.x += .35;
-=======
                 if (entities[i] instanceof special) {
                     var theSpecial = entities[i];
                     var hit = !(theSpecial.boundingBox.x + theSpecial.boundingBox.bbwidth < this.boundingBox.x ||
@@ -217,7 +192,6 @@ Player.prototype.update = function() {
     									this.health -= damage * .05;
     									if (this.isFacingLeft())  {
     										this.x += .35;
->>>>>>> Stashed changes
 										} else {
 											this.x -= .75;
 										}
@@ -228,16 +202,6 @@ Player.prototype.update = function() {
 										this.health -= damage;
 									}
 								}
-<<<<<<< Updated upstream
-								if(this.health <= 0) {
-									this.game.gameOver = true;
-									this.state = "lose";
-									otherGuy.state = "win";
-								}
-								break;
-=======
-								
->>>>>>> Stashed changes
 							}
 						}
 					}

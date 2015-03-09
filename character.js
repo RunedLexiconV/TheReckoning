@@ -320,17 +320,11 @@ function special(game, animation, spawnFrames, spawnOffset) {
 
 special.prototype.update = function() {
 	if (this.facing === "right") {
-<<<<<<< Updated upstream
-		this.x += 15;
-	} else {
-		this.x -= 15;
-=======
 		this.x += 15;
 		this.boundingBox.x += 15;
 	} else {
 		this.x -= 15;
 		this.boundingBox.x -= 15;
->>>>>>> Stashed changes
 	}
 }
 
