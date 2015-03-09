@@ -15,7 +15,11 @@ StartScreen.prototype.update = function() {
   }
   if(this.shadowBlur <= 2) this.shadowUp = true;
   if(this.shadowBlur >= 30) this.shadowUp = false;
-  this.shadowUp ?  this.shadowBlur += 2: this.shadowBlur -= 2;
+  if(this.shadowUp) {
+    this.shadowBlur += 2;
+  } else {
+    this.shadowBlur -= 2;
+  }
 };
 
 StartScreen.prototype.draw = function() {
@@ -55,8 +59,10 @@ function CharSelectScreen (gameEngine) {
   this.player2Ready = false;
   this.shadowBlur = 2;
   this.shadowUp = true;
-  //var stickman = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"), 1);
-  //var jenkins = new Character2(AM.getAsset("./sprites/sheet 3b.png"), AM.getAsset("./sprites/portrait2.png"), 1);
+  this.countdown = 3;
+  this.countdownSet = false;
+  this.interval;
+
   var portrait1 = AM.getAsset("./sprites/portrait1.png");
   var portrait2 = AM.getAsset("./sprites/portrait2.png");
 
@@ -76,16 +82,25 @@ function CharSelectScreen (gameEngine) {
 }
 
 CharSelectScreen.prototype.update = function () {
-  if(this.player1Ready && this.player2Ready)  {
-    var p1 = this.selections[this.selector1.charIndex];
-    var p2 = this.selections[this.selector2.charIndex];
-    var gs = new GameScreen(this.gameEngine);
-    this.gameEngine.screen = gs;
-    gs.addPlayers(p1.name, p2.name);
-  }
   if(this.shadowBlur <= 2) this.shadowUp = true;
   if(this.shadowBlur >= 30) this.shadowUp = false;
   this.shadowUp ?  this.shadowBlur += 2: this.shadowBlur -= 2;
+  var that = this;
+  if (!this.countdownSet) {
+	  this.interval = window.setInterval(function() {
+      that.countdown--;
+    }, 1000);
+		this.countdownSet = true;
+  }
+  if (this.countdown === 0) {
+    var p1 = that.selections[that.selector1.charIndex];
+	  var p2 = that.selections[that.selector2.charIndex];
+	  var gs = new GameScreen(that.gameEngine);
+    window.clearInterval(this.interval);
+		that.gameEngine.screen = gs;
+		gs.addPlayers(p1.name, p2.name);
+  }
+  
 };
 
 CharSelectScreen.prototype.draw = function () {
@@ -103,44 +118,73 @@ CharSelectScreen.prototype.draw = function () {
       this.ctx.fillText("Player 1", this.padding * 3, 200);
       this.ctx.strokeText("Player 1", this.padding * 3, 200);
       this.ctx.fillText(this.selections[this.selector1.charIndex].name, this.padding * 3 , 250);
+	  if (this.player1Ready)  {
+	  	this.ctx.fillText("*Selected*", this.padding * 3, 300);
+	  }
 
       if(this.selector2) {
         this.ctx.fillStyle = this.selector2.color;
         this.ctx.fillRect(this.selections[this.selector2.charIndex].x + this.portraitWidth / 2, this.selections[this.selector2.charIndex].y - 5,
                     (this.portraitWidth / 2) + 5, this.portraitWidth + 10);
-      this.ctx.strokeStyle = "white";
-      this.ctx.fillText("Player 2", WIDTH - this.padding * 3 - 150, 200);
-      this.ctx.strokeText("Player 2", WIDTH - this.padding * 3 - 150, 200);
-      this.ctx.fillText(this.selections[this.selector2.charIndex].name, WIDTH - this.padding * 3 - 150, 250);
+        this.ctx.strokeStyle = "white";
+        this.ctx.fillText("Player 2", WIDTH - this.padding * 3 - 150, 200);
+        this.ctx.strokeText("Player 2", WIDTH - this.padding * 3 - 150, 200);
+        this.ctx.fillText(this.selections[this.selector2.charIndex].name, WIDTH - this.padding * 3 - 150, 250);
+	    if (this.player2Ready)  {
+	  	  this.ctx.fillText("*Selected*", WIDTH - this.padding * 3 - 150, 300);
+	    }
       }
     }
     for (var i = 0; i < this.selections.length; i++) {
       this.ctx.drawImage(this.selections[i].portrait, this.selections[i].x, this.selections[i].y, 
         this.portraitWidth, this.portraitWidth);
     }
-
+	
+	if (this.player1Ready && this.player2Ready){
+		this.ctx.fillText(this.countdown + "", WIDTH / 2, HEIGHT / 2);
+	}
+	
     drawTitle(this.ctx, "Character Select", 60);
     this.ctx.restore();
 };
 
 CharSelectScreen.prototype.handleInput = function (key, downEvent) {
   if(!downEvent) {
-    switch (key) {
+    console.log(this.player1Ready + " " + this.player2Ready);
+    switch (key) {  
       case PLAYER1_CONTROLS.moveRight:
-        ((this.selector1.charIndex + 1) < this.selections.length) ? this.selector1.charIndex++ : this.selector1.charIndex = 0;
+        if(!this.player1Ready)
+          ((this.selector1.charIndex + 1) < this.selections.length) ? this.selector1.charIndex++ : this.selector1.charIndex = 0;
         break;
       case PLAYER1_CONTROLS.moveLeft:
-        (this.selector1.charIndex > 0) ? this.selector1.charIndex-- : this.selector1.charIndex = this.selections.length - 1;
+        if(!this.player1Ready)
+          (this.selector1.charIndex > 0) ? this.selector1.charIndex-- : this.selector1.charIndex = this.selections.length - 1;
         break;
       case PLAYER2_CONTROLS.moveRight:
+        if(!this.player2Ready)
           ((this.selector2.charIndex + 1) < this.selections.length) ? this.selector2.charIndex++ : this.selector2.charIndex = 0;
         break;
       case PLAYER2_CONTROLS.moveLeft:
-        (this.selector2.charIndex > 0) ? this.selector2.charIndex-- : this.selector2.charIndex = this.selections.length - 1;
+        if(!this.player2Ready)
+          (this.selector2.charIndex > 0) ? this.selector2.charIndex-- : this.selector2.charIndex = this.selections.length - 1;
         break;
-      default:
-        if(key === PLAYER1_CONTROLS.punch || key === PLAYER1_CONTROLS.kick) this.player1Ready = true;
-        if(key === PLAYER2_CONTROLS.punch || key === PLAYER2_CONTROLS.kick) this.player2Ready = true;
+      case PLAYER1_CONTROLS.punch:
+        this.player1Ready = true;
+        break;
+      case PLAYER2_CONTROLS.punch:
+        this.player2Ready = true;
+        break;
+      case PLAYER1_CONTROLS.kick:
+        this.player1Ready = false;
+        this.countdown = 3;
+        this.countdownSet = false;
+        window.clearInterval(this.interval);
+        break;
+      case PLAYER2_CONTROLS.kick:
+        this.player2Ready = false;
+        this.countdown = 3;
+        this.countdownSet = false;
+        window.clearInterval(this.interval);
         break;
     }
   }
@@ -249,13 +293,14 @@ function GameScreen (gameEngine) {
   this.backFrames = 0;
   switch (this.gameEngine.background) {
       case 0: this.backFrames = 36; break;
-      case 1: this.backFrames = 9; break;
+      case 1: this.backFrames = 8; break;
       case 2: this.backFrames = 27; break;
       case 3: this.bacFrames = 20; break;
       default: break;
   }
   startBackgroundAnimation(this, "./sprites/background" + this.gameEngine.background + "/", this.backFrames);
   this.gameEngine = gameEngine;
+  this.printed = false;
 }
 
 GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
@@ -296,8 +341,8 @@ GameScreen.prototype.update = function () {
   if(!this.gameOver) {
       var entitiesCount = this.entities.length;
       for (var i = 0; i < entitiesCount; i++) {
-          var entity = this.entities[i];
-          entity.update();
+        var entity = this.entities[i];
+        entity.update();
   		  if (entity instanceof special && entity.x > WIDTH || entity.x + 100 < 0) {
   			  this.entities.splice(i, 1);
   			  entitiesCount--;
@@ -314,7 +359,7 @@ GameScreen.prototype.draw = function() {
 
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
-		this.entities[i].draw(this.ctx);
+		  this.entities[i].draw(this.ctx);
   		if (!(this.entities[i] instanceof special)) {
   			this.ctx.save();
   			this.ctx.globalAlpha = 0.7;
@@ -329,22 +374,26 @@ GameScreen.prototype.draw = function() {
   			this.ctx.stroke();
   			this.ctx.closePath();
   			this.ctx.restore();
-  			if(this.gameOver) {
-  				this.ctx.save();
-  				this.ctx.globalAlpha = 0.7;
-  				this.ctx.font = "45pt runed";
-  				this.ctx.strokeStyle = "black";
-          this.ctx.fillStyle = "white";
-  				this.ctx.textAlign = "center";
-          this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
-  				this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
-          this.ctx.font = "36pt runed";
-          this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-          this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-  				this.ctx.restore();
-  			}
-  		}
-          
+      }
+    }
+		if(this.gameOver) {
+			this.ctx.save();
+			this.ctx.globalAlpha = 0.7;
+			this.ctx.font = "45pt runed";
+			this.ctx.strokeStyle = "black";
+  		this.ctx.fillStyle = "white";
+			this.ctx.textAlign = "center";
+  		this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+			this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+  		this.ctx.font = "36pt runed";
+      this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+		  this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+			this.ctx.restore();
+		  for (var i = 0; i < this.entities.length; i++) {
+			 if (this.entities[i] instanceof special) {
+				this.entities.splice(i, 1);
+			 }
+			}
     }
     this.ctx.restore();
 };

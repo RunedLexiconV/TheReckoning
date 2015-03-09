@@ -17,7 +17,6 @@ loadBackground("./sprites/background2/", 27);
 loadBackground("./sprites/background3/", 20);
 AM.queueAudio("./sound/Dirtiest - Genoshan Massacre.mp3");
 AM.queueAudio("./sound/End of peace.mp3");
-AM.queueAudio("./sound/06 Hidden Shrine.mp3");
 AM.queueAudio("./sound/Robot on Drabgon.mp3");
 
 window.onload = function () {
