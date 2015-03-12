@@ -136,7 +136,7 @@ function Character2 (spritesheet, reverseSpritesheet, portrait, player) {
 											SCALE, true, SPRITESHEET_WIDTH), 
 					spawnFrames: [{frame: 15, created: false}, {frame: 17, created: false}, 
 								{frame: 19, created: false}, {frame: 21, created: false}],
-					damage: 30,
+					damage: 7.5,
 					spawnOffset: 85,
 					bbX: 75,
 					bbY: HEIGHT - 145,
