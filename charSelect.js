@@ -3,15 +3,15 @@ var startGame = function (e) {
   gameEngine.startInput();
   document.getElementById("canvas").focus();
   timer = startBackgroundAnimation(gameEngine, "./sprites/background"+background+"/", 36);
-  var character1 = new Character(AM.getAsset("./sprites/sheet 2a.png"),
+  var Stickman1 = new Stickman(AM.getAsset("./sprites/sheet 2a.png"),
                                     AM.getAsset("./sprites/portrait1.png"), 1);
-  var character2 = new Character2(AM.getAsset("./sprites/sheet 3b.png"),
+  var Jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3b.png"),
                                     AM.getAsset("./sprites/portrait2.png"), 2);
-  gameEngine.addEntity(new Player(gameEngine, character1,
+  gameEngine.addEntity(new Player(gameEngine, Stickman1,
                                   50 , GROUND - FRAME_HEIGHT,
                                   HEALTH, PLAYER1_CONTROLS));
  
-  gameEngine.addEntity(new Player(gameEngine, character2,
+  gameEngine.addEntity(new Player(gameEngine, Jenkins,
                                   WIDTH - FRAME_WIDTH - 50 , GROUND - FRAME_HEIGHT,
                                   HEALTH, PLAYER2_CONTROLS));
   window.removeEventListener("keydown", startListener, false);
@@ -98,24 +98,27 @@ function CharSelectScreen (gameEngine) {
   this.countdownSet = false;
   this.interval;
 
-  //var stickman = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"), 1);
-  //var jenkins = new Character2(AM.getAsset("./sprites/sheet 3b.png"), AM.getAsset("./sprites/portrait2.png"), 1);
+  //var stickman = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/portrait1.png"), 1);
+  //var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3b.png"), AM.getAsset("./sprites/portrait2.png"), 1);
   var portrait1 = AM.getAsset("./sprites/portrait1.png");
   var portrait2 = AM.getAsset("./sprites/portrait2.png");
+  var portrait3 = AM.getAsset("./sprites/portrait3.png");
 
   this.selections = [];
   this.selections.push({name: "Stickman", portrait: portrait1, x: 0, y:0});
   this.selections.push({name: "Jenkins", portrait: portrait2, x: 0, y: 0});
+  this.selections.push({name: "Ephie", portrait: portrait3, x: 0, y: 0});
 
 	this.selector1 = {x: 0, y: 0, color: "blue", charIndex: 0, selected: false};
   if (gameEngine.mode === "localMult") this.selector2 = {x: 0, y: 0, color: "red", charIndex: 0, selected: false};  
   var initX = Math.ceil((WIDTH - (this.portraitWidth + this.padding * 2) * this.selections.length) / 2);
   if(initX < this.padding) console.log("ERROR: SelectScreen portrait section starting x too small");
-  //draw character portraits
+  //draw Stickman portraits
 	for (var i = 0; i < this.selections.length; i++) {
-    this.selections[i].x = initX + (this.portraitWidth + this.padding)* i;
-    this.selections[i].y = this.titleHeight + 400;
+		this.selections[i].x = initX + (this.portraitWidth + this.padding)* i;
+		this.selections[i].y = this.titleHeight + 400;
 	}
+	
 }
 
 CharSelectScreen.prototype.update = function () {
@@ -129,9 +132,9 @@ CharSelectScreen.prototype.update = function () {
 	  }
     if (this.countdown === 0) {
 	    var p1 = that.selections[that.selector1.charIndex];
-		  var p2 = that.selections[that.selector2.charIndex];
-		  var gs = new GameScreen(that.gameEngine);
-      window.clearInterval(this.interval);
+		var p2 = that.selections[that.selector2.charIndex];
+		var gs = new GameScreen(that.gameEngine);
+		window.clearInterval(this.interval);
   		that.gameEngine.screen = gs;
   		gs.addPlayers(p1.name, p2.name);
     }
@@ -179,14 +182,14 @@ CharSelectScreen.prototype.draw = function () {
 		this.ctx.fillText(this.countdown + "", WIDTH / 2, HEIGHT / 2);
 	}
 	
-    drawTitle(this.ctx, "Character Select", 60);
+    drawTitle(this.ctx, "Stickman Select", 60);
 
     this.ctx.restore();
 };
 
 CharSelectScreen.prototype.handleInput = function (key, downEvent) {
   if(!downEvent) {
-    console.log(this.player1Ready + " " + this.player2Ready);
+    //console.log(this.player1Ready + " " + this.player2Ready);
     switch (key) {  
       case PLAYER1_CONTROLS.moveRight:
         if(!this.player1Ready)
@@ -272,31 +275,42 @@ function GameScreen (gameEngine) {
 
 GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   if(p1Name === "Stickman") {
-    var character = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
-                                AM.getAsset("./sprites/portrait1.png"), 1);
+	var character = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"), AM.getAsset("./sprites/portrait1.png"), 1);
     this.addEntity(new Player(this.gameEngine, character,
                               50 , GROUND ,
                               HEALTH, PLAYER1_CONTROLS));
   } else if (p1Name === "Jenkins") {
-    var character = new Character2(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
+    var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                               AM.getAsset("./sprites/portrait2.png"), 1);
-    this.addEntity(new Player(this.gameEngine, character,
+    this.addEntity(new Player(this.gameEngine, stickman,
                             50 , GROUND,
                             HEALTH, PLAYER1_CONTROLS));
+  } else if (p1Name === "Ephie") {
+	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
+                              AM.getAsset("./sprites/portrait3.png"), 1);
+	this.addEntity(new Player(this.gameEngine, ephie,
+							50, GROUND,
+							HEALTH, PLAYER1_CONTROLS));
   }
 
   if(p2Name === "Stickman") {
-    var character = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
+    var stickman = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
                                 AM.getAsset("./sprites/portrait1.png"), 2);
-    this.addEntity(new Player(this.gameEngine, character,
+    this.addEntity(new Player(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
   } else if (p2Name === "Jenkins") {
-      var character = new Character2(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
+      var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                                 AM.getAsset("./sprites/portrait2.png"), 2);
-      this.addEntity(new Player(this.gameEngine, character,
+      this.addEntity(new Player(this.gameEngine, jenkins,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
+  } else if (p2Name === "Ephie") {
+	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
+                              AM.getAsset("./sprites/portrait3.png"), 2);
+	this.addEntity(new Player(this.gameEngine, ephie,
+							WIDTH - FRAME_WIDTH - 50, GROUND,
+							HEALTH, PLAYER2_CONTROLS));
   }
 };
 
@@ -359,7 +373,7 @@ GameScreen.prototype.draw = function() {
 			 if (this.entities[i] instanceof special) {
 				this.entities.splice(i, 1);
 			 }
-			}
+		  }
     }
     this.ctx.restore();
 };
