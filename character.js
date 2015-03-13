@@ -238,11 +238,13 @@ function Ephie(spritesheet, reverseSpritesheet, portrait, player) {
         new attack("kick3", 58 * SCALE, 10)
 	];
 	this.special = {animation: new Animation(spritesheet, reverseSpritesheet,
-											FRAME_WIDTH, FRAME_HEIGHT,
-											.05, 3, 5, 27,
+											this.ephie_frame_width, FRAME_HEIGHT,
+											.1, 3, 5, 27,
 											SCALE, true, SPRITESHEET_WIDTH), 
-					spawnFrames: [{frame: 10, created: false}, {frame: 16, created: false}, 
-								{frame: 21, created: false}],
+					spawnFrames: [{frame: 10, created: false}, 
+								{frame: 16, created: false}, 
+								{frame: 21, created: false}
+								],
 					damage: 7.5,
 					spawnOffset: 85,
 					bbX: 75,

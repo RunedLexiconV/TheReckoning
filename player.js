@@ -491,7 +491,7 @@ Player.prototype.handleInput = function(key, downEvent) {
 				this.interuptable = false;
     			break;
     		case this.control.block:
-    			if (downEvent) {
+    			if (downEvent && this.y === GROUND) {
                     this.interuptable = false;
     				this.prevState = this.state;
     				this.state = "block";

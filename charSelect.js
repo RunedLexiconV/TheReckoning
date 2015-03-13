@@ -324,7 +324,7 @@ GameScreen.prototype.update = function () {
       for (var i = 0; i < entitiesCount; i++) {
           var entity = this.entities[i];
           entity.update();
-		  if (entity instanceof special && entity.x > WIDTH || entity.x + 100 < 0) {
+		  if (entity instanceof special && entity.x > WIDTH || entity.x + 200 < 0) {
 			  this.entities.splice(i, 1);
 			  entitiesCount--;
 		  }
@@ -339,7 +339,7 @@ GameScreen.prototype.draw = function() {
 
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
-		  this.entities[i].draw(this.ctx);
+			this.entities[i].draw(this.ctx);
   		if (this.entities[i] instanceof Player) {
   			this.ctx.save();
   			this.ctx.globalAlpha = 0.7;
@@ -361,19 +361,19 @@ GameScreen.prototype.draw = function() {
 			this.ctx.globalAlpha = 0.7;
 			this.ctx.font = "45pt runed";
 			this.ctx.strokeStyle = "black";
-  		this.ctx.fillStyle = "white";
+			this.ctx.fillStyle = "white";
 			this.ctx.textAlign = "center";
-  		this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+			this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
 			this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
-  		this.ctx.font = "36pt runed";
-      this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-		  this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+			this.ctx.font = "36pt runed";
+			this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+			this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
 			this.ctx.restore();
-		  for (var i = 0; i < this.entities.length; i++) {
-			 if (this.entities[i] instanceof special) {
+		for (var i = 0; i < this.entities.length; i++) {
+			if (this.entities[i] instanceof special) {
 				this.entities.splice(i, 1);
-			 }
-		  }
+			}
+		}
     }
     this.ctx.restore();
 };
