@@ -424,7 +424,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   } else if (p1Name === "Jenkins") {
     var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                               AM.getAsset("./sprites/portrait2.png"), 1);
-    this.addEntity(new Player(this.gameEngine, stickman,
+    this.addEntity(new Player(this.gameEngine, jenkins,
                             50 , GROUND,
                             HEALTH, PLAYER1_CONTROLS));
   } else if (p1Name === "Ephie") {
@@ -494,6 +494,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 
 GameScreen.prototype.addEntity = function (entity) {
     this.entities.push(entity);
+    console.log(this.entities);
 };
 
 GameScreen.prototype.update = function () {

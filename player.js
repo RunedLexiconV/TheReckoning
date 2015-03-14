@@ -153,6 +153,7 @@ Player.prototype.draw = function () {
 };
 
 Player.prototype.update = function() {
+    console.log("update player");
 	var entities = this.entities;
 	if (this.state != "hurt") {
 		for (var i = 0; i < entities.length; i++) {
@@ -332,7 +333,7 @@ Player.prototype.update = function() {
 		this.jump.jumpSpeed = 16 - ((timeInAir) * 32);
 		if(this.y < GROUND) {
 			if (this.velocity.x < 0) {
-				this.state = "moveLeft"
+				this.state = "moveLeft";
 			} else if (this.velocity > 0) {
 				this.state = "moveRight";
 			} else {

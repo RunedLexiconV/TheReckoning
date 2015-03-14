@@ -74,6 +74,7 @@ aiPlayer.prototype.chooseMove = function() {
 };
 
 aiPlayer.prototype.update = function() {
+	console.log("update ai");
 	if((this.game.timer.gameTime % this.moveTime) > (this.moveTime * 0.9)) {		
 		this.chooseMove();
 	}
