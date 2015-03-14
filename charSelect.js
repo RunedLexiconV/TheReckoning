@@ -437,18 +437,20 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
                               AM.getAsset("./sprites/portrait4.png"), 1);
 	this.addEntity(new Player(this.gameEngine, samuru,
-							WIDTH - FRAME_WIDTH - 50, GROUND,
-							HEALTH, PLAYER2_CONTROLS));
+							50, GROUND,
+							HEALTH, PLAYER1_CONTROLS));
   }
 
   if(p2Name === "Stickman") {
     var stickman = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
                                 AM.getAsset("./sprites/portrait1.png"), 2);
     if(this.gameEngine.mode === "localVs") {
+      console.log("localp2");
       this.addEntity(new Player(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
     } else {
+      console.log("aip2");
       this.addEntity(new aiPlayer(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH));
@@ -457,10 +459,12 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
       var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                                 AM.getAsset("./sprites/portrait2.png"), 2);
       if (this.gameEngine.mode === "localVs") {
+        console.log("localp2");
         this.addEntity(new Player(this.gameEngine, jenkins,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
       } else {
+          console.log("aip2");
           this.addEntity(new aiPlayer(this.gameEngine, jenkins,
                         WIDTH - FRAME_WIDTH - 50, GROUND,
                         HEALTH));
@@ -469,10 +473,12 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
                               AM.getAsset("./sprites/portrait3.png"), 2);
     if (this.gameEngine.mode === "localVs") {
+      console.log("localp2");
       this.addEntity(new Player(this.gameEngine, ephie,
 							WIDTH - FRAME_WIDTH - 50, GROUND,
 							HEALTH, PLAYER2_CONTROLS));
     } else {
+        console.log("aip2");
         this.addEntity(new aiPlayer(this.gameEngine, ephie,
           WIDTH - FRAME_WIDTH - 50, GROUND,
           HEALTH));
@@ -481,11 +487,13 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
                               AM.getAsset("./sprites/portrait4.png"), 2);
     if (this.gameEngine.mode === "localVs") {
+      console.log("localp2");
       this.addEntity(new Player(this.gameEngine, samuru,
   							WIDTH - FRAME_WIDTH - 50, GROUND,
   							HEALTH, PLAYER2_CONTROLS));
     } else {
-        this.addEntity(new aiPlayer(this.gameEngine, samuru,
+      console.log("aip2");
+      this.addEntity(new aiPlayer(this.gameEngine, samuru,
                 WIDTH - FRAME_WIDTH - 50, GROUND,
                 HEALTH));     
     }
@@ -554,7 +562,10 @@ GameScreen.prototype.draw = function() {
 			this.ctx.font = "36pt runed";
 			this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
 			this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-			this.ctx.restore();
+      this.ctx.fillText("Press any key to continue", WIDTH / 2, HEIGHT / 2);
+      this.ctx.strokeText("Press any key to continue", WIDTH / 2, HEIGHT / 2);
+      this.ctx.restore();
+
 		for (var i = 0; i < this.entities.length; i++) {
 			if (this.entities[i] instanceof special) {
 				this.entities.splice(i, 1);

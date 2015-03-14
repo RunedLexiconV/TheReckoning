@@ -153,7 +153,6 @@ Player.prototype.draw = function () {
 };
 
 Player.prototype.update = function() {
-    console.log("update player");
 	var entities = this.entities;
 	if (this.state != "hurt") {
 		for (var i = 0; i < entities.length; i++) {

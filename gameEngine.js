@@ -22,7 +22,7 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.timer = new Timer();
-    this.gameOver = false;
+    // this.gameOver = false;
     var that = this;
     this.mode = "localVs";
     this.background = 0;
@@ -44,7 +44,7 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("keydown", function (event) {
         event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        if(!this.gameOver) {
+        if(!that.screen.gameOver) {
             var entities = that.screen.entities;
             for (var i = 0; i < entities.length; i++) {
                 entities[i].handleInput(key, true);
@@ -55,10 +55,14 @@ GameEngine.prototype.startInput = function () {
     this.ctx.canvas.addEventListener("keyup", function (event) {
         event.preventDefault();
         var key = String.fromCharCode(event.keyCode).toLowerCase();
-        if(!this.gameOver) {
+        if(!that.screen.gameOver) {
             var entities = that.screen.entities;
             for (var i = 0; i < entities.length; i++) {
             entities[i].handleInput(key, false);
+            }
+        } else {
+            if(key) {
+                that.screen = new ModeSelect(that);
             }
         }
     }, false);
