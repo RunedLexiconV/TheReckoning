@@ -344,7 +344,7 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         new attack("kick3", 58 * SCALE, 10)
 	];
 	this.special = {animation: new Animation(spritesheet, reverseSpritesheet,
-											this.Samuru_frame_width, FRAME_HEIGHT,
+											FRAME_WIDTH, FRAME_HEIGHT,
 											.1, 5, 5, 20,
 											SCALE, true, SPRITESHEET_WIDTH), 
 					spawnFrames: [{frame: 10, created: false}],
