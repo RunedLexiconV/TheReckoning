@@ -323,6 +323,107 @@ function Ephie(spritesheet, reverseSpritesheet, portrait, player) {
     };
 }
 
+function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
+	this.Samuru_frame_width = 294;
+	this.Samuru_frame_height = 294;
+
+    this.spritesheet = spritesheet;
+	this.reverseSpritesheet = reverseSpritesheet;
+	this.swordSpritesheet = AM.getAsset("./sprites/sheet 5c.png");
+	this.reverseSwordSpritesheet = AM.getAsset("./sprites/sheet 5d.png");
+    this.portrait = portrait;
+	this.player = player;
+    this.attacks = [
+        new attack("punch1", 40 * SCALE, 10),
+        new attack("punch2", 45 * SCALE, 10),
+        new attack("punch3", 41 * SCALE, 10),
+        new attack("kick1", 40 * SCALE, 10),
+        new attack("kick2", 47 * SCALE, 10),
+        new attack("kick3", 58 * SCALE, 10)
+	];
+	this.special = {animation: new Animation(spritesheet, reverseSpritesheet,
+											this.Samuru_frame_width, FRAME_HEIGHT,
+											.1, 5, 5, 20,
+											SCALE, true, SPRITESHEET_WIDTH), 
+					spawnFrames: [{frame: 10, created: false}],
+					damage: 7.5,
+					spawnOffset: 85,
+					bbX: 75,
+					bbY: HEIGHT - 145,
+					bbWidth: 80,
+					bbHeight: 30};
+// The animation parameters are as follows:
+
+// (spriteSheet, int frameWidth, int frameHeight,
+// int frameDuration(sec), int frames, int lineSize, int startline,
+// int scale, bool loop, int reverseOffset)
+ 
+
+    this.animations =  {
+        idle: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 5, 5, 0,
+                            SCALE, true, SPRITESHEET_WIDTH),
+        walk: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 9, 5, 1,
+                            SCALE, true, SPRITESHEET_WIDTH),
+        punch1: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet, 
+							this.Samuru_frame_width, this.Samuru_frame_height,
+                            0.05, 6, 5, 0,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        punch2: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet, 
+							this.Samuru_frame_width, this.Samuru_frame_height,
+                            0.05, 8, 5, 2,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        punch3: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet, 
+							this.Samuru_frame_width, this.Samuru_frame_height,
+                            0.05, 11, 5, 4,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        kick1: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 14, 5, 3,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        kick2: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 14, 5, 6,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        kick3: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 24, 5, 9,
+                            SCALE, false, SPRITESHEET_WIDTH),
+		jumpKick: new Animation(spritesheet, reverseSpritesheet,
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 10, 5, 21,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        inair: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            FRAME_DURATION, 1, 5, 14,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        special: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.06, 15, 5, 15,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        hurt: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.15, 4, 5, 18,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        block: new Animation(spritesheet, reverseSpritesheet, 
+							FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 1, 5, 19,
+                            SCALE, true, SPRITESHEET_WIDTH),
+        win: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet,
+							this.Samuru_frame_width, this.Samuru_frame_height,
+                            0.05, 10, 5, 13,
+                            SCALE, true, SPRITESHEET_WIDTH),
+        lose: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet,
+							this.Samuru_frame_width, this.Samuru_frame_height,
+                            0.05, 30, 5, 7,
+                            SCALE, false, SPRITESHEET_WIDTH)
+
+    };
+}
+
 Stickman.prototype.getAnimation = function(name) {
 	switch(name) {
 		case "idle":
@@ -408,6 +509,48 @@ Jenkins.prototype.getAnimation = function(name) {
 };
 
 Ephie.prototype.getAnimation = function(name) {
+	switch(name) {
+		case "idle":
+			return this.animations.idle;
+		case "moveRight":
+			return this.animations.walk;
+		case "moveLeft":
+			return this.animations.walk;
+		case "punch1":
+			return this.animations.punch1;
+		case "punch2":
+			return this.animations.punch2;
+		case "punch3":
+			return this.animations.punch3;
+		case "kick1":
+			return this.animations.kick1;
+		case "kick2":
+			return this.animations.kick2;
+		case "kick3":
+			return this.animations.kick3;
+		case "jump":
+			return this.animations.jump;
+		case "jumpKick":
+			return this.animations.jumpKick;
+		case "inair":
+			return this.animations.inair;
+		case "landing":
+			return this.animations.landing;
+		case "special":
+			return this.animations.special;
+		case "hurt":
+			return this.animations.hurt;
+		case "block":
+			return this.animations.block;
+		case "win":
+			return this.animations.win;
+		case "lose":
+			return this.animations.lose;
+		
+	}
+};
+
+Samuru.prototype.getAnimation = function(name) {
 	switch(name) {
 		case "idle":
 			return this.animations.idle;

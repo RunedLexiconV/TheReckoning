@@ -103,11 +103,13 @@ function CharSelectScreen (gameEngine) {
   var portrait1 = AM.getAsset("./sprites/portrait1.png");
   var portrait2 = AM.getAsset("./sprites/portrait2.png");
   var portrait3 = AM.getAsset("./sprites/portrait3.png");
+  var portrait4 = AM.getAsset("./sprites/portrait4.png");
 
   this.selections = [];
   this.selections.push({name: "Stickman", portrait: portrait1, x: 0, y:0});
   this.selections.push({name: "Jenkins", portrait: portrait2, x: 0, y: 0});
   this.selections.push({name: "Ephie", portrait: portrait3, x: 0, y: 0});
+  this.selections.push({name: "Samuru", portrait: portrait4, x: 0, y: 0});
 
 	this.selector1 = {x: 0, y: 0, color: "blue", charIndex: 0, selected: false};
   if (gameEngine.mode === "localMult") this.selector2 = {x: 0, y: 0, color: "red", charIndex: 0, selected: false};  
@@ -291,6 +293,12 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 	this.addEntity(new Player(this.gameEngine, ephie,
 							50, GROUND,
 							HEALTH, PLAYER1_CONTROLS));
+  } else if (p1Name === "Samuru") {
+	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
+                              AM.getAsset("./sprites/portrait4.png"), 1);
+	this.addEntity(new Player(this.gameEngine, samuru,
+							WIDTH - FRAME_WIDTH - 50, GROUND,
+							HEALTH, PLAYER2_CONTROLS));
   }
 
   if(p2Name === "Stickman") {
@@ -309,6 +317,12 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
                               AM.getAsset("./sprites/portrait3.png"), 2);
 	this.addEntity(new Player(this.gameEngine, ephie,
+							WIDTH - FRAME_WIDTH - 50, GROUND,
+							HEALTH, PLAYER2_CONTROLS));
+  } else if (p2Name === "Samuru") {
+	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
+                              AM.getAsset("./sprites/portrait4.png"), 2);
+	this.addEntity(new Player(this.gameEngine, samuru,
 							WIDTH - FRAME_WIDTH - 50, GROUND,
 							HEALTH, PLAYER2_CONTROLS));
   }
