@@ -1,5 +1,5 @@
 function Animation (spriteSheet, reverseSpritesheet, frameWidth, frameHeight, 
-					frameDuration, frames, lineSize, startline, scale, loop, reverseOffset) {
+					frameDuration, frames, lineSize, startline, scale, loop, reverseOffset, sound) {
     this.spriteSheet = spriteSheet;
 	this.reverseSpritesheet = reverseSpritesheet;
     this.frameWidth = frameWidth;
@@ -13,6 +13,8 @@ function Animation (spriteSheet, reverseSpritesheet, frameWidth, frameHeight,
     this.reverseOffset = reverseOffset;
     this.totalTime = frameDuration * frames;
     this.elapsedTime = 0;
+    this.sound = sound;
+    this.lastSound = 0;
 }
 
 Animation.prototype.drawFrame = function (tick, ctx, x, y, reverse) {
@@ -46,7 +48,15 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y, reverse) {
                     this.frameWidth,
                     this.frameHeight);
     }
-    
+    if(this.sound) {
+        var time = new Date();
+        time = time.getTime();
+        if(time - this.lastSound > 2000) {
+            this.sound.play();
+            this.lastSound = time;
+        }
+
+    }
 };
 
 Animation.prototype.currentFrame = function () {

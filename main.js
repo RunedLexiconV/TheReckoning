@@ -28,6 +28,13 @@ loadBackground("./sprites/background3/", 20);
 AM.queueAudio("./sound/Dirtiest - Genoshan Massacre.mp3");
 AM.queueAudio("./sound/End of peace.mp3");
 AM.queueAudio("./sound/Robot on Drabgon.mp3");
+AM.queueAudio("./sound/getting-hit.mp3");
+AM.queueAudio("./sound/melee-attack.mp3");
+AM.queueAudio("./sound/elephant.mp3");
+AM.queueAudio("./sound/oh-yeah.mp3");
+AM.queueAudio("./sound/yeehaw.mp3");
+AM.queueAudio("./sound/sword.mp3");
+AM.queueAudio("./sound/ele-hit.mp3");
 
 window.onload = function () {
   AM.downloadAll( function () {

@@ -562,8 +562,16 @@ GameScreen.prototype.draw = function() {
 			this.ctx.font = "36pt runed";
 			this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
 			this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-      this.ctx.fillText("Press any key to continue", WIDTH / 2, HEIGHT / 2);
-      this.ctx.strokeText("Press any key to continue", WIDTH / 2, HEIGHT / 2);
+      var that = this;
+      window.setTimeout(function() {
+          that.winDone = true;
+          console.log("time");
+      }, 1000);
+      if(this.winDone) {
+        this.ctx.fillText("Press any key to continue", WIDTH / 2, HEIGHT / 2);
+        this.ctx.strokeText("Press any key to continue", WIDTH / 2, HEIGHT / 2);
+      }
+
       this.ctx.restore();
 
 		for (var i = 0; i < this.entities.length; i++) {

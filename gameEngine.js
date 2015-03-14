@@ -61,7 +61,7 @@ GameEngine.prototype.startInput = function () {
             entities[i].handleInput(key, false);
             }
         } else {
-            if(key) {
+            if(key && that.screen.winDone) {
                 that.screen = new ModeSelect(that);
             }
         }
