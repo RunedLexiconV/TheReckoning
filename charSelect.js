@@ -527,29 +527,33 @@ GameScreen.prototype.draw = function() {
     this.ctx.save();
     for (var i = 0; i < this.entities.length; i++) {
 		  this.entities[i].draw(this.ctx);
-  		if (!(this.entities[i] instanceof special)) {
-  			this.ctx.save();
-  			// this.ctx.globalAlpha = 0.7;
-        // this.ctx.fillStyle = i === 0 ? "blue" : "red";
-        // this.ctx.fillRect(20 + (700* i) - 5, 20 -5, 60, 60);
-        // this.ctx.strokeStyle = "green";
-        // this.ctx.lineWidth = "10";
-        // this.ctx.beginPath();
-        // this.ctx.moveTo(80+(430* i), );
-        // this.ctx.lineTo(80 + (430*i) + 2*Math.ceil(this.entities[i].health), 40);
-        // this.ctx.stroke();
-        // this.ctx.closePath();
-  			this.ctx.drawImage(this.entities[i].character.portrait, 40 + (647 * i), 30, 73, 73);
-        var image = i === 0 ? AM.getAsset("./sprites/healthbar.png"): AM.getAsset("./sprites/healthbar2.png");
-        this.ctx.drawImage(image, 0, 0, 395, 133,         //source
-                                  405 * i, 0, 395, 133);  //canvas
-        this.ctx.drawImage(image, 122 + ((800 - 244) * i), 133, Math.ceil(this.entities[i].health) / 100 * (244 + 2 * 244 * (i * -1)), 133,
-                                  122 + ((800 - 244) * i), 0, Math.ceil(this.entities[i].health) / 100 * (244 + 2 * 244 * (i * -1)), 133);
-        var AHHHHHHHHHHHHHH = 122 + ((800 - 244) * i);
-        //console.log(AHHHHHHHHHHHHHH);
-        this.ctx.restore();
-      }
     }
+    var player1 = this.entities[0];
+    var player2 = this.entities[1];
+		this.ctx.drawImage(player1.character.portrait, 40, 30, 73, 73);
+    this.ctx.drawImage(player2.character.portrait, 687, 30, 73, 73);
+
+    var bar1 = AM.getAsset("./sprites/healthbar.png");
+    var bar2 = AM.getAsset("./sprites/healthbar2.png");
+    this.ctx.drawImage(bar1, 0, 0, 395, 133,          //source
+                              0, 0, 395, 133);        //canvas
+    this.ctx.drawImage(bar2, 0, 0, 395, 133,          //source
+                              405, 0, 395, 133);      //canvas
+
+    var hpPercent1 = (Math.ceil(player1.health) / 100) * 244;
+    var hpPercent2 = (Math.ceil(player2.health) / 100) * 244;
+    this.ctx.drawImage(bar1, 122, 163, hpPercent1, 28,
+                              122, 30, hpPercent1, 28);
+    this.ctx.drawImage(bar2, 29 + (244 - hpPercent2), 163, hpPercent2, 28,
+                              434 + (244 - hpPercent2), 30, hpPercent2, 28);
+
+    var ePercent1 = (Math.ceil(player1.energy) / 100) * 244;
+    var ePercent2 = (Math.ceil(player2.energy) / 100) * 244;
+    this.ctx.drawImage(bar1, 122, 203, ePercent1, 29,
+                              122, 70, ePercent1, 29);
+    this.ctx.drawImage(bar2, 29 + (244 - ePercent2), 203, ePercent2, 29,
+                              434 + (244 - ePercent2), 70, ePercent2, 29);
+
 		if(this.gameOver) {
 			this.ctx.save();
 			this.ctx.globalAlpha = 0.7;
@@ -562,8 +566,10 @@ GameScreen.prototype.draw = function() {
 			this.ctx.font = "36pt runed";
 			this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
 			this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-      this.ctx.fillText("Press any key to continue", WIDTH / 2, HEIGHT / 2);
-      this.ctx.strokeText("Press any key to continue", WIDTH / 2, HEIGHT / 2);
+      this.ctx.fillText("Press any key to", WIDTH / 2, HEIGHT / 2);
+      this.ctx.strokeText("Press any key to", WIDTH / 2, HEIGHT / 2);
+      this.ctx.fillText("return to the main menu", WIDTH / 2, HEIGHT / 2 + 50);
+      this.ctx.strokeText("return to the main menu", WIDTH / 2, HEIGHT / 2 + 50);
       this.ctx.restore();
 
 		for (var i = 0; i < this.entities.length; i++) {
