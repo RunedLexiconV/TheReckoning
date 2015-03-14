@@ -336,9 +336,9 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
     this.portrait = portrait;
 	this.player = player;
     this.attacks = [
-        new attack("punch1", 40 * SCALE, 10),
-        new attack("punch2", 45 * SCALE, 10),
-        new attack("punch3", 41 * SCALE, 10),
+        new attack("punch1", 75 * SCALE, 6),
+        new attack("punch2", 80 * SCALE, 6),
+        new attack("punch3", 80 * SCALE, 6),
         new attack("kick1", 40 * SCALE, 10),
         new attack("kick2", 47 * SCALE, 10),
         new attack("kick3", 58 * SCALE, 10)
