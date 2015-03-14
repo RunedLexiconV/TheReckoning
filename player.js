@@ -108,7 +108,10 @@ Player.prototype.draw = function () {
         this.character.animations.lose.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         if(!this.character.animations.lose.isDone())
-        this.x += this.isFacingLeft ? -4: 4;
+            if(this.isFacingLeft())
+                this.x -= 4;
+            else
+                this.x += 4;
         break;   
 
     case "win":
