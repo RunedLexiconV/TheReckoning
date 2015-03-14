@@ -399,18 +399,25 @@ GameScreen.prototype.draw = function() {
 		  this.entities[i].draw(this.ctx);
   		if (!(this.entities[i] instanceof special)) {
   			this.ctx.save();
-  			this.ctx.globalAlpha = 0.7;
-  			this.ctx.fillStyle = i === 0 ? "blue" : "red";
-  			this.ctx.fillRect(20 + (700* i) - 5, 20 -5, 60, 60);
-  			this.ctx.drawImage(this.entities[i].character.portrait, 20 + (700* i), 20, 50, 50);
-  			this.ctx.strokeStyle = "green";
-  			this.ctx.lineWidth = "10";
-  			this.ctx.beginPath();
-  			this.ctx.moveTo(80+(430* i), 40);
-  			this.ctx.lineTo(80 + (430*i) + 2*Math.ceil(this.entities[i].health),40);
-  			this.ctx.stroke();
-  			this.ctx.closePath();
-  			this.ctx.restore();
+  			// this.ctx.globalAlpha = 0.7;
+        // this.ctx.fillStyle = i === 0 ? "blue" : "red";
+        // this.ctx.fillRect(20 + (700* i) - 5, 20 -5, 60, 60);
+        // this.ctx.strokeStyle = "green";
+        // this.ctx.lineWidth = "10";
+        // this.ctx.beginPath();
+        // this.ctx.moveTo(80+(430* i), );
+        // this.ctx.lineTo(80 + (430*i) + 2*Math.ceil(this.entities[i].health), 40);
+        // this.ctx.stroke();
+        // this.ctx.closePath();
+  			this.ctx.drawImage(this.entities[i].character.portrait, 40 + (647 * i), 30, 73, 73);
+        var image = i === 0 ? AM.getAsset("./sprites/healthbar.png"): AM.getAsset("./sprites/healthbar2.png");
+        this.ctx.drawImage(image, 0, 0, 395, 133,         //source
+                                  405 * i, 0, 395, 133);  //canvas
+        this.ctx.drawImage(image, 122 + ((800 - 244) * i), 133, Math.ceil(this.entities[i].health) / 100 * (244 + 2 * 244 * (i * -1)), 133,
+                                  122 + ((800 - 244) * i), 0, Math.ceil(this.entities[i].health) / 100 * (244 + 2 * 244 * (i * -1)), 133);
+        var AHHHHHHHHHHHHHH = 122 + ((800 - 244) * i);
+        console.log(AHHHHHHHHHHHHHH);
+        this.ctx.restore();
       }
     }
 		if(this.gameOver) {

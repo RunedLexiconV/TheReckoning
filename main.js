@@ -17,6 +17,8 @@ AM.queueImage("./sprites/sheet 5c.png");
 AM.queueImage("./sprites/sheet 5d.png");
 AM.queueImage("./sprites/portrait1.png");
 AM.queueImage("./sprites/portrait2.png");
+AM.queueImage("./sprites/healthbar.png");
+AM.queueImage("./sprites/healthbar2.png");
 AM.queueImage("./sprites/portrait3.png");
 AM.queueImage("./sprites/portrait4.png");
 loadBackground("./sprites/background0/", 36);
