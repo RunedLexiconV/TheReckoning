@@ -1,3 +1,4 @@
+
 //------------------------------------- BEGIN START SCREEN ----------------------------------------------
 
 function StartScreen (gameEngine) {
@@ -65,32 +66,45 @@ function CharSelectScreen (gameEngine) {
 
   var portrait1 = AM.getAsset("./sprites/portrait1.png");
   var portrait2 = AM.getAsset("./sprites/portrait2.png");
+  var portrait3 = AM.getAsset("./sprites/portrait3.png");
+  var portrait4 = AM.getAsset("./sprites/portrait4.png");
 
   this.selections = [];
   this.selections.push({name: "Stickman", portrait: portrait1, x: 0, y:0});
   this.selections.push({name: "Jenkins", portrait: portrait2, x: 0, y: 0});
+  this.selections.push({name: "Ephie", portrait: portrait3, x: 0, y: 0});
+  this.selections.push({name: "Samuru", portrait: portrait4, x: 0, y: 0});
 
 	this.selector1 = {x: 0, y: 0, color: "blue", charIndex: 0, selected: false};
   if (gameEngine.mode === "localMult") this.selector2 = {x: 0, y: 0, color: "red", charIndex: 0, selected: false};  
   var initX = Math.ceil((WIDTH - (this.portraitWidth + this.padding * 2) * this.selections.length) / 2);
   if(initX < this.padding) console.log("ERROR: SelectScreen portrait section starting x too small");
-  //draw character portraits
+  //draw Stickman portraits
 	for (var i = 0; i < this.selections.length; i++) {
-    this.selections[i].x = initX + (this.portraitWidth + this.padding)* i;
-    this.selections[i].y = this.titleHeight + 400;
+		this.selections[i].x = initX + (this.portraitWidth + this.padding)* i;
+		this.selections[i].y = this.titleHeight + 400;
 	}
+	
 }
 
 CharSelectScreen.prototype.update = function () {
-  if(this.shadowBlur <= 2) this.shadowUp = true;
-  if(this.shadowBlur >= 30) this.shadowUp = false;
-  this.shadowUp ?  this.shadowBlur += 2: this.shadowBlur -= 2;
-  var that = this;
-  if (!this.countdownSet) {
-	  this.interval = window.setInterval(function() {
-      that.countdown--;
-    }, 1000);
-		this.countdownSet = true;
+
+  if(this.player1Ready && this.player2Ready)  {
+	  var that = this;
+	  if (!this.countdownSet) {
+		  this.interval = window.setInterval(function() {
+        that.countdown--;
+      }, 1000);
+  		this.countdownSet = true;
+	  }
+    if (this.countdown === 0) {
+	    var p1 = that.selections[that.selector1.charIndex];
+		var p2 = that.selections[that.selector2.charIndex];
+		var gs = new GameScreen(that.gameEngine);
+		window.clearInterval(this.interval);
+  		that.gameEngine.screen = gs;
+  		gs.addPlayers(p1.name, p2.name);
+    }
   }
   if (this.countdown === 0) {
     var p1 = that.selections[that.selector1.charIndex];
@@ -150,7 +164,7 @@ CharSelectScreen.prototype.draw = function () {
 
 CharSelectScreen.prototype.handleInput = function (key, downEvent) {
   if(!downEvent) {
-    console.log(this.player1Ready + " " + this.player2Ready);
+    //console.log(this.player1Ready + " " + this.player2Ready);
     switch (key) {  
       case PLAYER1_CONTROLS.moveRight:
         if(!this.player1Ready)
@@ -305,31 +319,55 @@ function GameScreen (gameEngine) {
 
 GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   if(p1Name === "Stickman") {
-    var character = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
-                                AM.getAsset("./sprites/portrait1.png"), 1);
+	var character = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"), AM.getAsset("./sprites/portrait1.png"), 1);
     this.addEntity(new Player(this.gameEngine, character,
                               50 , GROUND ,
                               HEALTH, PLAYER1_CONTROLS));
   } else if (p1Name === "Jenkins") {
-    var character = new Character2(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
+    var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                               AM.getAsset("./sprites/portrait2.png"), 1);
-    this.addEntity(new Player(this.gameEngine, character,
+    this.addEntity(new Player(this.gameEngine, stickman,
                             50 , GROUND,
                             HEALTH, PLAYER1_CONTROLS));
+  } else if (p1Name === "Ephie") {
+	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
+                              AM.getAsset("./sprites/portrait3.png"), 1);
+	this.addEntity(new Player(this.gameEngine, ephie,
+							50, GROUND,
+							HEALTH, PLAYER1_CONTROLS));
+  } else if (p1Name === "Samuru") {
+	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
+                              AM.getAsset("./sprites/portrait4.png"), 1);
+	this.addEntity(new Player(this.gameEngine, samuru,
+							WIDTH - FRAME_WIDTH - 50, GROUND,
+							HEALTH, PLAYER2_CONTROLS));
   }
 
   if(p2Name === "Stickman") {
-    var character = new Character(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
+    var stickman = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
                                 AM.getAsset("./sprites/portrait1.png"), 2);
-    this.addEntity(new aiPlayer(this.gameEngine, character,
+
+    this.addEntity(new Player(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH));
   } else if (p2Name === "Jenkins") {
-      var character = new Character2(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
+      var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                                 AM.getAsset("./sprites/portrait2.png"), 2);
-      this.addEntity(new aiPlayer(this.gameEngine, character,
+      this.addEntity(new Player(this.gameEngine, jenkins,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
-                              HEALTH));
+                              HEALTH, PLAYER2_CONTROLS));
+  } else if (p2Name === "Ephie") {
+	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
+                              AM.getAsset("./sprites/portrait3.png"), 2);
+	this.addEntity(new Player(this.gameEngine, ephie,
+							WIDTH - FRAME_WIDTH - 50, GROUND,
+							HEALTH, PLAYER2_CONTROLS));
+  } else if (p2Name === "Samuru") {
+	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
+                              AM.getAsset("./sprites/portrait4.png"), 2);
+	this.addEntity(new Player(this.gameEngine, samuru,
+							WIDTH - FRAME_WIDTH - 50, GROUND,
+							HEALTH, PLAYER2_CONTROLS));
   }
 };
 
@@ -341,13 +379,12 @@ GameScreen.prototype.update = function () {
   if(!this.gameOver) {
       var entitiesCount = this.entities.length;
       for (var i = 0; i < entitiesCount; i++) {
-        var entity = this.entities[i];
-        entity.update();
-  		  if (entity instanceof special && entity.x > WIDTH || entity.x + 100 < 0) {
-  			  this.entities.splice(i, 1);
-  			  entitiesCount--;
-
-  		  }
+          var entity = this.entities[i];
+          entity.update();
+		  if (entity instanceof special && entity.x > WIDTH || entity.x + 200 < 0) {
+			  this.entities.splice(i, 1);
+			  entitiesCount--;
+		  }
       }
   }
 };
@@ -381,19 +418,19 @@ GameScreen.prototype.draw = function() {
 			this.ctx.globalAlpha = 0.7;
 			this.ctx.font = "45pt runed";
 			this.ctx.strokeStyle = "black";
-  		this.ctx.fillStyle = "white";
+			this.ctx.fillStyle = "white";
 			this.ctx.textAlign = "center";
-  		this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
+			this.ctx.fillText("GAME OVER", WIDTH / 2, HEIGHT / 4);
 			this.ctx.strokeText("GAME OVER", WIDTH / 2, HEIGHT / 4);
-  		this.ctx.font = "36pt runed";
-      this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
-		  this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+			this.ctx.font = "36pt runed";
+			this.ctx.fillText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
+			this.ctx.strokeText("PLAYER " + this.winner + " WINS!", WIDTH / 2, HEIGHT / 3);
 			this.ctx.restore();
-		  for (var i = 0; i < this.entities.length; i++) {
-			 if (this.entities[i] instanceof special) {
+		for (var i = 0; i < this.entities.length; i++) {
+			if (this.entities[i] instanceof special) {
 				this.entities.splice(i, 1);
-			 }
 			}
+		}
     }
     this.ctx.restore();
 };
