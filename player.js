@@ -1,3 +1,7 @@
+var MAX_ENERGY = 100;
+var ENERGY_ATTACK = 100;
+var ENERGY_INCREMENT = 20;
+
 function Player (game, character, x, y, health, controls, orientation) { 
     this.x = x;
     this.y = y;
@@ -20,6 +24,7 @@ function Player (game, character, x, y, health, controls, orientation) {
         x: 0,
         y: 0
     };
+    this.energy = 0;
 	this.character.special.game = this.game;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
@@ -161,7 +166,8 @@ Player.prototype.update = function() {
 					}
 					if (hit) {
                         if (this.state === "block") {
-                            this.health -= theSpecial.damage * .05;
+                            this.health -= theSpecial.damage * 0.05;
+                            this.energy -= ENERGY_INCREMENT * 0.1;
                             if (this.isFacingLeft())  {
                                 this.x += .35;
                             } else {
@@ -169,7 +175,9 @@ Player.prototype.update = function() {
                             }
                         } else {
     						this.health -= theSpecial.damage;
+                            this.energy += ENERGY_INCREMENT * 1.2;
     						this.state = "hurt";
+                            this.character.animations.block.elapsedTime = 0;
     						this.y = 0;
                             this.velocity.y = 0;
                         }
@@ -202,16 +210,20 @@ Player.prototype.update = function() {
     								var damage = otherGuy.character.attacks[j].damage;
     								if (this.state === "block"){
     									this.health -= damage * .05;
+                                        this.energy += ENERGY_INCREMENT * 0.1;
     									if (this.isFacingLeft())  {
     										this.x += .35;
 										} else {
 											this.x -= .75;
 										}
 									} else {
-										this.prevState = this.state;
-										this.state = "hurt";
-										this.health -= damage;
-									}
+                                        this.energy += ENERGY_INCREMENT * 1.2;
+                                        this.prevState = this.state;
+                                        this.character.getAnimation(this.state).elapsedTime = 0;
+                                        this.state = "hurt";
+                                        this.health -= damage;
+                                    }
+                                    otherGuy.energy += ENERGY_INCREMENT;
 								}
 								if(this.health <= 0) {
 									this.game.screen.gameOver = true;
@@ -231,7 +243,6 @@ Player.prototype.update = function() {
 		}
 		
 	}
-	
 	if(this.health <= 0) {
 		this.health = 0;
 		this.y = 0;
@@ -406,6 +417,9 @@ Player.prototype.update = function() {
     else if(this.boundingBox.x + this.boundingBox.bbwidth > WIDTH)
         this.x = WIDTH - (FRAME_WIDTH * SCALE + this.boundingBox.bbwidth) / 2;
     
+    this.energy += ENERGY_INCREMENT * 0.005;
+    if(this.energy >= MAX_ENERGY)
+        this.energy = MAX_ENERGY;
     this.x += this.velocity.x;
     this.y += this.velocity.y;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
@@ -497,7 +511,8 @@ Player.prototype.handleInput = function(key, downEvent) {
 				}
                 break;
     		case this.control.special:
-    			if (downEvent && this.y === GROUND) {
+    			if (downEvent && this.y === GROUND && this.energy >= ENERGY_ATTACK) {
+                    this.energy -= ENERGY_ATTACK;
 					this.prevState = this.state;
 					this.state = "special";
 				}
