@@ -206,8 +206,76 @@ CharSelectScreen.prototype.handleInput = function (key, downEvent) {
 
 //--------------------------- END CHAR SELECT SCREEN ---------------------------------------------------
 //-----------------------------BEGIN MODE SELECT SCREEN------------------------------------------------
+function ModeSelect (gameEngine) {
+  this.titleHeight = 60;
+  this.ctx = gameEngine.ctx;
+  this.gameEngine = gameEngine;
+  this.selections = [];
+  this.shadowBlur = 2;
+  this.shadowUp = false;
+  this.ready = false;
+  selections.push({name: "Local VS", value:"LocalVs", x:0, y:0});
+  selections.push({name: "AI VS", value:"aiVs", x:0, y:0});
+  this.selector1 = {x: 0, y: 0, color: "blue", index: 0};
+  for (var i = 0; i < this.selections.length; i++) {
+    this.selections[i].x =  WIDTH / 2;
+    this.selections[i].y = 200 + (60)* i;
+  }
+}
 
+ModeSelect.prototype.update = function() {
+  this.selector1.x = this.selections[this.selector1.index].x;
+  this.selector1.y = this.selections[this.selector1.index].y;
+  if(this.shadowBlur <= 2) this.shadowUp = true;
+  if(this.shadowBlur >= 30) this.shadowUp = false;
+  this.shadowUp ?  this.shadowBlur += 2: this.shadowBlur -= 2;
+};
 
+ModeSelect.prototype.draw = function() {
+  this.ctx.save();
+  this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
+  drawTitle(this.ctx, "Scene Select", 60);
+  if(this.ready) {
+
+  }
+  // for (var i = Things.length - 1; i >= 0; i--) {
+    
+  // }
+  this.ctx.restore();
+};
+
+ModeSelect.prototype.handleInput = function(key, downEvent) {
+  if(!downEvent) {
+    if(!this.ready) {
+      switch (key) {
+        case PLAYER1_CONTROLS.moveRight:
+          ((this.selector1.index + 1) < this.selections.length) ? this.selector1.index++ : this.selector1.index = 0;
+          break;
+        case PLAYER1_CONTROLS.moveLeft:
+          (this.selector1.index > 0) ? this.selector1.index-- : this.selector1.index = this.selections.length - 1;
+          break;
+        case PLAYER1_CONTROLS.punch:
+          this.ready = true;
+          break;
+        case PLAYER2_CONTROLS.kick:
+          this.ready = false
+          break;
+        default:
+          break;
+        }
+    } else {
+        switch (key) {
+          case PLAYER2_CONTROLS.kick:
+            this.ready = false
+            break;
+          default:
+            this.gameEngine.mode = this.selections[this.selector1.index].value;
+            this.gameEngine.screen = new SceneSelect(this.gameEngine);
+            break;
+        }
+    }
+  }
+};
 
 //-----------------------------END MODE SELECT SCREEN------------------------------------------------
 //-----------------------------BEGIN SCENE SELECT SCREEN-----------------------------------------------
@@ -346,28 +414,51 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   if(p2Name === "Stickman") {
     var stickman = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
                                 AM.getAsset("./sprites/portrait1.png"), 2);
-
-    this.addEntity(new Player(this.gameEngine, stickman,
+    if(gameEngine.mode == "localVs") {
+      this.addEntity(new Player(this.gameEngine, stickman,
+                              WIDTH - FRAME_WIDTH - 50, GROUND,
+                              HEALTH, PLAYER2_CONTROLS));
+    } else {
+      this.addEntity(new aiPlayer(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH));
+    }
   } else if (p2Name === "Jenkins") {
       var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                                 AM.getAsset("./sprites/portrait2.png"), 2);
-      this.addEntity(new Player(this.gameEngine, jenkins,
+      if (gameEngine.mode == "localVs") {
+        this.addEntity(new Player(this.gameEngine, jenkins,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
+      } else {
+          this.addEntity(new aiPlayer(this.gameEngine, jenkins,
+                        WIDTH - FRAME_WIDTH - 50, GROUND,
+                        HEALTH));
+      }
   } else if (p2Name === "Ephie") {
 	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
                               AM.getAsset("./sprites/portrait3.png"), 2);
-	this.addEntity(new Player(this.gameEngine, ephie,
+    if (gameEngine.mode == "localVs") {
+      this.addEntity(new Player(this.gameEngine, ephie,
 							WIDTH - FRAME_WIDTH - 50, GROUND,
 							HEALTH, PLAYER2_CONTROLS));
+    } else {
+        this.addEntity(new aiPlayer(this.gameEngine, ephie,
+          WIDTH - FRAME_WIDTH - 50, GROUND,
+          HEALTH));
+    }
   } else if (p2Name === "Samuru") {
 	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
                               AM.getAsset("./sprites/portrait4.png"), 2);
-	this.addEntity(new Player(this.gameEngine, samuru,
-							WIDTH - FRAME_WIDTH - 50, GROUND,
-							HEALTH, PLAYER2_CONTROLS));
+    if (gameEngine.mode == "localVs") {
+      this.addEntity(new Player(this.gameEngine, samuru,
+  							WIDTH - FRAME_WIDTH - 50, GROUND,
+  							HEALTH, PLAYER2_CONTROLS));
+    } else {
+        this.addEntity(new aiPlayer(this.gameEngine, samuru,
+                WIDTH - FRAME_WIDTH - 50, GROUND,
+                HEALTH));     
+    }
   }
 };
 
