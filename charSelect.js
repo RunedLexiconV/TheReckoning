@@ -12,7 +12,7 @@ function StartScreen (gameEngine) {
 
 StartScreen.prototype.update = function() {
   if(this.goToModeSelect) {
-    this.gameEngine.screen = new SceneSelect(this.gameEngine);
+    this.gameEngine.screen = new ModeSelect(this.gameEngine);
   }
   if(this.shadowBlur <= 2) this.shadowUp = true;
   if(this.shadowBlur >= 30) this.shadowUp = false;
@@ -76,7 +76,8 @@ function CharSelectScreen (gameEngine) {
   this.selections.push({name: "Samuru", portrait: portrait4, x: 0, y: 0});
 
 	this.selector1 = {x: 0, y: 0, color: "blue", charIndex: 0, selected: false};
-  if (gameEngine.mode === "localMult") this.selector2 = {x: 0, y: 0, color: "red", charIndex: 0, selected: false};  
+  //if (gameEngine.mode === "localVS") 
+  this.selector2 = {x: 0, y: 0, color: "red", charIndex: 0, selected: false};  
   var initX = Math.ceil((WIDTH - (this.portraitWidth + this.padding * 2) * this.selections.length) / 2);
   if(initX < this.padding) console.log("ERROR: SelectScreen portrait section starting x too small");
   //draw Stickman portraits
@@ -211,16 +212,19 @@ function ModeSelect (gameEngine) {
   this.ctx = gameEngine.ctx;
   this.gameEngine = gameEngine;
   this.selections = [];
+  this.entities = [this];
   this.shadowBlur = 2;
   this.shadowUp = false;
   this.ready = false;
-  selections.push({name: "Local VS", value:"LocalVs", x:0, y:0});
-  selections.push({name: "AI VS", value:"aiVs", x:0, y:0});
+  this.selections.push({name: "Local VS", value:"localVs", x:0, y:0});
+  this.selections.push({name: "AI VS", value:"aiVs", x:0, y:0});
   this.selector1 = {x: 0, y: 0, color: "blue", index: 0};
   for (var i = 0; i < this.selections.length; i++) {
     this.selections[i].x =  WIDTH / 2;
-    this.selections[i].y = 200 + (60)* i;
+    this.selections[i].y = 320 + (80)* i;
+       console.log(this.selections[i]);
   }
+
 }
 
 ModeSelect.prototype.update = function() {
@@ -235,12 +239,37 @@ ModeSelect.prototype.draw = function() {
   this.ctx.save();
   this.ctx.clearRect(0, 0, WIDTH, HEIGHT);
   drawTitle(this.ctx, "Scene Select", 60);
-  if(this.ready) {
+  this.ctx.font = "22px runed";
+  this.ctx.textAlign ="center";
+  this.ctx.fillStyle = "white";
+  this.ctx.strokeStyle = "white";
+  this.ctx.lineWidth = "10px";
+  // instruction
+  this.ctx.fillText("Use Jump and Block to change selections.", WIDTH / 2, 100);
+  this.ctx.fillText("Press punch to select, kick to deselect", WIDTH / 2, 130);
 
+  if(this.ready) {
+    this.ctx.save();
+    this.ctx.shadowColor = "white";
+    this.ctx.shadowBlur = this.shadowBlur;
+    this.ctx.fillText("click any key to continue", WIDTH / 2, 180);
+    this.ctx.restore();
   }
-  // for (var i = Things.length - 1; i >= 0; i--) {
-    
-  // }
+  for (var i = 0; i < this.selections.length; i++) {
+    this.ctx.fillStyle = "gray";
+    this.ctx.fillRect(this.selections[i].x - 70, this.selections[i].y - 35, 130, 50);
+  }
+  if(this.ready) {
+    this.ctx.shadowColor = "white";
+    this.ctx.shadowBlur = this.shadowBlur;
+  }
+  this.ctx.fillStyle = "blue";
+  this.ctx.fillRect(this.selector1.x - 70, this.selector1.y - 35, 130, 50);
+
+  for (var i = 0; i < this.selections.length; i++) {
+    this.ctx.fillStyle = "white";
+    this.ctx.fillText(this.selections[i].name, this.selections[i].x, this.selections[i].y);
+  }
   this.ctx.restore();
 };
 
@@ -248,10 +277,10 @@ ModeSelect.prototype.handleInput = function(key, downEvent) {
   if(!downEvent) {
     if(!this.ready) {
       switch (key) {
-        case PLAYER1_CONTROLS.moveRight:
+        case PLAYER1_CONTROLS.jump:
           ((this.selector1.index + 1) < this.selections.length) ? this.selector1.index++ : this.selector1.index = 0;
           break;
-        case PLAYER1_CONTROLS.moveLeft:
+        case PLAYER1_CONTROLS.block:
           (this.selector1.index > 0) ? this.selector1.index-- : this.selector1.index = this.selections.length - 1;
           break;
         case PLAYER1_CONTROLS.punch:
@@ -270,6 +299,7 @@ ModeSelect.prototype.handleInput = function(key, downEvent) {
             break;
           default:
             this.gameEngine.mode = this.selections[this.selector1.index].value;
+            console.log(this.gameEngine.mode);
             this.gameEngine.screen = new SceneSelect(this.gameEngine);
             break;
         }
@@ -414,7 +444,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   if(p2Name === "Stickman") {
     var stickman = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
                                 AM.getAsset("./sprites/portrait1.png"), 2);
-    if(gameEngine.mode == "localVs") {
+    if(this.gameEngine.mode === "localVs") {
       this.addEntity(new Player(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
@@ -426,7 +456,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   } else if (p2Name === "Jenkins") {
       var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                                 AM.getAsset("./sprites/portrait2.png"), 2);
-      if (gameEngine.mode == "localVs") {
+      if (this.gameEngine.mode === "localVs") {
         this.addEntity(new Player(this.gameEngine, jenkins,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
@@ -438,7 +468,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   } else if (p2Name === "Ephie") {
 	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
                               AM.getAsset("./sprites/portrait3.png"), 2);
-    if (gameEngine.mode == "localVs") {
+    if (this.gameEngine.mode === "localVs") {
       this.addEntity(new Player(this.gameEngine, ephie,
 							WIDTH - FRAME_WIDTH - 50, GROUND,
 							HEALTH, PLAYER2_CONTROLS));
@@ -450,7 +480,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
   } else if (p2Name === "Samuru") {
 	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
                               AM.getAsset("./sprites/portrait4.png"), 2);
-    if (gameEngine.mode == "localVs") {
+    if (this.gameEngine.mode === "localVs") {
       this.addEntity(new Player(this.gameEngine, samuru,
   							WIDTH - FRAME_WIDTH - 50, GROUND,
   							HEALTH, PLAYER2_CONTROLS));
@@ -507,7 +537,7 @@ GameScreen.prototype.draw = function() {
         this.ctx.drawImage(image, 122 + ((800 - 244) * i), 133, Math.ceil(this.entities[i].health) / 100 * (244 + 2 * 244 * (i * -1)), 133,
                                   122 + ((800 - 244) * i), 0, Math.ceil(this.entities[i].health) / 100 * (244 + 2 * 244 * (i * -1)), 133);
         var AHHHHHHHHHHHHHH = 122 + ((800 - 244) * i);
-        console.log(AHHHHHHHHHHHHHH);
+        //console.log(AHHHHHHHHHHHHHH);
         this.ctx.restore();
       }
     }
