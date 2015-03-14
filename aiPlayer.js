@@ -35,7 +35,11 @@ aiPlayer.prototype.chooseMove = function() {
 				hitable = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + this.attackLength >= this.boundingBox.x ? true : false;
 				flee = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + this.flee >= this.boundingBox.x ? true : false;
 			}
-			if(hitable) {
+			if(this.energy >= this.ENERGY_MAX) {
+				this.handleInput(this.controls.special, true);
+				this.prevControl = this.controls.special;
+			}
+			else if(hitable) {
 				if(random(0, 100) < 10) {
 					this.handleInput(this.controls.block, true);
 					this.prevControl = this.controls.block;
