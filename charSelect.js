@@ -89,32 +89,6 @@ function CharSelectScreen (gameEngine) {
 }
 
 CharSelectScreen.prototype.update = function () {
-
-  // if(this.player1Ready && this.player2Ready)  {
-	 //  var that = this;
-	 //  if (!this.countdownSet) {
-		//   this.interval = window.setInterval(function() {
-  //       that.countdown--;
-  //     }, 1000);
-  // 		this.countdownSet = true;
-	 //  }
-  //   if (this.countdown === 0) {
-	 //    var p1 = that.selections[that.selector1.charIndex];
-		// var p2 = that.selections[that.selector2.charIndex];
-		// var gs = new GameScreen(that.gameEngine);
-		// window.clearInterval(this.interval);
-  // 		that.gameEngine.screen = gs;
-  // 		gs.addPlayers(p1.name, p2.name);
-  //   }
-  // }
-  // if (this.countdown === 0) {
-  //   var p1 = that.selections[that.selector1.charIndex];
-	 //  var p2 = that.selections[that.selector2.charIndex];
-	 //  var gs = new GameScreen(that.gameEngine);
-  //   window.clearInterval(this.interval);
-		// that.gameEngine.screen = gs;
-		// gs.addPlayers(p1.name, p2.name);
-  // }
   if(this.shadowBlur <= 2) this.shadowUp = true;
   if(this.shadowBlur >= 30) this.shadowUp = false;
   if(this.shadowUp) {
