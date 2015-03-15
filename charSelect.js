@@ -571,7 +571,7 @@ GameScreen.prototype.draw = function() {
       var that = this;
       window.setTimeout(function() {
           that.winDone = true;
-          console.log("time");
+          //console.log("time");
       }, 1000);
       if(this.winDone) {
         this.ctx.fillText("Press any key to", WIDTH / 2, HEIGHT / 2);

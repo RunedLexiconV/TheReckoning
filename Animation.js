@@ -14,6 +14,7 @@ function Animation (spriteSheet, reverseSpritesheet, frameWidth, frameHeight,
     this.totalTime = frameDuration * frames;
     this.elapsedTime = 0;
     this.sound = sound;
+	this.soundPlayed = false;
     this.lastSound = 0;
 }
 
@@ -51,10 +52,14 @@ Animation.prototype.drawFrame = function (tick, ctx, x, y, reverse) {
     if(this.sound) {
         var time = new Date();
         time = time.getTime();
-        if(time - this.lastSound > 2000) {
-            this.sound.play();
-            this.lastSound = time;
-        }
+        //if(time - this.lastSound > 2000) {
+			if (!this.soundPlayed) {
+				this.sound.play();
+				this.soundPlayed = true;
+			}
+            
+            //this.lastSound = time;
+        //}
 
     }
 };

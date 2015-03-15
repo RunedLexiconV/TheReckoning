@@ -31,6 +31,9 @@ function Player (game, character, x, y, health, controls, orientation) {
     this.debug = false;
 	this.jump = null;
     this.entities = this.game.screen.entities;
+	this.stateList = ["idle", "moveRight", "moveLeft", "jump", "inair", "jumpKick", 
+					"punch1", "punch2", "punch3", "kick1", "kick2", "kick3", 
+					"special", "hurt", "block", "lose", "win"];
 }
 
 Player.prototype.isFacingLeft = function () {
@@ -51,20 +54,12 @@ Player.prototype.draw = function () {
         this.character.animations.walk.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         break;
-    case "jump":
-        this.character.animations.jump.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y, this.isFacingLeft());
-        break;
     case "inair":
         this.character.animations.inair.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         break;
 	case "jumpKick":
         this.character.animations.jumpKick.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y, this.isFacingLeft());
-        break;
-    case "landing":
-        this.character.animations.landing.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         break;
     case "punch1":
@@ -425,7 +420,19 @@ Player.prototype.update = function() {
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//(this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
 	
+	this.clearPrevStates();
 };
+
+Player.prototype.clearPrevStates = function() {
+	for (var i = 0; i < this.stateList.length; i++) {
+		if (this.state !== this.stateList[i]) {
+			var state = this.stateList[i];
+			var animation = this.character.getAnimation(state);
+			animation.elapsedTime = 0;
+			animation.soundPlayed = false;
+		}
+	}
+}
 
 Player.prototype.handleInput = function(key, downEvent) {
     if (!this.game.gameOver) {
