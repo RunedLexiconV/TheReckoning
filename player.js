@@ -25,6 +25,9 @@ function Player (game, character, x, y, health, controls, orientation) {
         y: 0
     };
     this.energy = 0;
+    if(this.character instanceof Ephie) {
+        this.boundingBox.bbwidth = 117;
+    }
 	this.character.special.game = this.game;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
@@ -423,6 +426,9 @@ Player.prototype.update = function() {
     this.x += this.velocity.x;
     this.y += this.velocity.y;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE/2 - this.boundingBox.bbwidth/2));
+    if(this.character instanceof Ephie) {
+        this.boundingBox.x += this.boundingBox.bbwidth / 2 - 20;
+    }
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//(this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
 	
 };

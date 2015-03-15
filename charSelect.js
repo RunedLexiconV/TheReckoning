@@ -273,17 +273,21 @@ ModeSelect.prototype.handleInput = function(key, downEvent) {
   if(!downEvent) {
     if(!this.ready) {
       switch (key) {
+        case PLAYER2_CONTROLS.jump:
         case PLAYER1_CONTROLS.jump:
           ((this.selector1.index + 1) < this.selections.length) ? this.selector1.index++ : this.selector1.index = 0;
           break;
+        case PLAYER2_CONTROLS.block:
         case PLAYER1_CONTROLS.block:
           (this.selector1.index > 0) ? this.selector1.index-- : this.selector1.index = this.selections.length - 1;
           break;
+        case PLAYER2_CONTROLS.punch:
         case PLAYER1_CONTROLS.punch:
           this.ready = true;
           break;
         case PLAYER2_CONTROLS.kick:
-          this.ready = false
+        case PLAYER1_CONTROLS.kick:
+          this.ready = false;
           break;
         default:
           break;
@@ -291,7 +295,8 @@ ModeSelect.prototype.handleInput = function(key, downEvent) {
     } else {
         switch (key) {
           case PLAYER2_CONTROLS.kick:
-            this.ready = false
+          case PLAYER1_CONTROLS.kick:
+            this.ready = false;
             break;
           default:
             this.gameEngine.mode = this.selections[this.selector1.index].value;
@@ -388,17 +393,25 @@ SceneSelect.prototype.handleInput =  function (key, downEvent) {
           (this.selector1.index > 0) ? this.selector1.index-- : this.selector1.index = this.selections.length - 1;
           break;
         case PLAYER1_CONTROLS.punch:
+        case PLAYER2_CONTROLS.punch:
           this.player1Ready = true;
           break;
+        case PLAYER1_CONTROLS.kick:
         case PLAYER2_CONTROLS.kick:
+          this.player1Ready = false;
+        }
+    } else {
+      switch (key) {
+        case PLAYER2_CONTROLS.kick:
+        case PLAYER1_CONTROLS.kick:
           this.player1Ready = false;
           break;
         default:
-          break;
-        }
-    } else {
-      this.gameEngine.background = this.selector1.index;
-      this.gameEngine.screen = new CharSelectScreen(this.gameEngine);
+          this.gameEngine.background = this.selector1.index;
+          this.gameEngine.screen = new CharSelectScreen(this.gameEngine);
+        break;
+    }
+
     }
   }
 };
