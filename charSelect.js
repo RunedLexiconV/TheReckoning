@@ -240,7 +240,7 @@ function ModeSelect (gameEngine) {
   this.shadowUp = false;
   this.ready = false;
   this.selections.push({name: "Local VS", value:"localVs", x:0, y:0});
-  // this.selections.push({name: "AI VS", value:"aiVs", x:0, y:0});
+  this.selections.push({name: "AI VS", value:"aiVs", x:0, y:0});
   this.selector1 = {x: 0, y: 0, color: "blue", index: 0};
   for (var i = 0; i < this.selections.length; i++) {
     this.selections[i].x =  WIDTH / 2;
