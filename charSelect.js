@@ -549,10 +549,16 @@ GameScreen.prototype.draw = function() {
 
     var ePercent1 = (Math.ceil(player1.energy) / 100) * 244;
     var ePercent2 = (Math.ceil(player2.energy) / 100) * 244;
-    this.ctx.drawImage(bar1, 122, 203, ePercent1, 29,
+	if (ePercent1 > 0) {
+		this.ctx.drawImage(bar1, 122, 203, ePercent1, 29,
                               122, 70, ePercent1, 29);
-    this.ctx.drawImage(bar2, 29 + (244 - ePercent2), 203, ePercent2, 29,
+	}
+	if (ePercent2 > 0) {
+		this.ctx.drawImage(bar2, 29 + (244 - ePercent2), 203, ePercent2, 29,
                               434 + (244 - ePercent2), 70, ePercent2, 29);
+	}
+	
+    
 
 		if(this.gameOver) {
 			this.ctx.save();
