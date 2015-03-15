@@ -232,12 +232,12 @@ function Ephie(spritesheet, reverseSpritesheet, portrait, player) {
     this.portrait = portrait;
 	this.player = player;
     this.attacks = [
-        new attack("punch1", 40 * SCALE, 10),
-        new attack("punch2", 45 * SCALE, 10),
-        new attack("punch3", 41 * SCALE, 10),
-        new attack("kick1", 40 * SCALE, 10),
-        new attack("kick2", 47 * SCALE, 10),
-        new attack("kick3", 58 * SCALE, 10)
+        new attack("punch1", 70 * SCALE, 10),
+        new attack("punch2", 78 * SCALE, 10),
+        new attack("punch3", 85 * SCALE, 10),
+        new attack("kick1", 12 * SCALE, 10),
+        new attack("kick2", 5 * SCALE, 10),
+        new attack("kick3", 46 * SCALE, 10)
 	];
 	this.special = {animation: new Animation(spritesheet, reverseSpritesheet,
 											this.ephie_frame_width, FRAME_HEIGHT,
@@ -336,9 +336,9 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
     this.portrait = portrait;
 	this.player = player;
     this.attacks = [
-        new attack("punch1", 75 * SCALE, 6),
-        new attack("punch2", 80 * SCALE, 6),
-        new attack("punch3", 80 * SCALE, 6),
+        new attack("punch1", 158 * SCALE, 6),
+        new attack("punch2", 170 * SCALE, 6),
+        new attack("punch3", 169 * SCALE, 6),
         new attack("kick1", 40 * SCALE, 10),
         new attack("kick2", 47 * SCALE, 10),
         new attack("kick3", 58 * SCALE, 10)
@@ -417,7 +417,7 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         win: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet,
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 10, 5, 13,
-                            SCALE, true, SPRITESHEET_WIDTH, AM.getAsset("./sound/sam-win.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/sam-win.mp3")),
         lose: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet,
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 30, 5, 7,
