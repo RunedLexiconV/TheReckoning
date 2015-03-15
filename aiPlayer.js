@@ -4,8 +4,7 @@ function random(max, min) {
 
 function aiPlayer (game, character, x, y, health) {
 	Player.call(this, game, character, x, y, health, PLAYER2_CONTROLS, "left");
-	aiPlayer.prototype = new Player(this.game, this.character, this.x, this.y,
-									this.health, this.control, this.facing);
+	aiPlayer.prototype = Object.create(Player);
 	aiPlayer.prototype.constructor = aiPlayer;
 	this.controls = PLAYER2_CONTROLS;
 	this.attackLength = 50;
@@ -35,9 +34,8 @@ aiPlayer.prototype.chooseMove = function() {
 				hitable = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + this.attackLength >= this.boundingBox.x ? true : false;
 				flee = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + this.flee >= this.boundingBox.x ? true : false;
 			}
-			if(this.energy >= this.ENERGY_MAX) {
+			if(this.energy >= MAX_ENERGY) {
 				this.handleInput(this.controls.special, true);
-				this.prevControl = this.controls.special;
 			}
 			else if(hitable) {
 				if(random(0, 100) < 10) {
@@ -74,7 +72,6 @@ aiPlayer.prototype.chooseMove = function() {
 };
 
 aiPlayer.prototype.update = function() {
-	console.log("update ai");
 	if((this.game.timer.gameTime % this.moveTime) > (this.moveTime * 0.9)) {		
 		this.chooseMove();
 	}
