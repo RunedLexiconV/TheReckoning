@@ -540,23 +540,19 @@ GameScreen.prototype.draw = function() {
     this.ctx.drawImage(bar2, 0, 0, 395, 133,          //source
                               405, 0, 395, 133);      //canvas
 
-    var hpPercent1 = (Math.ceil(player1.health) / 100) * 244;
-    var hpPercent2 = (Math.ceil(player2.health) / 100) * 244;
+    var hpPercent1 = (Math.ceil(player1.health) / 100) * 244 + 1;
+    var hpPercent2 = (Math.ceil(player2.health) / 100) * 244 + 1;
     this.ctx.drawImage(bar1, 122, 163, hpPercent1, 28,
                               122, 30, hpPercent1, 28);
     this.ctx.drawImage(bar2, 29 + (244 - hpPercent2), 163, hpPercent2, 28,
                               434 + (244 - hpPercent2), 30, hpPercent2, 28);
 
-    var ePercent1 = (Math.ceil(player1.energy) / 100) * 244;
-    var ePercent2 = (Math.ceil(player2.energy) / 100) * 244;
-	if (ePercent1 > 0) {
+    var ePercent1 = (Math.ceil(player1.energy) / 100) * 244 + 1;
+    var ePercent2 = (Math.ceil(player2.energy) / 100) * 244 + 1;
 		this.ctx.drawImage(bar1, 122, 203, ePercent1, 29,
                               122, 70, ePercent1, 29);
-	}
-	if (ePercent2 > 0) {
 		this.ctx.drawImage(bar2, 29 + (244 - ePercent2), 203, ePercent2, 29,
                               434 + (244 - ePercent2), 70, ePercent2, 29);
-	}
 	
     
 
