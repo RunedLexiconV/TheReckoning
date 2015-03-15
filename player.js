@@ -188,8 +188,8 @@ Player.prototype.update = function() {
     						attack = otherGuy.character.attacks[j].name;
     						if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
     							var attackLength = otherGuy.character.attacks[j].length;
-    							var hit;
-    							var verticalHit;
+    							var hit = false;
+    							var verticalHit = false;
                                 if (otherGuy.isFacingLeft()) {
     								hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth;
     							} else {
@@ -254,13 +254,11 @@ Player.prototype.update = function() {
     case "moveRight":
         this.moveVelocity = 4;
         this.velocity.x = this.moveVelocity;
-		console.log(this.animationFrame);
         break;
 
     case "moveLeft":
         this.moveVelocity = -4;
         this.velocity.x = this.moveVelocity;
-		console.log(this.animationFrame);
         break;
 
     case "punch1":

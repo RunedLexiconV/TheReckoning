@@ -4,8 +4,6 @@ function random(max, min) {
 
 function aiPlayer (game, character, x, y, health) {
 	Player.call(this, game, character, x, y, health, PLAYER2_CONTROLS, "left");
-	aiPlayer.prototype = Object.create(Player);
-	aiPlayer.prototype.constructor = aiPlayer;
 	this.controls = PLAYER2_CONTROLS;
 	this.attackLength = 50;
 	this.fleeLength = 70;
@@ -13,8 +11,20 @@ function aiPlayer (game, character, x, y, health) {
 	this.prevControl = "idle";
 }
 
+aiPlayer.prototype = Object.create(Player);
+aiPlayer.prototype.constructor = aiPlayer;
 aiPlayer.prototype.draw = function() {Player.prototype.draw.call(this);};
 aiPlayer.prototype.handleInput = function(key, downevent) {Player.prototype.handleInput.call(this, key, downevent);};
+aiPlayer.prototype.clearPrevStates = function() {
+	for (var i = 0; i < this.stateList.length; i++) {
+		if (this.state !== this.stateList[i]) {
+			var state = this.stateList[i];
+			var animation = this.character.getAnimation(state);
+			//animation.elapsedTime = 0;
+			animation.soundPlayed = false;
+		}
+	}
+};
 aiPlayer.prototype.isFacingLeft = function() {
     return this.facing === "left" ? true : false;
 };
@@ -34,8 +44,9 @@ aiPlayer.prototype.chooseMove = function() {
 				hitable = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + this.attackLength >= this.boundingBox.x ? true : false;
 				flee = otherGuy.boundingBox.x + otherGuy.boundingBox.bbwidth + this.flee >= this.boundingBox.x ? true : false;
 			}
-			if(this.energy >= MAX_ENERGY) {
+			if(this.energy >= ENERGY_ATTACK) {
 				this.handleInput(this.controls.special, true);
+				this.prevControl = this.controls.special;
 			}
 			else if(hitable) {
 				if(random(0, 100) < 10) {
