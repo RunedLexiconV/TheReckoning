@@ -35,6 +35,10 @@ AM.queueAudio("./sound/oh-yeah.mp3");
 AM.queueAudio("./sound/yeehaw.mp3");
 AM.queueAudio("./sound/sword.mp3");
 AM.queueAudio("./sound/ele-hit.mp3");
+AM.queueAudio("./sound/kung-kick.mp3");
+AM.queueAudio("./sound/kung-kick2.mp3");
+AM.queueAudio("./sound/sam-win.mp3");
+
 
 window.onload = function () {
   AM.downloadAll( function () {

@@ -385,15 +385,15 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         kick1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 14, 5, 3,
-                            SCALE, false, SPRITESHEET_WIDTH),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/kung-kick.mp3")),
         kick2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 14, 5, 6,
-                            SCALE, false, SPRITESHEET_WIDTH),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/kung-kick.mp3")),
         kick3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 24, 5, 9,
-                            SCALE, false, SPRITESHEET_WIDTH),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/kung-kick2.mp3")),
 		jumpKick: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 10, 5, 21,
@@ -409,7 +409,7 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         hurt: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.15, 4, 5, 18,
-                            SCALE, false, SPRITESHEET_WIDTH),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/getting-hit.mp3")),
         block: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 19,
@@ -417,7 +417,7 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         win: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet,
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 10, 5, 13,
-                            SCALE, true, SPRITESHEET_WIDTH),
+                            SCALE, true, SPRITESHEET_WIDTH, AM.getAsset("./sound/sam-win.mp3")),
         lose: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet,
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 30, 5, 7,
@@ -614,7 +614,7 @@ special.prototype.update = function() {
 		this.x -= 15;
 		this.boundingBox.x -= 15;
 	}
-}
+};
 
 special.prototype.draw = function() {
 	//console.log(this.animation.currentFrame());
@@ -634,11 +634,11 @@ special.prototype.draw = function() {
 		this.game.ctx.stroke();
 	}
 	
-}
+};
 
 special.prototype.handleInput = function(key, downEvent) {
 	//do nothing
-}
+};
 
 
 
