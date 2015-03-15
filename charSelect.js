@@ -60,8 +60,8 @@ function CharSelectScreen (gameEngine) {
   this.player2Ready = false;
   this.shadowBlur = 2;
   this.shadowUp = true;
-  this.countdown = 3;
-  this.countdownSet = false;
+  //this.countdown = 3;
+  //this.countdownSet = false;
   this.interval;
 
   var portrait1 = AM.getAsset("./sprites/portrait1.png");
@@ -90,30 +90,37 @@ function CharSelectScreen (gameEngine) {
 
 CharSelectScreen.prototype.update = function () {
 
-  if(this.player1Ready && this.player2Ready)  {
-	  var that = this;
-	  if (!this.countdownSet) {
-		  this.interval = window.setInterval(function() {
-        that.countdown--;
-      }, 1000);
-  		this.countdownSet = true;
-	  }
-    if (this.countdown === 0) {
-	    var p1 = that.selections[that.selector1.charIndex];
-		var p2 = that.selections[that.selector2.charIndex];
-		var gs = new GameScreen(that.gameEngine);
-		window.clearInterval(this.interval);
-  		that.gameEngine.screen = gs;
-  		gs.addPlayers(p1.name, p2.name);
-    }
-  }
-  if (this.countdown === 0) {
-    var p1 = that.selections[that.selector1.charIndex];
-	  var p2 = that.selections[that.selector2.charIndex];
-	  var gs = new GameScreen(that.gameEngine);
-    window.clearInterval(this.interval);
-		that.gameEngine.screen = gs;
-		gs.addPlayers(p1.name, p2.name);
+  // if(this.player1Ready && this.player2Ready)  {
+	 //  var that = this;
+	 //  if (!this.countdownSet) {
+		//   this.interval = window.setInterval(function() {
+  //       that.countdown--;
+  //     }, 1000);
+  // 		this.countdownSet = true;
+	 //  }
+  //   if (this.countdown === 0) {
+	 //    var p1 = that.selections[that.selector1.charIndex];
+		// var p2 = that.selections[that.selector2.charIndex];
+		// var gs = new GameScreen(that.gameEngine);
+		// window.clearInterval(this.interval);
+  // 		that.gameEngine.screen = gs;
+  // 		gs.addPlayers(p1.name, p2.name);
+  //   }
+  // }
+  // if (this.countdown === 0) {
+  //   var p1 = that.selections[that.selector1.charIndex];
+	 //  var p2 = that.selections[that.selector2.charIndex];
+	 //  var gs = new GameScreen(that.gameEngine);
+  //   window.clearInterval(this.interval);
+		// that.gameEngine.screen = gs;
+		// gs.addPlayers(p1.name, p2.name);
+  // }
+  if(this.shadowBlur <= 2) this.shadowUp = true;
+  if(this.shadowBlur >= 30) this.shadowUp = false;
+  if(this.shadowUp) {
+    this.shadowBlur += 2;
+  } else {
+    this.shadowBlur -= 2;
   }
   
 };
@@ -156,7 +163,13 @@ CharSelectScreen.prototype.draw = function () {
     }
 	
 	if (this.player1Ready && this.player2Ready){
-		this.ctx.fillText(this.countdown + "", WIDTH / 2, HEIGHT / 2);
+    this.ctx.save();
+    this.ctx.textAlign = "center";
+    this.ctx.fillStyle = "white";
+    this.ctx.shadowColor = "white";
+    this.ctx.shadowBlur = this.shadowBlur;
+		this.ctx.fillText("Press any key to continue", WIDTH / 2, 400);
+    this.ctx.restore();
 	}
 	
     drawTitle(this.ctx, "Character Select", 60);
@@ -166,41 +179,51 @@ CharSelectScreen.prototype.draw = function () {
 CharSelectScreen.prototype.handleInput = function (key, downEvent) {
   if(!downEvent) {
     //console.log(this.player1Ready + " " + this.player2Ready);
-    switch (key) {  
-      case PLAYER1_CONTROLS.moveRight:
-        if(!this.player1Ready)
-          ((this.selector1.charIndex + 1) < this.selections.length) ? this.selector1.charIndex++ : this.selector1.charIndex = 0;
-        break;
-      case PLAYER1_CONTROLS.moveLeft:
-        if(!this.player1Ready)
-          (this.selector1.charIndex > 0) ? this.selector1.charIndex-- : this.selector1.charIndex = this.selections.length - 1;
-        break;
-      case PLAYER2_CONTROLS.moveRight:
-        if(!this.player2Ready)
-          ((this.selector2.charIndex + 1) < this.selections.length) ? this.selector2.charIndex++ : this.selector2.charIndex = 0;
-        break;
-      case PLAYER2_CONTROLS.moveLeft:
-        if(!this.player2Ready)
-          (this.selector2.charIndex > 0) ? this.selector2.charIndex-- : this.selector2.charIndex = this.selections.length - 1;
-        break;
-      case PLAYER1_CONTROLS.punch:
-        this.player1Ready = true;
-        break;
-      case PLAYER2_CONTROLS.punch:
-        this.player2Ready = true;
-        break;
-      case PLAYER1_CONTROLS.kick:
-        this.player1Ready = false;
-        this.countdown = 3;
-        this.countdownSet = false;
-        window.clearInterval(this.interval);
-        break;
-      case PLAYER2_CONTROLS.kick:
-        this.player2Ready = false;
-        this.countdown = 3;
-        this.countdownSet = false;
-        window.clearInterval(this.interval);
-        break;
+    if(!this.player1Ready || !this.player2Ready) {
+      switch (key) {  
+        case PLAYER1_CONTROLS.moveRight:
+          if(!this.player1Ready)
+            ((this.selector1.charIndex + 1) < this.selections.length) ? this.selector1.charIndex++ : this.selector1.charIndex = 0;
+          break;
+        case PLAYER1_CONTROLS.moveLeft:
+          if(!this.player1Ready)
+            (this.selector1.charIndex > 0) ? this.selector1.charIndex-- : this.selector1.charIndex = this.selections.length - 1;
+          break;
+        case PLAYER2_CONTROLS.moveRight:
+          if(!this.player2Ready)
+            ((this.selector2.charIndex + 1) < this.selections.length) ? this.selector2.charIndex++ : this.selector2.charIndex = 0;
+          break;
+        case PLAYER2_CONTROLS.moveLeft:
+          if(!this.player2Ready)
+            (this.selector2.charIndex > 0) ? this.selector2.charIndex-- : this.selector2.charIndex = this.selections.length - 1;
+          break;
+        case PLAYER1_CONTROLS.punch:
+          this.player1Ready = true;
+          break;
+        case PLAYER2_CONTROLS.punch:
+          this.player2Ready = true;
+          break;
+        case PLAYER1_CONTROLS.kick:
+          this.player1Ready = false;
+         // this.countdown = 3;
+          //this.countdownSet = false;
+          //window.clearInterval(this.interval);
+          break;
+        case PLAYER2_CONTROLS.kick:
+          this.player2Ready = false;
+          //this.countdown = 3;
+          //this.countdownSet = false;
+          //window.clearInterval(this.interval);
+          break;
+      }
+    } else {
+      if(key) {
+        var p1 = this.selections[this.selector1.charIndex];
+        var p2 = this.selections[this.selector2.charIndex];
+        var gs = new GameScreen(this.gameEngine);
+        this.gameEngine.screen = gs;
+        gs.addPlayers(p1.name, p2.name);
+      }
     }
   }
 };
@@ -222,7 +245,6 @@ function ModeSelect (gameEngine) {
   for (var i = 0; i < this.selections.length; i++) {
     this.selections[i].x =  WIDTH / 2;
     this.selections[i].y = 320 + (80)* i;
-       console.log(this.selections[i]);
   }
 
 }
@@ -352,17 +374,28 @@ SceneSelect.prototype.draw = function () {
     this.ctx.textAlign ="center";
     this.ctx.fillStyle = "white";
     if(!this.player1Ready) {
-      this.ctx.fillText("press kick or punch to select a scene", WIDTH / 2, 120);
+      this.ctx.fillText("press punch to select a scene, kick to deselect", WIDTH / 2, 120);
     } else {
+      this.ctx.save();
       this.ctx.shadowColor = "white";
       this.ctx.shadowBlur = this.shadowBlur;
       this.ctx.fillText("Scene Selected. Press any key to continue.", WIDTH / 2, 120);
+      this.ctx.restore();
     }
 
     this.ctx.fillText(this.selections[this.selector1.index].name, WIDTH / 2, 190);
     this.ctx.fillStyle = "blue";
+    if(this.player1Ready) {
+      this.ctx.save();
+      this.ctx.shadowColor = "white";
+      this.ctx.shadowBlur = this.shadowBlur;
+    }
     this.ctx.fillRect(this.selections[this.selector1.index].x - 5, this.selections[this.selector1.index].y - 5, 
                   (this.portraitWidth) + 10, this.portraitWidth + 10);
+    if(this.player1Ready) {
+      this.ctx.restore();
+    }
+
     for (var i = 0; i < this.selections.length; i++) {
       this.ctx.drawImage(this.selections[i].portrait, this.selections[i].x, this.selections[i].y, 
         this.portraitWidth, this.portraitWidth);
@@ -380,8 +413,13 @@ SceneSelect.prototype.handleInput =  function (key, downEvent) {
         case PLAYER1_CONTROLS.moveLeft:
           (this.selector1.index > 0) ? this.selector1.index-- : this.selector1.index = this.selections.length - 1;
           break;
+        case PLAYER1_CONTROLS.punch:
+          this.player1Ready = true;
+          break;
+        case PLAYER2_CONTROLS.kick:
+          this.player1Ready = false;
+          break;
         default:
-          if(key === PLAYER1_CONTROLS.punch || key === PLAYER1_CONTROLS.kick) this.player1Ready = true;
           break;
         }
     } else {
@@ -445,12 +483,12 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
     var stickman = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"),
                                 AM.getAsset("./sprites/portrait1.png"), 2);
     if(this.gameEngine.mode === "localVs") {
-      console.log("localp2");
+      //console.log("localp2");
       this.addEntity(new Player(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
     } else {
-      console.log("aip2");
+      //console.log("aip2");
       this.addEntity(new aiPlayer(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH));
@@ -459,12 +497,12 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
       var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                                 AM.getAsset("./sprites/portrait2.png"), 2);
       if (this.gameEngine.mode === "localVs") {
-        console.log("localp2");
+        //console.log("localp2");
         this.addEntity(new Player(this.gameEngine, jenkins,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
                               HEALTH, PLAYER2_CONTROLS));
       } else {
-          console.log("aip2");
+          //console.log("aip2");
           this.addEntity(new aiPlayer(this.gameEngine, jenkins,
                         WIDTH - FRAME_WIDTH - 50, GROUND,
                         HEALTH));
@@ -473,12 +511,12 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
                               AM.getAsset("./sprites/portrait3.png"), 2);
     if (this.gameEngine.mode === "localVs") {
-      console.log("localp2");
+      //console.log("localp2");
       this.addEntity(new Player(this.gameEngine, ephie,
 							WIDTH - FRAME_WIDTH - 50, GROUND,
 							HEALTH, PLAYER2_CONTROLS));
     } else {
-        console.log("aip2");
+        //console.log("aip2");
         this.addEntity(new aiPlayer(this.gameEngine, ephie,
           WIDTH - FRAME_WIDTH - 50, GROUND,
           HEALTH));
@@ -487,12 +525,12 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
                               AM.getAsset("./sprites/portrait4.png"), 2);
     if (this.gameEngine.mode === "localVs") {
-      console.log("localp2");
+      //console.log("localp2");
       this.addEntity(new Player(this.gameEngine, samuru,
   							WIDTH - FRAME_WIDTH - 50, GROUND,
   							HEALTH, PLAYER2_CONTROLS));
     } else {
-      console.log("aip2");
+      //console.log("aip2");
       this.addEntity(new aiPlayer(this.gameEngine, samuru,
                 WIDTH - FRAME_WIDTH - 50, GROUND,
                 HEALTH));     
@@ -502,7 +540,6 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 
 GameScreen.prototype.addEntity = function (entity) {
     this.entities.push(entity);
-    console.log(this.entities);
 };
 
 GameScreen.prototype.update = function () {
