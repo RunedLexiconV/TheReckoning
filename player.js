@@ -254,11 +254,13 @@ Player.prototype.update = function() {
     case "moveRight":
         this.moveVelocity = 4;
         this.velocity.x = this.moveVelocity;
+		console.log(this.animationFrame);
         break;
 
     case "moveLeft":
         this.moveVelocity = -4;
         this.velocity.x = this.moveVelocity;
+		console.log(this.animationFrame);
         break;
 
     case "punch1":
@@ -360,7 +362,6 @@ Player.prototype.update = function() {
 			for (var i = 0; i < this.character.special.spawnFrames.length; i++) {
 				this.character.special.spawnFrames[i].created = false;
 			}
-
 		}
 		
 		for (var i = 0; i < this.character.special.spawnFrames.length; i++) {
@@ -434,7 +435,7 @@ Player.prototype.clearPrevStates = function() {
 		if (this.state !== this.stateList[i]) {
 			var state = this.stateList[i];
 			var animation = this.character.getAnimation(state);
-			animation.elapsedTime = 0;
+			//animation.elapsedTime = 0;
 			animation.soundPlayed = false;
 		}
 	}
