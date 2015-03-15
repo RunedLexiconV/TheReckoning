@@ -46,6 +46,20 @@ AM.queueAudio("./sound/stickman/hit 4.mp3");
 AM.queueAudio("./sound/stickman/hurt.mp3");
 AM.queueAudio("./sound/stickman/jumpKick.mp3");
 
+AM.queueAudio("./sound/jenkins/hit1.mp3");
+AM.queueAudio("./sound/jenkins/hit2.mp3");
+AM.queueAudio("./sound/jenkins/hit3.mp3");
+AM.queueAudio("./sound/jenkins/hurt.mp3");
+AM.queueAudio("./sound/jenkins/jumpKick.mp3");
+
+AM.queueAudio("./sound/samuru/hit_1.mp3");
+AM.queueAudio("./sound/samuru/hit_2.mp3");
+AM.queueAudio("./sound/samuru/hit_3.mp3");
+AM.queueAudio("./sound/samuru/hurt.mp3");
+AM.queueAudio("./sound/samuru/jumpKick.mp3");
+AM.queueAudio("./sound/samuru/kick_1.mp3");
+AM.queueAudio("./sound/samuru/kick_2.mp3");
+AM.queueAudio("./sound/samuru/kick_3.mp3");
 
 window.onload = function () {
   AM.downloadAll( function () {

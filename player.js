@@ -34,7 +34,7 @@ function Player (game, character, x, y, health, controls, orientation) {
     this.debug = false;
 	this.jump = null;
     this.entities = this.game.screen.entities;
-	this.stateList = ["idle", "moveRight", "moveLeft", "jump", "inair", "jumpKick", 
+	this.stateList = ["idle", "moveRight", "moveLeft", "inair", "jumpKick", 
 					"punch1", "punch2", "punch3", "kick1", "kick2", "kick3", 
 					"special", "hurt", "block", "lose", "win"];
 }
