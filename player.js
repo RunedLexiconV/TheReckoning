@@ -1,7 +1,3 @@
-var MAX_ENERGY = 100;
-var ENERGY_ATTACK = 100;
-var ENERGY_INCREMENT = 20;
-
 function Player (game, character, x, y, health, controls, orientation) { 
     this.x = x;
     this.y = y;
@@ -31,7 +27,7 @@ function Player (game, character, x, y, health, controls, orientation) {
 	this.character.special.game = this.game;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = true;
+    this.debug = false;
 	this.jump = null;
     this.entities = this.game.screen.entities;
 	this.stateList = ["idle", "moveRight", "moveLeft", "inair", "jumpKick", 
@@ -545,8 +541,8 @@ Player.prototype.handleInput = function(key, downEvent) {
                     this.energy -= ENERGY_ATTACK;
 					this.prevState = this.state;
 					this.state = "special";
-				}
-				this.interuptable = false;
+    				this.interuptable = false;
+                }
     			break;
     		case this.control.block:
     			if (downEvent) {

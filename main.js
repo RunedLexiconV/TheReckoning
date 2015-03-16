@@ -1,9 +1,3 @@
-var AM = new AssetManager();
-var WIDTH = 800;
-var HEIGHT = 600;
-var GROUND = 0;
-var HEALTH = 100;
-
 AM.queueImage("./sprites/runedlogo.png");
 AM.queueImage("./sprites/sheet 2a.png");
 AM.queueImage("./sprites/sheet 2b.png");

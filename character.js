@@ -1,9 +1,3 @@
-var FRAME_WIDTH = 215;
-var FRAME_HEIGHT = 215;
-var FRAME_DURATION = 0.1;
-var SPRITESHEET_WIDTH = 1500;
-var SCALE = 1;
-
 function attack(name, length, damage) {
 	this.name = name;
 	this.length = length;
