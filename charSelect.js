@@ -89,32 +89,6 @@ function CharSelectScreen (gameEngine) {
 }
 
 CharSelectScreen.prototype.update = function () {
-
-  // if(this.player1Ready && this.player2Ready)  {
-	 //  var that = this;
-	 //  if (!this.countdownSet) {
-		//   this.interval = window.setInterval(function() {
-  //       that.countdown--;
-  //     }, 1000);
-  // 		this.countdownSet = true;
-	 //  }
-  //   if (this.countdown === 0) {
-	 //    var p1 = that.selections[that.selector1.charIndex];
-		// var p2 = that.selections[that.selector2.charIndex];
-		// var gs = new GameScreen(that.gameEngine);
-		// window.clearInterval(this.interval);
-  // 		that.gameEngine.screen = gs;
-  // 		gs.addPlayers(p1.name, p2.name);
-  //   }
-  // }
-  // if (this.countdown === 0) {
-  //   var p1 = that.selections[that.selector1.charIndex];
-	 //  var p2 = that.selections[that.selector2.charIndex];
-	 //  var gs = new GameScreen(that.gameEngine);
-  //   window.clearInterval(this.interval);
-		// that.gameEngine.screen = gs;
-		// gs.addPlayers(p1.name, p2.name);
-  // }
   if(this.shadowBlur <= 2) this.shadowUp = true;
   if(this.shadowBlur >= 30) this.shadowUp = false;
   if(this.shadowUp) {
@@ -131,9 +105,14 @@ CharSelectScreen.prototype.draw = function () {
         //draw selectors
     if(this.selections.length > 0) {
       this.ctx.fillStyle = this.selector1.color;
+      if(this.player1Ready) {
+        this.ctx.save();
+        this.ctx.shadowBlur = this.shadowBlur;
+        this.ctx.shadowColor = "white";
+      } 
       this.ctx.fillRect(this.selections[this.selector1.charIndex].x - 5, this.selections[this.selector1.charIndex].y - 5, 
                   (this.portraitWidth / 2) + 5, this.portraitWidth + 10);
-  
+      if(this.player1Ready) this.ctx.restore();
       this.ctx.font = "24px runed";
       this.ctx.strokeStyle = this.selector1.color;
       this.ctx.fillStyle = "white";
@@ -144,23 +123,29 @@ CharSelectScreen.prototype.draw = function () {
 	  	this.ctx.fillText("*Selected*", this.padding * 3, 300);
 	  }
 
-      if(this.selector2) {
+    if(this.selector2) {
         this.ctx.fillStyle = this.selector2.color;
+        if(this.player2Ready) {
+          this.ctx.save();
+          this.ctx.shadowBlur = this.shadowBlur;
+          this.ctx.shadowColor = "white";
+        }  
         this.ctx.fillRect(this.selections[this.selector2.charIndex].x + this.portraitWidth / 2, this.selections[this.selector2.charIndex].y - 5,
                     (this.portraitWidth / 2) + 5, this.portraitWidth + 10);
+        if(this.player2Ready) this.ctx.restore();
         this.ctx.strokeStyle = "white";
         this.ctx.fillText("Player 2", WIDTH - this.padding * 3 - 150, 200);
         this.ctx.strokeText("Player 2", WIDTH - this.padding * 3 - 150, 200);
         this.ctx.fillText(this.selections[this.selector2.charIndex].name, WIDTH - this.padding * 3 - 150, 250);
-	    if (this.player2Ready)  {
-	  	  this.ctx.fillText("*Selected*", WIDTH - this.padding * 3 - 150, 300);
-	    }
+  	    if (this.player2Ready)  {
+  	  	  this.ctx.fillText("*Selected*", WIDTH - this.padding * 3 - 150, 300);
+  	    }
       }
-    }
-    for (var i = 0; i < this.selections.length; i++) {
-      this.ctx.drawImage(this.selections[i].portrait, this.selections[i].x, this.selections[i].y, 
-        this.portraitWidth, this.portraitWidth);
-    }
+  }
+  for (var i = 0; i < this.selections.length; i++) {
+    this.ctx.drawImage(this.selections[i].portrait, this.selections[i].x, this.selections[i].y, 
+      this.portraitWidth, this.portraitWidth);
+  }
 	
 	if (this.player1Ready && this.player2Ready){
     this.ctx.save();
@@ -168,12 +153,16 @@ CharSelectScreen.prototype.draw = function () {
     this.ctx.fillStyle = "white";
     this.ctx.shadowColor = "white";
     this.ctx.shadowBlur = this.shadowBlur;
-		this.ctx.fillText("Press any key to continue", WIDTH / 2, 400);
+		this.ctx.fillText("Press any other key to continue", WIDTH / 2, 400);
     this.ctx.restore();
 	}
-	
-    drawTitle(this.ctx, "Character Select", 60);
-    this.ctx.restore();
+  this.ctx.textAlign = "center";
+  this.ctx.fillStyle = "white";
+  this.ctx.font = "16px runed";
+	this.ctx.fillText("Use move right and left to change selections.", WIDTH / 2, 100);
+  this.ctx.fillText("Press punch to select, kick to deselect or go back", WIDTH / 2, 130);
+  drawTitle(this.ctx, "Character Select", 60);
+  this.ctx.restore();
 };
 
 CharSelectScreen.prototype.handleInput = function (key, downEvent) {
@@ -204,20 +193,27 @@ CharSelectScreen.prototype.handleInput = function (key, downEvent) {
           this.player2Ready = true;
           break;
         case PLAYER1_CONTROLS.kick:
-          this.player1Ready = false;
-         // this.countdown = 3;
-          //this.countdownSet = false;
-          //window.clearInterval(this.interval);
+          if(!this.player1Ready && !this.player2Ready) {
+            this.gameEngine.screen = new SceneSelect(this.gameEngine);
+          } else {
+            this.player1Ready = false;
+          }
           break;
         case PLAYER2_CONTROLS.kick:
-          this.player2Ready = false;
-          //this.countdown = 3;
-          //this.countdownSet = false;
-          //window.clearInterval(this.interval);
+          if(!this.player1Ready && !this.player2Ready) {
+            this.gameEngine.screen = new SceneSelect(this.gameEngine);
+          } else {
+            this.player2Ready = false;
+          }
           break;
       }
     } else {
-      if(key) {
+      if(key === PLAYER1_CONTROLS.kick) { 
+            this.player1Ready = false;
+
+      } else if(key === PLAYER2_CONTROLS.kick){
+            this.player2Ready = false;
+      } else {
         var p1 = this.selections[this.selector1.charIndex];
         var p2 = this.selections[this.selector2.charIndex];
         var gs = new GameScreen(this.gameEngine);
@@ -424,7 +420,11 @@ SceneSelect.prototype.handleInput =  function (key, downEvent) {
           break;
         case PLAYER1_CONTROLS.kick:
         case PLAYER2_CONTROLS.kick:
-          this.player1Ready = false;
+            if (this.player1Ready) {
+              this.player1Ready = false;
+            } else {
+              this.gameEngine.screen = new ModeSelect(this.gameEngine);
+            }
         }
     } else {
       switch (key) {
