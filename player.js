@@ -66,18 +66,33 @@ Player.prototype.draw = function () {
                                                     this.x, this.y, this.isFacingLeft());
         break;
     case "punch1":
+        var savedX = this.x;
+        if(this.character instanceof Samuru && this.isFacingLeft()) {
+            this.x -= 77;
+        }
         this.character.animations.punch1.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
+        this.x = savedX;
         break;
 
     case "punch2":
+        var savedX = this.x;
+        if(this.character instanceof Samuru && this.isFacingLeft()) {
+            this.x -= 77;
+        }
         this.character.animations.punch2.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
+        this.x = savedX;
         break;
 
     case "punch3":
+        var savedX = this.x;
+        if(this.character instanceof Samuru && this.isFacingLeft()) {
+            this.x -= 77;
+        }
         this.character.animations.punch3.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
+        this.x = savedX;
         break;
 
     case "kick1":
