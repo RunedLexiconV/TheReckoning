@@ -39,6 +39,32 @@ AM.queueAudio("./sound/kung-kick.mp3");
 AM.queueAudio("./sound/kung-kick2.mp3");
 AM.queueAudio("./sound/sam-win.mp3");
 
+AM.queueAudio("./sound/stickman/hit 1.mp3");
+AM.queueAudio("./sound/stickman/hit 2.mp3");
+AM.queueAudio("./sound/stickman/hit 3.mp3");
+AM.queueAudio("./sound/stickman/hurt.mp3");
+AM.queueAudio("./sound/stickman/jumpKick.mp3");
+AM.queueAudio("./sound/stickman/kick1.mp3");
+AM.queueAudio("./sound/stickman/kick2.mp3");
+AM.queueAudio("./sound/stickman/kick3.mp3");
+
+AM.queueAudio("./sound/jenkins/hit1.mp3");
+AM.queueAudio("./sound/jenkins/hit2.mp3");
+AM.queueAudio("./sound/jenkins/hit3.mp3");
+AM.queueAudio("./sound/jenkins/hurt.mp3");
+AM.queueAudio("./sound/jenkins/jumpKick.mp3");
+AM.queueAudio("./sound/jenkins/kick_1.mp3");
+AM.queueAudio("./sound/jenkins/kick_2.mp3");
+AM.queueAudio("./sound/jenkins/kick_3.mp3");
+
+AM.queueAudio("./sound/samuru/hit_1.mp3");
+AM.queueAudio("./sound/samuru/hit_2.mp3");
+AM.queueAudio("./sound/samuru/hit_3.mp3");
+AM.queueAudio("./sound/samuru/hurt.mp3");
+AM.queueAudio("./sound/samuru/jumpKick.mp3");
+AM.queueAudio("./sound/samuru/kick_1.mp3");
+AM.queueAudio("./sound/samuru/kick_2.mp3");
+AM.queueAudio("./sound/samuru/kick_3.mp3");
 
 window.onload = function () {
   AM.downloadAll( function () {

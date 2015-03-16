@@ -34,6 +34,9 @@ function Player (game, character, x, y, health, controls, orientation) {
     this.debug = false;
 	this.jump = null;
     this.entities = this.game.screen.entities;
+	this.stateList = ["idle", "moveRight", "moveLeft", "inair", "jumpKick", 
+					"punch1", "punch2", "punch3", "kick1", "kick2", "kick3", 
+					"special", "hurt", "block", "lose", "win"];
 }
 
 Player.prototype.isFacingLeft = function () {
@@ -54,20 +57,12 @@ Player.prototype.draw = function () {
         this.character.animations.walk.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         break;
-    case "jump":
-        this.character.animations.jump.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y, this.isFacingLeft());
-        break;
     case "inair":
         this.character.animations.inair.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         break;
 	case "jumpKick":
         this.character.animations.jumpKick.drawFrame(this.game.clockTick, this.ctx,
-                                                    this.x, this.y, this.isFacingLeft());
-        break;
-    case "landing":
-        this.character.animations.landing.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         break;
     case "punch1":
@@ -115,15 +110,14 @@ Player.prototype.draw = function () {
     case "lose":
         this.character.animations.lose.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
-        if(!this.character.animations.lose.isDone())
-            if(this.isFacingLeft())
-                this.x -= 4;
-            else
-                this.x += 4;
         break;   
 
     case "win":
         this.character.animations.win.drawFrame(this.game.clockTick, this.ctx,
+                                                    this.x, this.y, this.isFacingLeft());
+        break;
+    case "airHurt":
+        this.character.animations.airHurt.drawFrame(this.game.clockTick, this.ctx,
                                                     this.x, this.y, this.isFacingLeft());
         break;
 
@@ -193,8 +187,8 @@ Player.prototype.update = function() {
     						attack = otherGuy.character.attacks[j].name;
     						if (otherGuy.animationFrame > .75 * otherGuy.character.getAnimation(attack).frames) {
     							var attackLength = otherGuy.character.attacks[j].length;
-    							var hit;
-    							var verticalHit;
+    							var hit = false;
+    							var verticalHit = false;
                                 if (otherGuy.isFacingLeft()) {
     								hit = otherGuy.boundingBox.x - attackLength <= this.boundingBox.x + this.boundingBox.bbwidth;
     							} else {
@@ -223,7 +217,7 @@ Player.prototype.update = function() {
                                         this.energy += ENERGY_INCREMENT * 1.2;
                                         this.prevState = this.state;
                                         this.character.getAnimation(this.state).elapsedTime = 0;
-                                        this.state = "hurt";
+                                        this.state = verticalHit ? "airHurt": "hurt"
                                         this.health -= damage;
                                     }
                                     otherGuy.energy += ENERGY_INCREMENT;
@@ -255,6 +249,14 @@ Player.prototype.update = function() {
 		otherGuy.state = "win";
 	}
 	
+    if(this.y < GROUND) {
+        this.y = GROUND;
+    } else if (this.y > GROUND) {
+        var timeInAir = this.game.timer.gameTime - this.jump.start;
+        this.velocity.y = this.jump.jumpSpeed;
+        this.jump.jumpSpeed = 16 - ((timeInAir) * 32);
+    }
+
     switch(this.state) {
     case "moveRight":
         this.moveVelocity = 4;
@@ -330,26 +332,24 @@ Player.prototype.update = function() {
         //x, y behavior is same as inair
 
     case "inair":
-		var timeInAir = this.game.timer.gameTime - this.jump.start;
-		this.velocity.y = this.jump.jumpSpeed;
-		this.jump.jumpSpeed = 16 - ((timeInAir) * 32);
-		if(this.y < GROUND) {
+		if(this.y <= GROUND) {
 			if (this.velocity.x < 0) {
+                console.log("left");
 				this.state = "moveLeft";
 			} else if (this.velocity > 0) {
+                console.log("right");
 				this.state = "moveRight";
 			} else {
+                console.log("ide");
 				this.state = "idle";
 			}
-			this.velocity.y = 0;
-			this.y = GROUND;
 			this.character.animations.jumpKick.elapsedTime = 0;
             this.jump = null;
 		}
         break;
 
     case "landing":
-        if(this.character.animations.landing.isDone()) {
+        if(this.character.animations3.landing.isDone()) {
             this.character.animations.landing.elapsedTime = 0;
             this.interuptable = true;
             this.state = this.prevState;
@@ -365,7 +365,6 @@ Player.prototype.update = function() {
 			for (var i = 0; i < this.character.special.spawnFrames.length; i++) {
 				this.character.special.spawnFrames[i].created = false;
 			}
-
 		}
 		
 		for (var i = 0; i < this.character.special.spawnFrames.length; i++) {
@@ -430,8 +429,19 @@ Player.prototype.update = function() {
         this.boundingBox.x += this.boundingBox.bbwidth / 2 - 20;
     }
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//(this.y + (FRAME_HEIGHT * SCALE/2 - this.boundingBox.bbheight/2));
-	
+	this.clearPrevStates();
 };
+
+Player.prototype.clearPrevStates = function() {
+	for (var i = 0; i < this.stateList.length; i++) {
+		if (this.state !== this.stateList[i]) {
+			var state = this.stateList[i];
+			var animation = this.character.getAnimation(state);
+			//animation.elapsedTime = 0;
+			animation.soundPlayed = false;
+		}
+	}
+}
 
 Player.prototype.handleInput = function(key, downEvent) {
     if (!this.game.gameOver) {
@@ -510,9 +520,10 @@ Player.prototype.handleInput = function(key, downEvent) {
 
             case this.control.jump:
 				if (downEvent) {
-					if (this.state !== "inair" && this.state !== "jumpKick") {
+                    if (this.state !== "inair" && this.state !== "jumpKick") {
 						this.state = "inair";
 						this.jump = {start: this.game.timer.gameTime, height: 0, attack: "none", jumpSpeed: 16};
+                        this.y++;
 					}
 				}
                 break;

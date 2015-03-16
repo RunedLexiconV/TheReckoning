@@ -55,27 +55,27 @@ function Stickman (spritesheet, reverseSpritesheet, portrait, player) {
         punch1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 7, 5, 3,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/stickman/hit 1.mp3")),//AM.getAsset("./sound/melee-attack.mp3")),
         punch2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 5, 5, 5,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/stickman/hit 2.mp3")),//AM.getAsset("./sound/melee-attack.mp3")),
         punch3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 8, 5, 6,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/stickman/hit 3.mp3")),//AM.getAsset("./sound/melee-attack.mp3")),
         kick1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 8, 5, 8,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/stickman/kick1.mp3")),
         kick2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 6, 5, 10,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/stickman/kick2.mp3")),
         kick3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 9, 5, 12,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/stickman/kick3.mp3")),
         jump: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.035, 5, 5, 14,
@@ -83,7 +83,7 @@ function Stickman (spritesheet, reverseSpritesheet, portrait, player) {
 		jumpKick: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 10, 5, 30,
-                            SCALE, false, SPRITESHEET_WIDTH),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/stickman/jumpKick.mp3")),
         inair: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             FRAME_DURATION, 1, 5, 15,
@@ -111,7 +111,11 @@ function Stickman (spritesheet, reverseSpritesheet, portrait, player) {
         lose: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.1, 15, 5, 27,
-                            SCALE, false, SPRITESHEET_WIDTH)
+                            SCALE, false, SPRITESHEET_WIDTH),
+        airHurt: new Animation(spritesheet, reverseSpritesheet,
+                            FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 5, 5, 34,
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/getting-hit.mp3"))
 
     };
 }
@@ -163,27 +167,27 @@ function Jenkins (spritesheet, reverseSpritesheet, portrait, player) {
         punch1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 7, 5, 3,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/hit1.mp3")),
         punch2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 9, 5, 5,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/hit2.mp3")),
         punch3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 6, 5, 7,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/hit3.mp3")),
         kick1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 7, 5, 9,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/kick_1.mp3")),
         kick2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 10, 5, 11,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/kick_2.mp3")),
         kick3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 13, 5, 13,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/melee-attack.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/kick_3.mp3")),
         jump: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.035, 5, 5, 16,
@@ -191,7 +195,7 @@ function Jenkins (spritesheet, reverseSpritesheet, portrait, player) {
 		jumpKick: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 10, 5, 34,
-                            SCALE, false, SPRITESHEET_WIDTH),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/jumpKick.mp3")),
         inair: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             FRAME_DURATION, 5, 5, 17,
@@ -207,7 +211,7 @@ function Jenkins (spritesheet, reverseSpritesheet, portrait, player) {
         hurt: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.15, 3, 5, 25,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/getting-hit.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/hurt.mp3")),
         block: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 26,
@@ -219,7 +223,11 @@ function Jenkins (spritesheet, reverseSpritesheet, portrait, player) {
         lose: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.1, 15, 5, 27,
-                            SCALE, false, SPRITESHEET_WIDTH)
+                            SCALE, false, SPRITESHEET_WIDTH),
+        airHurt: new Animation(spritesheet, reverseSpritesheet,
+                            FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 5, 5, 31,
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/hurt.mp3"))
 
     };
 }
@@ -320,6 +328,10 @@ function Ephie(spritesheet, reverseSpritesheet, portrait, player) {
         lose: new Animation(spritesheet, reverseSpritesheet,
 							this.ephie_frame_width, FRAME_HEIGHT,
                             0.05, 13, 5, 28,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        airHurt: new Animation(spritesheet, reverseSpritesheet, 
+                            this.ephie_frame_width, FRAME_HEIGHT,
+                            0.15, 5, 5, 34,
                             SCALE, false, SPRITESHEET_WIDTH)
 
     };
@@ -373,31 +385,31 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         punch1: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet, 
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 6, 5, 0,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/sword.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/hit_1.mp3")),
         punch2: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet, 
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 8, 5, 2,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/sword.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/hit_2.mp3")),
         punch3: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet, 
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 11, 5, 4,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/sword.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/hit_3.mp3")),
         kick1: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 14, 5, 3,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/kung-kick.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/kick_1.mp3")),
         kick2: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 14, 5, 6,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/kung-kick.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/kick_2.mp3")),
         kick3: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 24, 5, 9,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/kung-kick2.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/kick_3.mp3")),
 		jumpKick: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 10, 5, 21,
-                            SCALE, false, SPRITESHEET_WIDTH),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/jumpKick.mp3")),
         inair: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             FRAME_DURATION, 1, 5, 14,
@@ -409,7 +421,7 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         hurt: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.15, 4, 5, 18,
-                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/getting-hit.mp3")),
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/hurt.mp3")),
         block: new Animation(spritesheet, reverseSpritesheet, 
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.05, 1, 5, 19,
@@ -421,7 +433,11 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         lose: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet,
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 30, 5, 7,
-                            SCALE, false, SPRITESHEET_WIDTH)
+                            SCALE, false, SPRITESHEET_WIDTH),
+        airHurt: new Animation(spritesheet, reverseSpritesheet, 
+                            FRAME_WIDTH, FRAME_HEIGHT,
+                            0.15, 4, 5, 23,
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/hurt.mp3"))
 
     };
 }
@@ -464,7 +480,8 @@ Stickman.prototype.getAnimation = function(name) {
 			return this.animations.win;
 		case "lose":
 			return this.animations.lose;
-		
+		case "airHurt":
+            return this.animations.airHurt;
 	}
 };
 
@@ -506,6 +523,8 @@ Jenkins.prototype.getAnimation = function(name) {
 			return this.animations.win;
 		case "lose":
 			return this.animations.lose;
+        case "airHurt":
+            return this.animations.airHurt;
 		
 	}
 };
@@ -548,6 +567,8 @@ Ephie.prototype.getAnimation = function(name) {
 			return this.animations.win;
 		case "lose":
 			return this.animations.lose;
+        case "airHurt":
+            return this.animations.airHurt;
 		
 	}
 };
@@ -590,6 +611,8 @@ Samuru.prototype.getAnimation = function(name) {
 			return this.animations.win;
 		case "lose":
 			return this.animations.lose;
+        case "airHurt":
+            return this.animations.airHurt;
 		
 	}
 };
