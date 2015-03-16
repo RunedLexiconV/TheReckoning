@@ -228,7 +228,10 @@ Player.prototype.update = function() {
                                         this.energy += ENERGY_INCREMENT * 1.2;
                                         this.prevState = this.state;
                                         this.character.getAnimation(this.state).elapsedTime = 0;
-                                        this.state = verticalHit ? "airHurt": "hurt"
+                                        this.state = verticalHit ? "airHurt": "hurt";
+										if(this.state === "airHurt") {
+											this.jump.start = this.game.timer.gameTime - .5;
+										}
                                         this.health -= damage;
                                     }
                                     otherGuy.energy += ENERGY_INCREMENT;
@@ -331,9 +334,14 @@ Player.prototype.update = function() {
         this.velocity.x = 0;
         break;
 
-    case "jumpKick":
-        //x, y behavior is same as inair
     case "airHurt":
+		if (this.isFacingLeft()) {
+			this.x += 2;
+		} else {
+			this.x -= 2;
+		}
+	case "jumpKick":
+        //x, y behavior is same as inair
     case "inair":
         var timeInAir = this.game.timer.gameTime - this.jump.start;
         this.velocity.y = this.jump.jumpSpeed;
