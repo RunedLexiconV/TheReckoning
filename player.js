@@ -31,7 +31,7 @@ function Player (game, character, x, y, health, controls, orientation) {
 	this.character.special.game = this.game;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = false;
+    this.debug = true;
 	this.jump = null;
     this.entities = this.game.screen.entities;
 	this.stateList = ["idle", "moveRight", "moveLeft", "inair", "jumpKick", 

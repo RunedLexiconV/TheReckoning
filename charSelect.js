@@ -471,25 +471,25 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 	var character = new Stickman(AM.getAsset("./sprites/sheet 2a.png"), AM.getAsset("./sprites/sheet 2b.png"), AM.getAsset("./sprites/portrait1.png"), 1);
     this.addEntity(new Player(this.gameEngine, character,
                               50 , GROUND ,
-                              HEALTH, PLAYER1_CONTROLS));
+                              HEALTH, PLAYER1_CONTROLS, "right"));
   } else if (p1Name === "Jenkins") {
     var jenkins = new Jenkins(AM.getAsset("./sprites/sheet 3a.png"), AM.getAsset("./sprites/sheet 3b.png"),
                               AM.getAsset("./sprites/portrait2.png"), 1);
     this.addEntity(new Player(this.gameEngine, jenkins,
                             50 , GROUND,
-                            HEALTH, PLAYER1_CONTROLS));
+                            HEALTH, PLAYER1_CONTROLS, "right"));
   } else if (p1Name === "Ephie") {
 	var ephie = new Ephie(AM.getAsset("./sprites/sheet 4a.png"), AM.getAsset("./sprites/sheet 4b.png"),
                               AM.getAsset("./sprites/portrait3.png"), 1);
 	this.addEntity(new Player(this.gameEngine, ephie,
 							50, GROUND,
-							HEALTH, PLAYER1_CONTROLS));
+							HEALTH, PLAYER1_CONTROLS, "right"));
   } else if (p1Name === "Samuru") {
 	var samuru = new Samuru(AM.getAsset("./sprites/sheet 5a.png"), AM.getAsset("./sprites/sheet 5b.png"),
                               AM.getAsset("./sprites/portrait4.png"), 1);
 	this.addEntity(new Player(this.gameEngine, samuru,
 							50, GROUND,
-							HEALTH, PLAYER1_CONTROLS));
+							HEALTH, PLAYER1_CONTROLS, "right"));
   }
 
   if(p2Name === "Stickman") {
@@ -499,7 +499,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
       //console.log("localp2");
       this.addEntity(new Player(this.gameEngine, stickman,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
-                              HEALTH, PLAYER2_CONTROLS));
+                              HEALTH, PLAYER2_CONTROLS, "left"));
     } else {
       //console.log("aip2");
       this.addEntity(new aiPlayer(this.gameEngine, stickman,
@@ -513,7 +513,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
         //console.log("localp2");
         this.addEntity(new Player(this.gameEngine, jenkins,
                               WIDTH - FRAME_WIDTH - 50, GROUND,
-                              HEALTH, PLAYER2_CONTROLS));
+                              HEALTH, PLAYER2_CONTROLS, "left"));
       } else {
           //console.log("aip2");
           this.addEntity(new aiPlayer(this.gameEngine, jenkins,
@@ -527,7 +527,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
       //console.log("localp2");
       this.addEntity(new Player(this.gameEngine, ephie,
 							WIDTH - FRAME_WIDTH - 50, GROUND,
-							HEALTH, PLAYER2_CONTROLS));
+							HEALTH, PLAYER2_CONTROLS, "left"));
     } else {
         //console.log("aip2");
         this.addEntity(new aiPlayer(this.gameEngine, ephie,
@@ -541,7 +541,7 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
       //console.log("localp2");
       this.addEntity(new Player(this.gameEngine, samuru,
   							WIDTH - FRAME_WIDTH - 50, GROUND,
-  							HEALTH, PLAYER2_CONTROLS));
+  							HEALTH, PLAYER2_CONTROLS, "left"));
     } else {
       //console.log("aip2");
       this.addEntity(new aiPlayer(this.gameEngine, samuru,
@@ -552,6 +552,17 @@ GameScreen.prototype.addPlayers = function (p1Name, p2Name) {
 };
 
 GameScreen.prototype.addEntity = function (entity) {
+    var savedFacing = entity.facing;
+    entity.facing = "right";
+    entity.draw();
+    entity.facing = "left";
+    entity.draw();
+    entity.state = "lose";
+    entity.draw();
+    entity.facing = "right";
+    entity.draw();
+    entity.state = "idle";
+    entity.facing = savedFacing;
     this.entities.push(entity);
 };
 
