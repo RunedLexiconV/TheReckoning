@@ -241,6 +241,12 @@ Player.prototype.update = function() {
                                     this.game.screen.winner = otherGuy.character.player;
 									this.state = "lose";
 									otherGuy.state = "win";
+									if (this.energy > 100) {
+										this.energy = 100;
+									} 
+									if (otherGuy.energy > 100) {
+										otherGuy.energy = 100;
+									}
 								}
 								break;
 							}
