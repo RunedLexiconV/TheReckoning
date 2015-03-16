@@ -5,9 +5,9 @@ function random(max, min) {
 function aiPlayer (game, character, x, y, health) {
 	Player.call(this, game, character, x, y, health, PLAYER2_CONTROLS, "left");
 	this.controls = PLAYER2_CONTROLS;
-	this.attackLength = 50;
-	this.fleeLength = 70;
-	this.moveTime = 1;
+	this.attackLength = AI_ATTACK_LENGTH;
+	this.fleeLength = AI_FLEE_LENGTH;
+	this.moveTime = AI_MOVE_TIME;
 	this.prevControl = "idle";
 }
 
