@@ -111,7 +111,11 @@ function Stickman (spritesheet, reverseSpritesheet, portrait, player) {
         lose: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.1, 15, 5, 27,
-                            SCALE, false, SPRITESHEET_WIDTH)
+                            SCALE, false, SPRITESHEET_WIDTH),
+        airHurt: new Animation(spritesheet, reverseSpritesheet,
+                            FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 5, 5, 34,
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/getting-hit.mp3"))
 
     };
 }
@@ -219,7 +223,11 @@ function Jenkins (spritesheet, reverseSpritesheet, portrait, player) {
         lose: new Animation(spritesheet, reverseSpritesheet,
 							FRAME_WIDTH, FRAME_HEIGHT,
                             0.1, 15, 5, 27,
-                            SCALE, false, SPRITESHEET_WIDTH)
+                            SCALE, false, SPRITESHEET_WIDTH),
+        airHurt: new Animation(spritesheet, reverseSpritesheet,
+                            FRAME_WIDTH, FRAME_HEIGHT,
+                            0.05, 5, 5, 31,
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/jenkins/hurt.mp3"))
 
     };
 }
@@ -320,6 +328,10 @@ function Ephie(spritesheet, reverseSpritesheet, portrait, player) {
         lose: new Animation(spritesheet, reverseSpritesheet,
 							this.ephie_frame_width, FRAME_HEIGHT,
                             0.05, 13, 5, 28,
+                            SCALE, false, SPRITESHEET_WIDTH),
+        airHurt: new Animation(spritesheet, reverseSpritesheet, 
+                            this.ephie_frame_width, FRAME_HEIGHT,
+                            0.15, 5, 5, 34,
                             SCALE, false, SPRITESHEET_WIDTH)
 
     };
@@ -421,7 +433,11 @@ function Samuru(spritesheet, reverseSpritesheet, portrait, player) {
         lose: new Animation(this.swordSpritesheet, this.reverseSwordSpritesheet,
 							this.Samuru_frame_width, this.Samuru_frame_height,
                             0.05, 30, 5, 7,
-                            SCALE, false, SPRITESHEET_WIDTH)
+                            SCALE, false, SPRITESHEET_WIDTH),
+        airHurt: new Animation(spritesheet, reverseSpritesheet, 
+                            FRAME_WIDTH, FRAME_HEIGHT,
+                            0.15, 4, 5, 23,
+                            SCALE, false, SPRITESHEET_WIDTH, AM.getAsset("./sound/samuru/hurt.mp3"))
 
     };
 }
@@ -464,7 +480,8 @@ Stickman.prototype.getAnimation = function(name) {
 			return this.animations.win;
 		case "lose":
 			return this.animations.lose;
-		
+		case "airHurt":
+            return this.animations.airHurt;
 	}
 };
 
@@ -506,6 +523,8 @@ Jenkins.prototype.getAnimation = function(name) {
 			return this.animations.win;
 		case "lose":
 			return this.animations.lose;
+        case "airHurt":
+            return this.animations.airHurt;
 		
 	}
 };
@@ -548,6 +567,8 @@ Ephie.prototype.getAnimation = function(name) {
 			return this.animations.win;
 		case "lose":
 			return this.animations.lose;
+        case "airHurt":
+            return this.animations.airHurt;
 		
 	}
 };
@@ -590,6 +611,8 @@ Samuru.prototype.getAnimation = function(name) {
 			return this.animations.win;
 		case "lose":
 			return this.animations.lose;
+        case "airHurt":
+            return this.animations.airHurt;
 		
 	}
 };
