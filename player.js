@@ -162,7 +162,7 @@ Player.prototype.draw = function () {
 
 Player.prototype.update = function() {
 	var entities = this.entities;
-	if (this.state != "hurt") {
+	if (this.state != "hurt" && this.state != "airHurt") {
 		for (var i = 0; i < entities.length; i++) {
 			if (entities[i] != this) {
                 if (entities[i] instanceof special) {
