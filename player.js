@@ -228,7 +228,7 @@ Player.prototype.update = function() {
                                         this.energy += ENERGY_INCREMENT * 1.2;
                                         this.prevState = this.state;
                                         this.character.getAnimation(this.state).elapsedTime = 0;
-                                        this.state = verticalHit ? "airHurt": "hurt";
+                                        this.state = verticalHit && this.y > GROUND? "airHurt": "hurt";
 										if(this.state === "airHurt") {
 											this.jump.start = this.game.timer.gameTime - .5;
 										}
