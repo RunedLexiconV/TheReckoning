@@ -31,7 +31,7 @@ function Player (game, character, x, y, health, controls, orientation) {
 	this.character.special.game = this.game;
     this.boundingBox.x = (this.x + (FRAME_WIDTH * SCALE - this.boundingBox.bbwidth) / 2);
     this.boundingBox.y = HEIGHT - this.y - FRAME_HEIGHT + 50;//+ (FRAME_HEIGHT * SCALE - this.boundingBox.bbheight) / 2);
-    this.debug = false;
+    this.debug = true;
 	this.jump = null;
     this.entities = this.game.screen.entities;
 	this.stateList = ["idle", "moveRight", "moveLeft", "inair", "jumpKick", 
@@ -248,14 +248,6 @@ Player.prototype.update = function() {
 		this.state = "lose";
 		otherGuy.state = "win";
 	}
-	
-    if(this.y < GROUND) {
-        this.y = GROUND;
-    } else if (this.y > GROUND) {
-        var timeInAir = this.game.timer.gameTime - this.jump.start;
-        this.velocity.y = this.jump.jumpSpeed;
-        this.jump.jumpSpeed = 16 - ((timeInAir) * 32);
-    }
 
     switch(this.state) {
     case "moveRight":
@@ -330,17 +322,18 @@ Player.prototype.update = function() {
 
     case "jumpKick":
         //x, y behavior is same as inair
-
+    case "airHurt":
     case "inair":
+        var timeInAir = this.game.timer.gameTime - this.jump.start;
+        this.velocity.y = this.jump.jumpSpeed;
+        this.jump.jumpSpeed = 16 - ((timeInAir) * 32);
+
 		if(this.y <= GROUND) {
 			if (this.velocity.x < 0) {
-                console.log("left");
 				this.state = "moveLeft";
 			} else if (this.velocity > 0) {
-                console.log("right");
 				this.state = "moveRight";
 			} else {
-                console.log("ide");
 				this.state = "idle";
 			}
 			this.character.animations.jumpKick.elapsedTime = 0;
@@ -412,6 +405,11 @@ Player.prototype.update = function() {
             this.state = this.prevState;
         }
         break;
+    }
+
+    if(this.y < GROUND) {
+        this.y = GROUND;
+        this.velocity.y = 0;
     }
 
     if(this.boundingBox.x < 0)
